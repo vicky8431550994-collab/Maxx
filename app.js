@@ -18,6 +18,7 @@ async function askMax(question) {
         speak(answer);
     } catch (e) {
         document.getElementById('response').innerText = "Max: Error connecting!";
+        console.error(e);
     }
 }
 
