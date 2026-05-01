@@ -2,15 +2,19 @@ const API_KEY = "AIzaSyA4fU4FVcG1nkFFblHmafpNX06SxvmgttI";
 const startBtn = document.getElementById('start-btn');
 const textInput = document.getElementById('text-input');
 const sendBtn = document.getElementById('send-btn');
+const responseDiv = document.getElementById('response');
+
+// ಸೈಟ್ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂದು ತಿಳಿಯಲು ಈ ಟೈಟಲ್ ಬದಲಾಯಿಸಿ
+document.querySelector('h1').innerText = "MAX AI V4";
+
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = 'en-US';
 
 async function askMax(question) {
-    // ಇದು ಬದಲಾಗಿದ್ದರೆ ಮಾತ್ರ ನಿಮ್ಮ ಸೈಟ್ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆ ಎಂದು ಅರ್ಥ
-    document.getElementById('response').innerHTML = "Max v3 ಪರೀಕ್ಷಿಸುತ್ತಿದ್ದಾನೆ...";
+    responseDiv.innerHTML = "Max v4 ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
     try {
-        // ಈ ಲಿಂಕ್ ಅನ್ನು ಅತ್ಯಂತ ಜಾಗರೂಕತೆಯಿಂದ ಬದಲಾಯಿಸಲಾಗಿದೆ
-        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+        // v1beta ಮತ್ತು flash ಮಾಡೆಲ್ - ಇದು ಸರಿಯಾದ ಕಾಂಬಿನೇಷನ್
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
         
         const res = await fetch(url, {
             method: 'POST',
@@ -22,10 +26,10 @@ async function askMax(question) {
         if (data.error) throw new Error(data.error.message);
 
         const answer = data.candidates[0].content.parts[0].text;
-        document.getElementById('response').innerHTML = "<b>Max:</b> " + answer;
+        responseDiv.innerHTML = "<b>Max:</b> " + answer;
         speak(answer);
     } catch (e) {
-        document.getElementById('response').innerHTML = "<b>Error:</b> " + e.message;
+        responseDiv.innerHTML = "<b>Error:</b> " + e.message;
     }
 }
 
