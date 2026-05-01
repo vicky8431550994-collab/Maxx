@@ -4,8 +4,7 @@ const textInput = document.getElementById('text-input');
 const sendBtn = document.getElementById('send-btn');
 const responseDiv = document.getElementById('response');
 
-// ಹೆಸರನ್ನು MAD MAX ಎಂದು ಬದಲಾಯಿಸಲಾಗಿದೆ
-document.querySelector('h1').innerText = "MAD MAX";
+document.querySelector('h1').innerText = "MAD MAX AI";
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = 'en-US';
@@ -13,8 +12,8 @@ recognition.lang = 'en-US';
 async function askMax(question) {
     responseDiv.innerHTML = "Mad Max is thinking...";
     try {
-        // v1 ಸ್ಟೇಬಲ್ ಲಿಂಕ್ ಬಳಸಲಾಗಿದೆ, ಈಗ ಎರರ್ ಬರುವುದಿಲ್ಲ
-        const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        // v1beta ಮಾತ್ರ gemini-1.5-flash ಗೆ ಸಪೋರ್ಟ್ ಮಾಡುತ್ತದೆ
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
         
         const res = await fetch(url, {
             method: 'POST',
