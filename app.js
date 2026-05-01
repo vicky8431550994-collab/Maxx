@@ -1,4 +1,4 @@
-const API_KEY = "AIzaSyBmunGgtidUt_reHeu3ur2_BQ2LD4mRGlQ"; 
+const API_KEY = "AIzaSyBmunGgticUt_reHeu3ur2_BQ2LD4nRG1Q"; 
 
 const startBtn = document.getElementById('start-btn');
 const textInput = document.getElementById('text-input');
@@ -29,7 +29,7 @@ async function askMax(question) {
         document.getElementById('response').innerHTML = "<b>Max:</b> Error connecting! ಕನೆಕ್ಷನ್ ಸಿಗುತ್ತಿಲ್ಲ.";
         console.error(e);
     }
-} 
+}
 
 function speak(text) {
     const speech = new SpeechSynthesisUtterance(text);
