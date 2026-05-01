@@ -1,4 +1,4 @@
-const API_KEY = "AIzaSyBmunGgticUt_reHeu3ur2_BQ2LD4nRG1Q"; 
+const API_KEY = "AIzaSyA4fU4FVcG1nkFFblHmafpNX06SxvmgttI"; 
 
 const startBtn = document.getElementById('start-btn');
 const textInput = document.getElementById('text-input');
