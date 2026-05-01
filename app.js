@@ -10,7 +10,8 @@ recognition.lang = 'en-US';
 async function askMax(question) {
     document.getElementById('response').innerHTML = "<b>Max:</b> ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
     try {
-        const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY, {
+        // ಇಲ್ಲಿ ನಾವು v1 (Stable) ಲಿಂಕ್ ಬಳಸುತ್ತಿದ್ದೇವೆ
+        const res = await fetch("https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + API_KEY, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: question }] }] })
@@ -18,7 +19,6 @@ async function askMax(question) {
         
         const data = await res.json();
         
-        // ಇಲ್ಲಿ ತಪ್ಪು ಕಂಡುಹಿಡಿಯುವ ಲಾಜಿಕ್ ಇದೆ
         if (data.error) {
              throw new Error(data.error.message);
         }
@@ -27,7 +27,6 @@ async function askMax(question) {
         document.getElementById('response').innerHTML = "<b>Max:</b> " + answer;
         speak(answer); 
     } catch (e) {
-        // ಇದು ನಿಮಗೆ ನಿಜವಾದ ತಪ್ಪು ಏನೆಂದು ತೋರಿಸುತ್ತದೆ!
         document.getElementById('response').innerHTML = "<b>Max Error:</b> " + e.message;
         console.error(e);
     }
