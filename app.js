@@ -4,7 +4,8 @@ const textInput = document.getElementById('text-input');
 const sendBtn = document.getElementById('send-btn');
 const responseDiv = document.getElementById('response');
 
-document.querySelector('h1').innerText = "MAD MAX AI";
+// ವೆಬ್‌ಸೈಟ್ ನಿಜವಾಗಿಯೂ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂದು ತಿಳಿಯಲು ಈ ಟೈಟಲ್
+document.querySelector('h1').innerText = "MAD MAX FINAL";
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = 'en-US';
@@ -12,8 +13,8 @@ recognition.lang = 'en-US';
 async function askMax(question) {
     responseDiv.innerHTML = "Mad Max is thinking...";
     try {
-        // v1beta ಮಾತ್ರ gemini-1.5-flash ಗೆ ಸಪೋರ್ಟ್ ಮಾಡುತ್ತದೆ
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        // ಗಮನಿಸಿ: ಇಲ್ಲಿ 'gemini-1.5-flash-latest' ಎಂದು ಬದಲಿಸಲಾಗಿದೆ
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
         
         const res = await fetch(url, {
             method: 'POST',
