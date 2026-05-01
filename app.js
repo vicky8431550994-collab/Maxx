@@ -10,7 +10,7 @@ recognition.lang = 'en-US';
 async function askMax(question) {
     document.getElementById('response').innerHTML = "<b>Max:</b> ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
     try {
-        // ನಾವು ಇಲ್ಲಿ v1beta ಮತ್ತು ಸರಿಯಾದ ಮಾಡೆಲ್ ಹೆಸರು ಬಳಸುತ್ತಿದ್ದೇವೆ
+        // ಗಮನಿಸಿ: ಇಲ್ಲಿ v1beta ಇದೆ, ಇದು ಈಗ ಸರಿಯಾದದ್ದು
         const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
