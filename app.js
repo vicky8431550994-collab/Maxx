@@ -60,4 +60,3 @@ startBtn.onclick = () => {
     document.getElementById('status').innerText = "ಮೈಕ್ ಆನ್ ಆಗುತ್ತಿದೆ... ದಯವಿಟ್ಟು ಮಾತನಾಡಿ!";
     recognition.start();
 };
-￼Enter
