@@ -6,16 +6,18 @@ const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognit
 recognition.lang = 'en-US';
 
 async function askMax(question) {
-    // ಸೈಟ್ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂದು ತಿಳಿಯಲು ಈ ಟೆಕ್ಸ್ಟ್ ಬದಲಾಯಿಸಲಾಗಿದೆ
-    document.getElementById('response').innerHTML = "Max v2.0 ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
+    // ಇದು ಬದಲಾಗಿದ್ದರೆ ಮಾತ್ರ ನಿಮ್ಮ ಸೈಟ್ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆ ಎಂದು ಅರ್ಥ
+    document.getElementById('response').innerHTML = "Max v3 ಪರೀಕ್ಷಿಸುತ್ತಿದ್ದಾನೆ...";
     try {
-        // ನಾವು ಇಲ್ಲಿ ಸ್ಟೇಬಲ್ 'v1' ಬಳಸುತ್ತಿದ್ದೇವೆ
-        const url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+        // ಈ ಲಿಂಕ್ ಅನ್ನು ಅತ್ಯಂತ ಜಾಗರೂಕತೆಯಿಂದ ಬದಲಾಯಿಸಲಾಗಿದೆ
+        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+        
         const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: question }] }] })
         });
+
         const data = await res.json();
         if (data.error) throw new Error(data.error.message);
 
