@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="kn">
 <head>
     <meta charset="UTF-8">
@@ -7,11 +7,11 @@ DOCTYPE html>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="app-container">
         <h1>MAX AI</h1>
+        
         <div class="status-box">
-            <p id="status">ಬಟನ್ ಒತ್ತಿ ಮತ್ತು ಮಾತನಾಡಿ...</p>
+            <p id="status">ಬಟನ್ ಒತ್ತಿ ಮಾತನಾಡಿ ಅಥವಾ ಟೈಪ್ ಮಾಡಿ...</p>
         </div>
 
         <div class="display-box">
@@ -20,10 +20,14 @@ DOCTYPE html>
             <p id="response"><b>Max:</b> ಇಲ್ಲಿ ಉತ್ತರಿಸುತ್ತಾನೆ...</p>
         </div>
 
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="text-input" placeholder="ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ (ಉದಾ: Hi Max)" style="width: 70%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; color: black;">
+            <button id="send-btn" style="padding: 10px 15px; background: #00ffcc; color: black; border-radius: 5px; font-weight: bold; border: none; cursor: pointer;">ಕಳುಹಿಸಿ 🚀</button>
+        </div>
+
         <button id="start-btn">ಮಾತನಾಡಿ 🎙️</button>
     </div>
 
     <script src="app.js"></script>
 </body>
 </html>
-￼Enter
