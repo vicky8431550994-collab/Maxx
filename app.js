@@ -18,6 +18,7 @@ async function askMax(question) {
         
         const data = await res.json();
         
+        // ಇಲ್ಲಿ ತಪ್ಪು ಕಂಡುಹಿಡಿಯುವ ಲಾಜಿಕ್ ಇದೆ
         if (data.error) {
              throw new Error(data.error.message);
         }
@@ -26,7 +27,8 @@ async function askMax(question) {
         document.getElementById('response').innerHTML = "<b>Max:</b> " + answer;
         speak(answer); 
     } catch (e) {
-        document.getElementById('response').innerHTML = "<b>Max:</b> Error connecting! ಕನೆಕ್ಷನ್ ಸಿಗುತ್ತಿಲ್ಲ.";
+        // ಇದು ನಿಮಗೆ ನಿಜವಾದ ತಪ್ಪು ಏನೆಂದು ತೋರಿಸುತ್ತದೆ!
+        document.getElementById('response').innerHTML = "<b>Max Error:</b> " + e.message;
         console.error(e);
     }
 }
