@@ -10,8 +10,8 @@ recognition.lang = 'en-US';
 async function askMax(question) {
     document.getElementById('response').innerHTML = "<b>Max:</b> ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
     try {
-        // ಇಲ್ಲಿ ನಾವು v1 (Stable) ಲಿಂಕ್ ಬಳಸುತ್ತಿದ್ದೇವೆ
-        const res = await fetch("https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + API_KEY, {
+        // ನಾವು ಇಲ್ಲಿ v1beta ಮತ್ತು ಸರಿಯಾದ ಮಾಡೆಲ್ ಹೆಸರು ಬಳಸುತ್ತಿದ್ದೇವೆ
+        const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: question }] }] })
