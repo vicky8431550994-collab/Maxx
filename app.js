@@ -6,9 +6,10 @@ const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognit
 recognition.lang = 'en-US';
 
 async function askMax(question) {
-    document.getElementById('response').innerHTML = "Max ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
+    // ಸೈಟ್ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂದು ತಿಳಿಯಲು ಈ ಟೆಕ್ಸ್ಟ್ ಬದಲಾಯಿಸಲಾಗಿದೆ
+    document.getElementById('response').innerHTML = "Max v2.0 ಯೋಚಿಸುತ್ತಿದ್ದಾನೆ...";
     try {
-        // ಗಮನಿಸಿ: ಇಲ್ಲಿ 'v1' ಬಳಸಲಾಗಿದೆ, ಇದು ಈಗಿನ ಸರಿಯಾದ ಲಿಂಕ್
+        // ನಾವು ಇಲ್ಲಿ ಸ್ಟೇಬಲ್ 'v1' ಬಳಸುತ್ತಿದ್ದೇವೆ
         const url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
         const res = await fetch(url, {
             method: 'POST',
@@ -16,7 +17,6 @@ async function askMax(question) {
             body: JSON.stringify({ contents: [{ parts: [{ text: question }] }] })
         });
         const data = await res.json();
-        
         if (data.error) throw new Error(data.error.message);
 
         const answer = data.candidates[0].content.parts[0].text;
