@@ -1,20 +1,21 @@
-const API_KEY = "AIzaSyA4fU4FVcG1nkFFblHmafpNX06SxvmgttI";
+const API_KEY = "ಇಲ್ಲಿ_ನಿಮ್ಮ_ಹೊಸ_API_KEY_ಹಾಕಿ"; 
+
 const startBtn = document.getElementById('start-btn');
 const textInput = document.getElementById('text-input');
 const sendBtn = document.getElementById('send-btn');
 const responseDiv = document.getElementById('response');
 
-// ವೆಬ್‌ಸೈಟ್ ನಿಜವಾಗಿಯೂ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂದು ತಿಳಿಯಲು ಈ ಟೈಟಲ್
-document.querySelector('h1').innerText = "MAD MAX FINAL";
+// ಹೆಸರನ್ನು 'MAX' ಎಂದು ಬದಲಾಯಿಸಲಾಗಿದೆ
+document.querySelector('h1').innerText = "MAX";
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = 'en-US';
 
 async function askMax(question) {
-    responseDiv.innerHTML = "Mad Max is thinking...";
+    responseDiv.innerHTML = "Max is thinking...";
     try {
-        // ಗಮನಿಸಿ: ಇಲ್ಲಿ 'gemini-1.5-flash-latest' ಎಂದು ಬದಲಿಸಲಾಗಿದೆ
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+        // ಅತ್ಯಂತ ಸ್ಥಿರವಾದ ಲಿಂಕ್ ಬಳಸಲಾಗಿದೆ
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
         
         const res = await fetch(url, {
             method: 'POST',
@@ -23,12 +24,16 @@ async function askMax(question) {
         });
 
         const data = await res.json();
-        if (data.error) throw new Error(data.error.message);
+        
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
 
         const answer = data.candidates[0].content.parts[0].text;
-        responseDiv.innerHTML = "<b>Mad Max:</b> " + answer;
+        responseDiv.innerHTML = "<b>Max:</b> " + answer;
         speak(answer);
     } catch (e) {
+        // ಎರರ್ ಬಂದರೆ ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ
         responseDiv.innerHTML = "<b>Error:</b> " + e.message;
     }
 }
