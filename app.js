@@ -1,61 +1,59 @@
-const API_KEY = "ಇಲ್ಲಿ_ನಿಮ್ಮ_ಹೊಸ_API_KEY_ಹಾಕಿ"; 
-
+// ಮ್ಯಾಕ್ಸ್ ಅಸಿಸ್ಟೆಂಟ್‌ನ ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಕೋಡ್
 const startBtn = document.getElementById('start-btn');
-const textInput = document.getElementById('text-input');
-const sendBtn = document.getElementById('send-btn');
-const responseDiv = document.getElementById('response');
+const statusText = document.getElementById('status');
+const transcriptText = document.getElementById('transcript');
+const responseText = document.getElementById('response');
 
-// ಹೆಸರನ್ನು 'MAX' ಎಂದು ಬದಲಾಯಿಸಲಾಗಿದೆ
-document.querySelector('h1').innerText = "MAX";
+// ಬ್ರೌಸರ್ ಸ್ಪೀಚ್ ರೆಕಗ್ನಿಷನ್ ಸೆಟಪ್
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'en-US';
+if (!SpeechRecognition) {
+    statusText.innerText = "ನಿಮ್ಮ ಬ್ರೌಸರ್ ವಾಯ್ಸ್ ಅಸಿಸ್ಟೆಂಟ್ ಸಪೋರ್ಟ್ ಮಾಡಲ್ಲ ಬಾಸ್!";
+} else {
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'kn-IN'; // ಕನ್ನಡ ಭಾಷೆ ಸೆಟ್ ಮಾಡಲಾಗಿದೆ
+    recognition.interimResults = false;
 
-async function askMax(question) {
-    responseDiv.innerHTML = "Max is thinking...";
-    try {
-        // ಅತ್ಯಂತ ಸ್ಥಿರವಾದ ಲಿಂಕ್ ಬಳಸಲಾಗಿದೆ
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    // ಬಟನ್ ಒತ್ತಿದಾಗ ಮೈಕ್ರೋಫೋನ್ ಆನ್ ಆಗಲು
+    startBtn.addEventListener('click', () => {
+        recognition.start();
+        statusText.innerText = "ಮ್ಯಾಕ್ಸ್ ಕೇಳ್ತಾ ಇದ್ದಾನೆ, ಮಾತನಾಡಿ... 🎙️";
+    });
+
+    // ನಾವು ಮಾತನಾಡಿದ್ದು ಮುಗಿದ ಮೇಲೆ
+    recognition.onresult = (event) => {
+        const mySpeech = event.results[0][0].transcript;
+        transcriptText.innerHTML = `<b>ನೀವು ಹೇಳಿದ್ದು:</b> ${mySpeech}`;
+        statusText.innerText = "ಬಟನ್ ಒತ್ತಿ ಮತ್ತು ಮಾತನಾಡಿ...";
         
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: question }] }] })
-        });
+        // ಮ್ಯಾಕ್ಸ್ ಕೊಡುವ ಉತ್ತರಗಳು (AI Logic)
+        generateMaxResponse(mySpeech.toLowerCase());
+    };
 
-        const data = await res.json();
-        
-        if (data.error) {
-            throw new Error(data.error.message);
-        }
-
-        const answer = data.candidates[0].content.parts[0].text;
-        responseDiv.innerHTML = "<b>Max:</b> " + answer;
-        speak(answer);
-    } catch (e) {
-        // ಎರರ್ ಬಂದರೆ ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ
-        responseDiv.innerHTML = "<b>Error:</b> " + e.message;
-    }
+    recognition.onerror = () => {
+        statusText.innerText = "ಏನೋ ಪ್ರಾಬ್ಲಮ್ ಆಯ್ತು, ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ ಬಾಸ್!";
+    };
 }
 
-function speak(text) {
-    const speech = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(speech);
-}
+// ಮ್ಯಾಕ್ಸ್ ಮಾತನಾಡಲು ಮತ್ತು ಉತ್ತರ ಕೊಡಲು ಫಂಕ್ಷನ್
+function generateMaxResponse(speech) {
+    let reply = "ಕ್ಷಮಿಸಿ ಬಾಸ್, ನನಗೆ ಅದು ಅರ್ಥ ಆಗಲಿಲ್ಲ.";
 
-sendBtn.onclick = () => {
-    const val = textInput.value;
-    if(val.trim()) {
-        document.getElementById('transcript').innerHTML = "You: " + val;
-        textInput.value = "";
-        askMax(val);
+    if (speech.includes('ಹಲೋ') || speech.includes('ನಮಸ್ಕಾರ')) {
+        reply = "ಹಲೋ ಬಾಸ್! ನಾನು ನಿಮ್ಮ ಮ್ಯಾಕ್ಸ್. ಇವತ್ತು ನಿಮಗೆ ಏನು ಸಹಾಯ ಬೇಕು ಮಾರಾಯಾ?";
+    } else if (speech.includes('ಹೇಗಿದ್ದೀಯಾ') || speech.includes('ಹೇಗಿದ್ದಿ')) {
+        reply = "ನಾನು ಸೂಪರ್ ಆಗಿದ್ದೀನಿ ಬಾಸ್. ನೀವು ಹೇಗಿದ್ದೀರಾ? ಬಾಳೆಕಾಯಿ ಚಿಪ್ಸ್ ತಿಂದ್ರಾ?";
+    } else if (speech.includes('ನಿಮ್ಮ ಹೆಸರೇನು') || speech.includes('ನಿನ್ನ ಹೆಸರೇನು')) {
+        reply = "ನನ್ನ ಹೆಸರು ಮ್ಯಾಕ್ಸ್ ಐ ಆಲ್ ರೌಂಡರ್ ಅಸಿಸ್ಟೆಂಟ್ ಬಾಸ್!";
+    } else if (speech.includes('ಬೆನ್ ಸ್ಟೋಕ್ಸ್')) {
+        reply = "ಅವನು ಒಂತರ ಕ್ರೇಜಿ ವಿಲನ್ ಇದ್ದಂಗೆ ಬಾಸ್, ಸಿಕ್ಕಾಪಟ್ಟೆ ಬೆಂಕಿ ಪ್ಲೇಯರ್!";
     }
-};
 
-recognition.onresult = (event) => {
-    const val = event.results[0][0].transcript;
-    document.getElementById('transcript').innerHTML = "You: " + val;
-    askMax(val);
-};
+    // ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಉತ್ತರ ತೋರಿಸಲು
+    responseText.innerHTML = `<b>Max:</b> ${reply}`;
 
-startBtn.onclick = () => { recognition.start(); };
+    // ಮ್ಯಾಕ್ಸ್ ಧ್ವನಿ ಮೂಲಕ ಮಾತನಾಡಲು (Text-to-Speech)
+    const speechUtterance = new SpeechSynthesisUtterance(reply);
+    speechUtterance.lang = 'kn-IN';
+    window.speechSynthesis.speak(speechUtterance);
+}
