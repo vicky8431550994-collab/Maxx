@@ -41,7 +41,7 @@ function generateMaxResponse(speech) {
 
     // ನೀವು ಕೇಳಿದ ಖದರ್ ಡೈಲಾಗ್ ಇಲ್ಲಿದೆ ಬಾಸ್
     if (speech.includes('ಹಲೋ') || speech.includes('ನಮಸ್ಕಾರ') || speech.includes('ಮ್ಯಾಕ್ಸ್')) {
-        reply = "ಹೇಳಿ ಬಾಸ್, ನಾನು ನಿಮ್ಮ ಮ್ಯಾಕ್ಸ್. ನಿಮಗೆ ಇವತ್ತು ಏನು ಸಹಾಯ ಆಗಬೇಕು ಮಾರಾಯಾ?";
+        reply = "ಹೇಳೋ ತಗಡು ನಾನ್ ಕಣೋ ನಿಮ್ಮಪ್ಪ ಅದೇ ಮೋನಿ ಬೈರಾ ಅವರಪ್ಪ ನಾನು";
     } else if (speech.includes('ಹೇಗಿದ್ದೀಯಾ') || speech.includes('ಹೇಗಿದ್ದಿ')) {
         reply = "ನಾನು ಸೂಪರ್ ಆಗಿದ್ದೀನಿ ಬಾಸ್. ನೀವು ಹೇಗಿದ್ದೀರಾ?";
     } else if (speech.includes('ನಿಮ್ಮ ಹೆಸರೇನು') || speech.includes('ನಿನ್ನ ಹೆಸರೇನು')) {
