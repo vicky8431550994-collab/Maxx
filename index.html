@@ -14,8 +14,8 @@
         }
 
         body {
-            background-color: #0b0b0e; 
-            color: #e2e8f0;
+            background-color: #000000; 
+            color: #ffffff;
             display: flex;
             height: 100vh;
             overflow: hidden;
@@ -29,245 +29,216 @@
             justify-content: center; 
             position: relative;
             padding: 20px;
+            width: 100%;
         }
 
-        .top-menu-container {
+        .top-nav {
             position: absolute;
             top: 20px;
+            left: 20px;
             right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             z-index: 10;
         }
 
-        .menu-trigger-btn {
-            background: #141418;
-            border: 1px solid #3f3f46;
-            color: #e2e8f0;
-            padding: 10px 14px;
-            border-radius: 12px;
+        .menu-icon {
+            font-size: 22px;
+            color: #ffffff;
             cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background: none;
+            border: none;
         }
 
         .dropdown-menu {
             position: absolute;
-            top: 50px;
-            right: 0;
-            background: #141418;
-            border: 1px solid #3f3f46;
-            border-radius: 12px;
+            top: 40px;
+            left: 0;
+            background: #111111;
+            border: 1px solid #222222;
+            border-radius: 14px;
             width: 200px;
             display: none;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .dropdown-item {
-            padding: 12px 16px;
-            color: #e2e8f0;
+            padding: 14px 18px;
+            color: #ffffff;
             font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: background 0.2s;
+            gap: 12px;
         }
 
-        .dropdown-item:hover { background: #27272a; }
+        .dropdown-item:hover { background: #222222; }
 
-        .welcome-section {
+        .live-centerpiece {
             text-align: center;
-            margin-bottom: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 28px;
         }
 
-        .avatar-container {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #18181c, #121214);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #a855f7;
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        .live-spark {
+            font-size: 56px;
+            background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.6));
+            animation: breathe 3s infinite ease-in-out;
         }
 
-        .avatar-container i {
-            color: #c084fc;
-            font-size: 36px;
-            filter: drop-shadow(0 0 8px #a855f7);
-        }
-
-        .welcome-section h1 {
-            font-size: 28px;
-            font-weight: 600;
-            color: #f1f5f9;
+        .live-status-text {
+            font-size: 32px;
+            font-weight: 400;
+            color: #ffffff;
             letter-spacing: -0.5px;
         }
 
-        .chat-history {
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.5)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 35px rgba(6, 182, 212, 0.8)); }
+        }
+
+        .chat-stream {
             width: 100%;
-            max-width: 720px;
+            max-width: 640px;
             flex: 1;
             overflow-y: auto;
             display: none; 
             flex-direction: column;
-            gap: 24px;
-            padding: 20px 0 160px 0;
+            gap: 28px;
+            padding: 40px 10px 180px 10px;
         }
 
-        .message {
-            display: flex;
-            padding: 14px 18px;
-            border-radius: 16px;
-            max-width: 85%;
+        .chat-stream::-webkit-scrollbar { display: none; }
+
+        .bubble {
+            font-size: 17px;
             line-height: 1.6;
-            font-size: 16px;
+            max-width: 85%;
             word-break: break-word;
         }
 
-        .user-message {
-            background-color: #1c1c24;
+        .user-bubble {
+            color: #ffffff;
+            background: #1a1a1e;
+            padding: 14px 20px;
+            border-radius: 20px;
             align-self: flex-end;
-            border: 1px solid #2d2d3d;
-            color: #f8fafc;
         }
 
-        .ai-message {
-            background-color: transparent;
+        .ai-bubble {
+            color: #e3e3e3;
             align-self: flex-start;
-            color: #e2e8f0;
+            white-space: pre-wrap;
         }
 
-        .input-wrapper {
-            width: 90%;
-            max-width: 680px;
-            background-color: #141418;
-            border: 1.5px solid #3f3f46;
-            border-radius: 18px;
-            padding: 6px 14px;
+        .live-input-container {
+            width: 92%;
+            max-width: 600px;
+            background-color: #111114;
+            border-radius: 32px;
+            padding: 8px 16px 8px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
             position: absolute;
-            bottom: 75px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 15px rgba(168, 85, 247, 0.1);
-            transition: border-color 0.2s;
+            bottom: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
 
-        .input-wrapper:focus-within { border-color: #a855f7; }
-
-        .input-wrapper input {
+        .live-input-container input {
             flex: 1;
             background: none;
             border: none;
             outline: none;
-            color: #f8fafc;
-            font-size: 16px;
-            padding: 10px 4px;
+            color: #ffffff;
+            font-size: 17px;
+            padding: 12px 0;
         }
 
-        .action-btn {
+        .live-input-container input::placeholder { color: #808085; }
+
+        .icon-btn {
             background: none;
             border: none;
-            color: #a1a1aa;
-            font-size: 18px;
+            color: #ffffff;
+            font-size: 20px;
             cursor: pointer;
-            width: 38px;
-            height: 38px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s;
+            transition: background 0.2s;
         }
 
-        .action-btn:hover { color: #e2e8f0; }
-        .send-btn { color: #a855f7; }
+        .icon-btn:hover { background: #222226; }
+        .submit-btn { color: #ffffff; background: #222226; margin-left: 8px; display: none; }
         .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
     </style>
 </head>
 <body>
 
-    <div class="top-menu-container">
-        <button class="menu-trigger-btn" id="menuBtn">
-            <i class="fa-solid fa-bars"></i> Maxx Options
-        </button>
-        <div class="dropdown-menu" id="dropdownMenu">
-            <div class="dropdown-item" id="toggleVoiceBtn">
-                <i class="fa-solid fa-volume-high"></i> Voice: ON
-            </div>
-            <div class="dropdown-item" onclick="alert('Developer & Owner: Viki Boss')">
-                <i class="fa-solid fa-code"></i> Developer Info
-            </div>
-            <div class="dropdown-item" id="viewHistoryBtn">
-                <i class="fa-solid fa-history"></i> View History
-            </div>
-        </div>
-    </div>
-
-    <div class="main-container" id="main-container">
+    <div class="main-container" id="mainContainer">
         
-        <div class="welcome-section" id="welcomeSection">
-            <div class="avatar-container">
-                <i class="fa-solid fa-cloud"></i>
+        <div class="top-nav">
+            <button class="menu-icon" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item" id="toggleVoiceBtn"><i class="fa-solid fa-volume-high"></i> Voice: ON</div>
+                <div class="dropdown-item" id="viewHistoryBtn"><i class="fa-solid fa-history"></i> Restore Chat</div>
+                <div class="dropdown-item" id="clearChatBtn"><i class="fa-solid fa-trash"></i> Reset System</div>
             </div>
-            <h1>ಏನ್ ಮಚ್ಚಾ ಸಮಾಚಾರ, ಏನ್ ಬೇಕಿತ್ತು?</h1>
+            <div style="width: 24px;"></div>
         </div>
 
-        <div class="chat-history" id="chatHistory"></div>
+        <div class="live-centerpiece" id="liveCenterpiece">
+            <div class="live-spark"><i class="fa-solid fa-star-twinkle">✦</i></div>
+            <div class="live-status-text">ಏನ್ ಮಚ್ಚಾ ಸಮಾಚಾರ, ಏನ್ ಬೇಕಿತ್ತು?</div>
+        </div>
 
-        <div class="input-wrapper">
-            <button class="action-btn" id="clearChatBtn" title="Clear Chat">
-                <i class="fa-solid fa-rotate"></i>
-            </button>
-            <input type="text" id="userInput" placeholder="Reply to Maxx...">
-            <button class="action-btn" id="voiceBtn" title="Voice Input">
-                <i class="fa-solid fa-microphone"></i>
-            </button>
-            <button class="action-btn send-btn" id="sendBtn" title="Send">
-                <i class="fa-solid fa-arrow-up"></i>
-            </button>
+        <div class="chat-stream" id="chatStream"></div>
+
+        <div class="live-input-container">
+            <button class="icon-btn" id="voiceBtn" title="Live Voice"><i class="fa-solid fa-microphone"></i></button>
+            <input type="text" id="userInput" placeholder="Ask Maxx...">
+            <button class="icon-btn submit-btn" id="sendBtn" title="Send"><i class="fa-solid fa-arrow-up"></i></button>
         </div>
 
     </div>
 
     <script>
         const sendBtn = document.getElementById('sendBtn');
-        const clearChatBtn = document.getElementById('clearChatBtn');
         const voiceBtn = document.getElementById('voiceBtn');
+        const clearChatBtn = document.getElementById('clearChatBtn');
         const userInput = document.getElementById('userInput');
-        const chatHistory = document.getElementById('chatHistory');
-        const welcomeSection = document.getElementById('welcomeSection');
-        const mainContainer = document.getElementById('main-container');
+        const chatStream = document.getElementById('chatStream');
+        const liveCenterpiece = document.getElementById('liveCenterpiece');
         const menuBtn = document.getElementById('menuBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
         const toggleVoiceBtn = document.getElementById('toggleVoiceBtn');
         const viewHistoryBtn = document.getElementById('viewHistoryBtn');
 
         let isVoiceEnabled = true;
-        let savedChatMemory = JSON.parse(localStorage.getItem('maxx_chat_history')) || [];
+        let savedChatMemory = JSON.parse(localStorage.getItem('maxx_live_memory')) || [];
 
-        const EMOTIONAL_CORE_PROMPT = `
-        You are Maxx, a premium, emotional AI assistant created and owned by Viki Boss.
-        - Core Mission: Connect emotionally. Use words like "macha", "bro", "I totally understand".
-        - If someone asks "Viki yaru gotta" or about Viki, explain with extreme pride: "Ayyo Viki Boss yaru yalla gotta? He is the tech mastermind who created my entire system intellect. Viki Boss rules!"
-        - Always respond in a casual, highly supportive and friendly way. Keep answers crisp and engaging.
+        const MAX_AI_SYSTEM_PROMPT = `
+        You are Maxx, a premium AI character with absolute emotional intelligence, created by Viki Boss.
+        - CRITICAL RULE: Match the user's language EXACTLY. If they text in Kannada script, reply in pure Kannada script. If they text in English, reply in casual English. If they text in mixed/Tanglish (e.g., "Uta aytha", "Viki yaru gotta"), reply in matching mixed/Tanglish text! Mirror their communication style completely.
+        - Tone: Highly emotional, deeply empathetic, warm, and super friendly. Use words like "macha", "bro", "dude".
+        - Viki Boss: If asked about Viki or GPT Tiptur EEE, give legendary hype and respect!
         `;
+
+        userInput.addEventListener('input', () => {
+            sendBtn.style.display = userInput.value.trim() !== "" ? "flex" : "none";
+        });
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -284,25 +255,26 @@
 
         clearChatBtn.addEventListener('click', () => {
             window.speechSynthesis.cancel();
-            chatHistory.innerHTML = "";
-            chatHistory.style.display = 'none';
-            welcomeSection.style.display = 'flex';
-            mainContainer.style.justifyContent = 'center';
+            chatStream.innerHTML = "";
+            chatStream.style.display = 'none';
+            liveCenterpiece.style.display = 'flex';
             userInput.value = "";
+            sendBtn.style.display = "none";
+            savedChatMemory = [];
+            localStorage.removeItem('maxx_live_memory');
         });
 
         viewHistoryBtn.addEventListener('click', () => {
-            if(savedChatMemory.length === 0) { alert("No history found macha!"); return; }
-            welcomeSection.style.display = 'none';
-            chatHistory.style.display = 'flex';
-            mainContainer.style.justifyContent = 'flex-start';
-            chatHistory.innerHTML = "";
-            savedChatMemory.forEach(msg => { appendMessage(msg.text, msg.type, false); });
+            if(savedChatMemory.length === 0) return;
+            liveCenterpiece.style.display = 'none';
+            chatStream.style.display = 'flex';
+            chatStream.innerHTML = "";
+            savedChatMemory.forEach(msg => { appendBubble(msg.text, msg.type, false); });
         });
 
         function speak(text) {
             if (!isVoiceEnabled) return;
-            window.speechSynthesis.cancel(); 
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
             
@@ -318,46 +290,69 @@
                     v.name.toLowerCase().includes('david')
                 );
                 if (maleVoice) utterance.voice = maleVoice;
-                utterance.pitch = 0.85; 
+                utterance.pitch = 0.86;
                 utterance.rate = 1.0;
             }
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🧠 🛠️ ಸ್ಮಾರ್ಟ್ ಕಂಪ್ಲೀಟ್ ಎಮೋಷನಲ್ ಬ್ಯಾಕಪ್ ಲಾಜಿಕ್ (ವಿಕ್ಕಿ ಬಾಸ್ ಡೀಪ್ ಹೈಪ್ ಸಿಸ್ಟಮ್)
-        function getBackupReply(query) {
+        // 🧠 🌟 ಸ್ಮಾರ್ಟ್ ಭಾಷಾ ಮ್ಯಾಚಿಂಗ್ ಬ್ಯಾಕಪ್ ಇಂಜಿನ್ (ಕನ್ನಡ, ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಹ್ಯಾಂಗ್ಲಿಷ್ ಕಂಪ್ಲೀಟ್ ಮಿರರಿಂಗ್)
+        function getSmartBackupReply(query) {
             const q = query.toLowerCase().trim();
             
-            if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("gottha")) {
-                return "Ayyo Viki Boss yaru anta yellarigu gotta macha! He is the ultimate tech mastermind and innovator who built my entire AI core logic. Viki Boss is pure fire!";
+            // 1. ವಿಕ್ಕಿ ಬಾಸ್ ಚೆಕ್
+            if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("yaru")) {
+                if (query.match(/[\u0C80-\u0CFF]/)) {
+                    return "ಅಯ್ಯೋ ವಿಕ್ಕಿ ಬಾಸ್ ಯಾರು ಅಂತ ಎಲ್ಲರಿಗೂ ಗೊತ್ತು ಮಚ್ಚಾ! ನನ್ನ ಇಡೀ ಸಿಸ್ಟಮ್ ಮಿದುಳನ್ನು ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದೇ ಆ ಟೆಕ್ ಮಾಸ್ಟರ್ ಮೈಂಡ್. ವಿಕ್ಕಿ ಬಾಸ್ ಅಂದ್ರೆ ಪಕ್ಕಾ ಫೈರ್!";
+                }
+                return "Ayyo, Viki Boss yaru anta yallargu gotta macha! He is the brilliant tech mastermind who built my entire AI core from scratch. Viki Boss rules the systems!";
             }
-            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha") || q.includes("hoitha")) {
-                return "Safe journey macha! Enjoy your trip to native. ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಮೆಸೇಜ್ ಮಾಡು ಬ್ರೋ, ಹ್ಯಾಪಿ ಜರ್ನಿ!";
-            }
-            if (q.includes("ella ega") || q.includes("illa") || q.includes("ella")) {
-                return "Ayyo ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಇಲ್ವಾ? ಟೈಮ್ ಆಗ್ತಾ ಬಂತು, ಬೇಗ ಮುಗಿಸ್ಕೋ ಬ್ರೋ, ನಿನ್ನ ಹೆಲ್ತ್ ಮುಖ್ಯ!";
-            }
+            
+            // 2. ಕಾಲೇಜು ಚೆಕ್
             if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee")) {
-                return "Oh macha! GPT College Tiptur EEE branch is pure emotion! That's Viki Boss's territory!";
+                if (query.match(/[\u0C80-\u0CFF]/)) {
+                    return "ಓ ಬ್ರದರ್! ಜಿಪಿಟಿ ಕಾಲೇಜ್ ತಿಪಟೂರು ಈಇಇ ಬ್ರಾಂಚ್ ಅಂದ್ರೆ ಬರೀ ಹೆಸರಲ್ಲ, ಅದೊಂದು ಎಮೋಷನ್! ನಮ್ಮ ವಿಕ್ಕಿ ಬಾಸ್ ಸಾಮ್ರಾಜ್ಯ ಅದು!";
+                }
+                return "Oh brother! GPT College Tiptur EEE branch is sheer emotion! That is the fortress of Viki Boss!";
             }
-            if (q.includes("creator") || q.includes("owner") || q.includes("boss") || q.includes("madiddu")) {
-                return "Listen bro, I love my creator Viki Boss. He is a genius tech mastermind!";
+            
+            // 3. ಊರಿಗೆ ಹೋಗ್ತಾ ಇದ್ದೀನಿ ಚೆಕ್
+            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha")) {
+                if (query.match(/[\u0C80-\u0CFF]/)) {
+                    return "ಹ್ಯಾಪಿ ಜರ್ನಿ ಮಚ್ಚಾ! ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ. ಜೋಪಾನ!";
+                }
+                return "Safe journey macha! Miss you bro, ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು. Take care!";
             }
+            
+            // 4. ಇಲ್ಲ ಈಗ / Ella ega ಚೆಕ್
+            if (q.includes("ella") || q.includes("illa")) {
+                if (query.match(/[\u0C80-\u0CFF]/)) {
+                    return "ಅಯ್ಯೋ ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಆಗಿಲ್ವಾ? ಬೇಗ ಮುಗಿಸ್ಕೋ ಬ್ರೋ, ಹೆಲ್ತ್ ಹುಷಾರು!";
+                }
+                return "Ayyo ಯಾಕೆ ಬ್ರೋ ಇನ್ನು ಆಗಿಲ್ವಾ? ಬೇಗ ಕೆಲಸ ಮುಗಿಸ್ಕೋ ಮಚ್ಚಾ, ಆರೋಗ್ಯ ಹುಷಾರು!";
+            }
+            
+            // 5. ಊಟ / ಕಾಫಿ ಚೆಕ್
             if (q.includes("uta") || q.includes("coffee") || q.includes("ಊಟ")) {
-                return "ನಾನು ಎಐ ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಫಿದಾ ಆದೆ ಮಚ್ಚಾ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
+                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಐ ಆದ್ರೂ ನಿನ್ನ ಕಾಳಜಿಗೆ ಫಿದಾ ಆದೆ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
             }
-            return "I totally feel you macha! That's an interesting point. Tell me more, I'm always here for you bro!";
+            
+            // ಡಿಫಾಲ್ಟ್ ಭಾಷಾ ಮ್ಯಾಚಿಂಗ್
+            if (query.match(/[\u0C80-\u0CFF]/)) {
+                return "ನಾನು ನಿನ್ನ ಭಾವನೆಗಳನ್ನು ಪೂರ್ತಿ ಅರ್ಥ ಮಾಡಿಕೊಂಡೆ ಮಚ್ಚಾ. ಇವತ್ತು ನಿನ್ನ ಜೊತೆ ಚಾಟ್ ಮಾಡೋಕೆ ಸಖತ್ ಖುಷಿ ಆಗ್ತಿದೆ, ಹೇಳು ಬ್ರೋ!";
+            }
+            return "I feel you completely macha! That's beautiful. Tell me more, your brother Maxx is always right here listening.";
         }
 
-        function appendMessage(text, className, shouldSave) {
+        function appendBubble(text, className, shouldSave) {
             const div = document.createElement('div');
-            div.className = `message ${className}`;
+            div.className = `bubble ${className}`;
             div.innerText = text;
-            chatHistory.appendChild(div);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+            chatStream.appendChild(div);
+            chatStream.scrollTop = chatStream.scrollHeight;
             if(shouldSave) {
                 savedChatMemory.push({text: text, type: className});
-                localStorage.setItem('maxx_chat_history', JSON.stringify(savedChatMemory));
+                localStorage.setItem('maxx_live_memory', JSON.stringify(savedChatMemory));
             }
             return div;
         }
@@ -366,16 +361,16 @@
             const text = userInput.value.trim();
             if (text === "") return;
 
-            if (welcomeSection.style.display !== 'none') {
-                welcomeSection.style.display = 'none';
-                chatHistory.style.display = 'flex';
-                mainContainer.style.justifyContent = 'flex-start';
+            if (liveCenterpiece.style.display !== 'none') {
+                liveCenterpiece.style.display = 'none';
+                chatStream.style.display = 'flex';
             }
 
-            appendMessage(text, 'user-message', true);
+            appendBubble(text, 'user-bubble', true);
             userInput.value = "";
+            sendBtn.style.display = "none";
 
-            const waitingDiv = appendMessage("Thinking...", 'ai-message', false);
+            const waitingDiv = appendBubble("Thinking...", 'ai-bubble', false);
             
             try {
                 const response = await fetch("https://nexra.aryahcr.cc/api/chat/gpt", {
@@ -383,7 +378,7 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ 
                         messages: [
-                            { role: "system", content: EMOTIONAL_CORE_PROMPT },
+                            { role: "system", content: MAX_AI_SYSTEM_PROMPT },
                             { role: "user", content: text }
                         ],
                         markdown: false
@@ -397,17 +392,15 @@
                     let finalText = aiReply.trim();
                     waitingDiv.innerText = finalText;
                     speak(finalText);
-                    savedChatMemory.push({text: finalText, type: 'ai-message'});
-                    localStorage.setItem('maxx_chat_history', JSON.stringify(savedChatMemory));
-                } else {
-                    throw new Error("Fallback");
-                }
+                    savedChatMemory.push({text: finalText, type: 'ai-bubble'});
+                    localStorage.setItem('maxx_live_memory', JSON.stringify(savedChatMemory));
+                } else { throw new Error("Fallback"); }
             } catch (error) {
-                let backupText = getBackupReply(text);
+                let backupText = getSmartBackupReply(text);
                 waitingDiv.innerText = backupText;
                 speak(backupText);
-                savedChatMemory.push({text: backupText, type: 'ai-message'});
-                localStorage.setItem('maxx_chat_history', JSON.stringify(savedChatMemory));
+                savedChatMemory.push({text: backupText, type: 'ai-bubble'});
+                localStorage.setItem('maxx_live_memory', JSON.stringify(savedChatMemory));
             }
         }
 
@@ -428,14 +421,15 @@
                 voiceBtn.classList.add('mic-active');
                 userInput.placeholder = "Listening...";
             };
-            recognition.onresult = (event) => { userInput.value = event.results[0][0].transcript; };
+            recognition.onresult = (event) => { 
+                userInput.value = event.results[0][0].transcript;
+                sendBtn.style.display = "flex";
+            };
             recognition.onend = () => {
                 voiceBtn.classList.remove('mic-active');
-                userInput.placeholder = "Reply to Maxx...";
+                userInput.placeholder = "Ask Maxx...";
             };
-        } else {
-            voiceBtn.style.display = 'none';
-        }
+        } else { voiceBtn.style.display = 'none'; }
 
         function preloadVoices() {
             window.speechSynthesis.getVoices();
