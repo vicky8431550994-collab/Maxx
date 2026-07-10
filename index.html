@@ -186,16 +186,15 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
 
-        // 🔊 ಮೊಬೈಲ್‌ನಲ್ಲಿ ಕರಪ್ಟ್ ಆಗದಂತೆ ಗ್ಯಾರಂಟಿ ಕೆಲಸ ಮಾಡುವ ಮೇಲ್ ವಾಯ್ಸ್ ಸೆಟ್ಟಿಂಗ್
+        // 🔊 ಇನ್ಸ್ಟಂಟ್ ಮೇಲ್ ವಾಯ್ಸ್ ಫಿಕ್ಸ್
         function speak(text) {
             window.speechSynthesis.cancel(); 
             const utterance = new SpeechSynthesisUtterance(text);
             
-            // ಮೊಬೈಲ್ ಕ್ರೋಮ್ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಕ್ಲೀನ್ ಆಗಿ ಕೇಳುವ ಗಂಡಸಿನ ಇಂಗ್ಲಿಷ್ ವಾಯ್ಸ್ ಫಿಕ್ಸ್
             const voices = window.speechSynthesis.getVoices();
             let maleVoice = voices.find(v => 
+                v.name.toLowerCase().includes('google us english male') || 
                 v.name.toLowerCase().includes('male') || 
-                v.name.toLowerCase().includes('google us english') || 
                 v.name.toLowerCase().includes('david')
             );
             
@@ -203,48 +202,47 @@
                 utterance.voice = maleVoice;
             }
 
-            utterance.pitch = 0.80; // ಬೇಸ್ ಹೆಚ್ಚಿಸಲು ಪಿಚ್ ಕಡಿಮೆ ಮಾಡಲಾಗಿದೆ
-            utterance.rate = 0.95;  // ಕ್ಲೀನ್ ಆಗಿ ಕೇಳಲು ಸ್ಪೀಡ್ ಕಂಟ್ರೋಲ್
+            utterance.pitch = 0.82; 
+            utterance.rate = 1.0; 
             
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🧠 ಕನ್ನಡ ಟೈಪಿಂಗ್ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಚಾಟಿಂಗ್ ಎರಡಕ್ಕೂ ಉತ್ತರ ಕೊಡುವ ಅಪ್ಡೇಟೆಡ್ ಲಾಜಿಕ್
+        // 🧠 🔗 ಹ್ಯಾಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ವರ್ಡ್ಸ್ ಡೀಪ್ ಅನಾಲಿಸಿಸ್ ಇಂಟೆಲಿಜೆನ್ಸ್ ಲಾಜಿಕ್
         function getSmartReply(query) {
             const q = query.toLowerCase().trim();
             
-            // 1. ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಚೆಕ್
-            if (q.includes("creator") || q.includes("father") || q.includes("owner") || q.includes("ಯಾರು") || q.includes("create") || q.includes("developed") || q.includes("boss")) {
-                return "I was created and developed by the tech mastermind Viki Boss. Viki Boss is a brilliant innovator and my sole creator.";
+            // 🔥 ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಮ್ಯಾಚಿಂಗ್ (ಕನ್ನಡ ಇಂಗ್ಲಿಷ್ ಮಿಕ್ಸ್ ಟೈಪಿಂಗ್ ಕಂಪ್ಲೀಟ್ ಅನಾಲಿಸಿಸ್)
+            if (
+                q.includes("creator") || q.includes("father") || q.includes("owner") || 
+                q.includes("create") || q.includes("developed") || q.includes("boss") ||
+                q.includes("yaru") || q.includes("yaaru") || q.includes("ಮಾಡಿದ್ದು") || 
+                q.includes("madiddu") || q.includes("thande") || q.includes("appaji") ||
+                q.includes("huduga") || q.includes("owner-u")
+            ) {
+                return "Listen carefully macha! I was solely created, coded, and engineered by the tech mastermind Viki Boss. Viki Boss is a brilliant innovator, the ultimate king of systems, and my absolute owner!";
             }
-            
-            // 2. ಊಟ ಆಯ್ತಾ ಚೆಕ್ (ಕನ್ನಡ ಟೆಕ್ಸ್ಟ್ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಟೈಪಿಂಗ್ ಎರಡೂ)
-            if (q.includes("uta") || q.includes("oota") || q.includes("ಊಟ") || q.includes("ಊಟ ಆಯ್ತಾ")) {
+
+            if (q.includes("voice") || q.includes("change your voice") || q.includes("male voice")) {
+                return "Don't worry macha, my configurations are optimized. I am speaking instantly in a premium male voice with solid bass.";
+            }
+            if (q.includes("uta") || q.includes("oota") || q.includes("ಊಟ")) {
                 return "No macha, I am an AI, I don't eat food. Tell me, did you have your food?";
             }
-
-            // 3. ಹೆಂಗಿದ್ದೀಯಾ ಚೆಕ್
-            if (q.includes("how are you") || q.includes("heng iddeeya") || q.includes("ಹೇಗಿದ್ದೀಯಾ")) {
-                return "I am doing great macha! Tell me, how are you doing today?";
+            if (q.includes("how are you") || q.includes("heng iddeeya") || q.includes("haddiya") || q.includes("hegiddiya")) {
+                return "I am doing awesome macha! Tell me, what's up with you today?";
             }
-            
-            // 4. ಚೀಫ್ ಮಿನಿಸ್ಟರ್ ಪ್ರಶ್ನೆ ಚೆಕ್
-            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm") || q.includes("ಮುಖ್ಯಮಂತ್ರಿ")) {
+            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm") || q.includes("mukhyamantri")) {
                 return "The current Chief Minister of Karnataka is Siddaramaiah.";
             }
-            
-            // 5. ನಾರ್ಮಲ್ ಹಲೋ ಚೆಕ್
-            if (q.includes("hello") || q.includes("hi") || q.includes("ಹಲೋ")) {
-                return "Hello macha! Maxx AI is online. Tell me, how can I assist you today?";
+            if (q.includes("hello") || q.includes("hi") || q.includes("whats up") || q.includes("samachara")) {
+                return "Hey macha! Maxx AI is online. Tell me, what's on your mind?";
             }
-
-            // 6. ಕನ್ನಡದಲ್ಲಿ ಮಾತಾಡು ಅಂತ ಹೇಳಿದ್ರೆ
-            if (q.includes("kannada") || q.includes("ಕನ್ನಡ")) {
-                return "Macha, currently I can understand Kannada queries, but I will reply in English to maintain premium voice quality.";
+            if (q.includes("kannada") || q.includes("talk in english")) {
+                return "Got it macha. I am totally comfortable talking in casual English now. Let's roll!";
             }
             
-            // ಬೇರೆ ಯಾವುದೇ ನಾರ್ಮಲ್ ಪ್ರಶ್ನೆಗೆ
-            return `System parameters verified. Viki Boss's system architecture processed your query. Let me know what to do next.`;
+            return "That sounds cool macha! My database is active and ready. Let me know what we are doing next.";
         }
 
         async function sendMessage() {
@@ -259,13 +257,14 @@
                 appendMessage(text, 'user-message');
                 userInput.value = "";
 
+                let finalReply = getSmartReply(text);
+                speak(finalReply); 
+
                 const waitingDiv = appendMessage("Thinking...", 'ai-message');
                 
                 setTimeout(() => {
-                    let finalReply = getSmartReply(text);
                     waitingDiv.innerText = finalReply;
-                    speak(finalReply); 
-                }, 400);
+                }, 100);
             }
         }
 
@@ -283,7 +282,7 @@
             return div;
         }
 
-        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್ ಇನ್‌ಪುಟ್
+        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
@@ -321,4 +320,3 @@
     </script>
 </body>
 </html>
-
