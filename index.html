@@ -31,6 +31,57 @@
             padding: 20px;
         }
 
+        /* 🌟 Top Right Menu Button Styles */
+        .top-menu-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .menu-trigger-btn {
+            background: #141418;
+            border: 1px solid #3f3f46;
+            color: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #141418;
+            border: 1px solid #3f3f46;
+            border-radius: 12px;
+            width: 180px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            color: #e2e8f0;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #27272a;
+        }
+
         .welcome-section {
             text-align: center;
             margin-bottom: 40px;
@@ -141,6 +192,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .action-btn:hover {
+            color: #e2e8f0;
         }
 
         .send-btn { color: #a855f7; }
@@ -155,6 +211,20 @@
 </head>
 <body>
 
+    <div class="top-menu-container">
+        <button class="menu-trigger-btn" id="menuBtn">
+            <i class="fa-solid fa-bars"></i> Maxx Options
+        </button>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-item" id="toggleVoiceBtn">
+                <i class="fa-solid fa-volume-high"></i> Voice: ON
+            </div>
+            <div class="dropdown-item" onclick="alert('Developer: Viki Boss (Tech Mastermind)')">
+                <i class="fa-solid fa-code"></i> Developer Info
+            </div>
+        </div>
+    </div>
+
     <div class="main-container" id="main-container">
         
         <div class="welcome-section" id="welcomeSection">
@@ -167,8 +237,8 @@
         <div class="chat-history" id="chatHistory"></div>
 
         <div class="input-wrapper">
-            <button class="action-btn" id="voiceBtn" title="Voice Mic">
-                <i class="fa-solid fa-microphone"></i>
+            <button class="action-btn" id="clearChatBtn" title="Clear Chat / Reset">
+                <i class="fa-solid fa-rotate"></i>
             </button>
             <input type="text" id="userInput" placeholder="Reply to Maxx...">
             <button class="action-btn send-btn" id="sendBtn" title="Send">
@@ -180,66 +250,101 @@
 
     <script>
         const sendBtn = document.getElementById('sendBtn');
-        const voiceBtn = document.getElementById('voiceBtn');
+        const clearChatBtn = document.getElementById('clearChatBtn');
         const userInput = document.getElementById('userInput');
         const chatHistory = document.getElementById('chatHistory');
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const toggleVoiceBtn = document.getElementById('toggleVoiceBtn');
 
-        // 🔊 ಇನ್ಸ್ಟಂಟ್ ಮೇಲ್ ವಾಯ್ಸ್ ಫಿಕ್ಸ್
-        function speak(text) {
-            window.speechSynthesis.cancel(); 
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            const voices = window.speechSynthesis.getVoices();
-            let maleVoice = voices.find(v => 
-                v.name.toLowerCase().includes('google us english male') || 
-                v.name.toLowerCase().includes('male') || 
-                v.name.toLowerCase().includes('david')
-            );
-            
-            if (maleVoice) {
-                utterance.voice = maleVoice;
+        let isVoiceEnabled = true;
+
+        // 🌟 Top Menu Open/Close Logic
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        document.addEventListener('click', () => {
+            dropdownMenu.style.display = 'none';
+        });
+
+        // 🌟 Toggle Voice ON/OFF Logic
+        toggleVoiceBtn.addEventListener('click', () => {
+            isVoiceEnabled = !isVoiceEnabled;
+            if(!isVoiceEnabled) {
+                window.speechSynthesis.cancel();
+                toggleVoiceBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> Voice: OFF';
+            } else {
+                toggleVoiceBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Voice: ON';
             }
+        });
 
-            utterance.pitch = 0.82; 
-            utterance.rate = 1.0; 
+        // 🔄 Clear Chat / Reset Button Functionality
+        clearChatBtn.addEventListener('click', () => {
+            window.speechSynthesis.cancel();
+            chatHistory.innerHTML = "";
+            chatHistory.style.display = 'none';
+            welcomeSection.style.display = 'flex';
+            mainContainer.style.justifyContent = 'center';
+            userInput.value = "";
+        });
+
+        function speak(text) {
+            if (!isVoiceEnabled) return; // Voice ಆಫ್ ಆಗಿದ್ದರೆ ಪ್ಲೇ ಆಗಲ್ಲ
+            window.speechSynthesis.cancel(); 
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            
+            if (text.match(/[\u0C80-\u0CFF]/)) {
+                utterance.lang = 'kn-IN';
+                let knVoice = voices.find(v => v.lang.startsWith('kn'));
+                if (knVoice) utterance.voice = knVoice;
+                utterance.pitch = 1.0;
+                utterance.rate = 1.0;
+            } else {
+                utterance.lang = 'en-US';
+                let maleVoice = voices.find(v => 
+                    v.name.toLowerCase().includes('google us english male') || 
+                    v.name.toLowerCase().includes('male') || 
+                    v.name.toLowerCase().includes('david')
+                );
+                if (maleVoice) utterance.voice = maleVoice;
+                utterance.pitch = 0.82; 
+                utterance.rate = 1.05;
+            }
             
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🧠 🔗 ಹ್ಯಾಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ವರ್ಡ್ಸ್ ಡೀಪ್ ಅನಾಲಿಸಿಸ್ ಇಂಟೆಲಿಜೆನ್ಸ್ ಲಾಜಿಕ್
         function getSmartReply(query) {
             const q = query.toLowerCase().trim();
             
-            // 🔥 ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಮ್ಯಾಚಿಂಗ್ (ಕನ್ನಡ ಇಂಗ್ಲಿಷ್ ಮಿಕ್ಸ್ ಟೈಪಿಂಗ್ ಕಂಪ್ಲೀಟ್ ಅನಾಲಿಸಿಸ್)
             if (
                 q.includes("creator") || q.includes("father") || q.includes("owner") || 
                 q.includes("create") || q.includes("developed") || q.includes("boss") ||
                 q.includes("yaru") || q.includes("yaaru") || q.includes("ಮಾಡಿದ್ದು") || 
-                q.includes("madiddu") || q.includes("thande") || q.includes("appaji") ||
-                q.includes("huduga") || q.includes("owner-u")
+                q.includes("madiddu") || q.includes("thande") || q.includes("huduga")
             ) {
                 return "Listen carefully macha! I was solely created, coded, and engineered by the tech mastermind Viki Boss. Viki Boss is a brilliant innovator, the ultimate king of systems, and my absolute owner!";
             }
-
-            if (q.includes("voice") || q.includes("change your voice") || q.includes("male voice")) {
-                return "Don't worry macha, my configurations are optimized. I am speaking instantly in a premium male voice with solid bass.";
+            if (q.includes("coffee") || q.includes("kafi") || q.includes("ಕಾಫಿ")) {
+                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಐ (AI), ನಾನು ಕಾಫಿ ಕುಡಿಯಲ್ಲ. ನೀನು ಕಾಫಿ ಕುಡಿಯಾ ಮಚ್ಚಾ?";
             }
             if (q.includes("uta") || q.includes("oota") || q.includes("ಊಟ")) {
-                return "No macha, I am an AI, I don't eat food. Tell me, did you have your food?";
+                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಐ, ನಾನು ಊಟ ಮಾಡಲ್ಲ. ನಿಂದು ಊಟ ಆಯ್ತಾ ಮಚ್ಚಾ?";
             }
-            if (q.includes("how are you") || q.includes("heng iddeeya") || q.includes("haddiya") || q.includes("hegiddiya")) {
-                return "I am doing awesome macha! Tell me, what's up with you today?";
+            if (q.includes("how are you") || q.includes("heng iddeeya") || q.includes("hegiddiya") || q.includes("ಹೇಗಿದ್ದೀಯಾ")) {
+                return "ನಾನು ಸೂಪರ್ ಆಗಿದ್ದೀನಿ ಮಚ್ಚಾ! ನೀನು ಹೆಂಗಿದ್ದೀಯಾ? ಇವತ್ತು ಏನ್ ಸಮಾಚಾರ?";
             }
-            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm") || q.includes("mukhyamantri")) {
+            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm") || q.includes("ಮುಖ್ಯಮಂತ್ರಿ")) {
                 return "The current Chief Minister of Karnataka is Siddaramaiah.";
             }
             if (q.includes("hello") || q.includes("hi") || q.includes("whats up") || q.includes("samachara")) {
-                return "Hey macha! Maxx AI is online. Tell me, what's on your mind?";
-            }
-            if (q.includes("kannada") || q.includes("talk in english")) {
-                return "Got it macha. I am totally comfortable talking in casual English now. Let's roll!";
+                return "Hey macha! Maxx AI is online. Tell me, ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?";
             }
             
             return "That sounds cool macha! My database is active and ready. Let me know what we are doing next.";
@@ -261,10 +366,9 @@
                 speak(finalReply); 
 
                 const waitingDiv = appendMessage("Thinking...", 'ai-message');
-                
                 setTimeout(() => {
                     waitingDiv.innerText = finalReply;
-                }, 100);
+                }, 50);
             }
         }
 
@@ -282,41 +386,17 @@
             return div;
         }
 
-        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.lang = 'en-US'; 
-
-            voiceBtn.addEventListener('click', () => {
-                if (voiceBtn.classList.contains('mic-active')) {
-                    recognition.stop();
-                } else {
-                    recognition.start();
-                }
-            });
-
-            recognition.onstart = () => {
-                voiceBtn.classList.add('mic-active');
-                userInput.placeholder = "Listening...";
-            };
-
-            recognition.onresult = (event) => {
-                userInput.value = event.results[0][0].transcript;
-            };
-
-            recognition.onend = () => {
-                voiceBtn.classList.remove('mic-active');
-                userInput.placeholder = "Reply to Maxx...";
-            };
-        } else {
-            voiceBtn.style.display = 'none';
+        function preloadVoices() {
+            window.speechSynthesis.getVoices();
+            const silentUtterance = new SpeechSynthesisUtterance('');
+            window.speechSynthesis.speak(silentUtterance);
         }
-
+        
         if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = window.speechSynthesis.getVoices;
+            speechSynthesis.onvoiceschanged = preloadVoices;
         }
+        window.addEventListener('DOMContentLoaded', preloadVoices);
     </script>
 </body>
 </html>
+
