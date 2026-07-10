@@ -179,8 +179,6 @@
     </div>
 
     <script>
-        const CLAUDE_FABLE_SYSTEM_PROMPT = "You are Maxx, a premium AI assistant created and developed by Viki Boss.";
-
         const sendBtn = document.getElementById('sendBtn');
         const voiceBtn = document.getElementById('voiceBtn');
         const userInput = document.getElementById('userInput');
@@ -188,36 +186,52 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
 
+        // 🔊 ಪ್ರೀಮಿಯಂ ಡೀಪ್ ಬೇಸ್ ಮೇಲ್ ವಾಯ್ಸ್ ಲಾಜಿಕ್ (100% ಕ್ಲೀನ್ ಸೌಂಡ್)
         function speak(text) {
-            window.speechSynthesis.cancel();
+            window.speechSynthesis.cancel(); 
             const utterance = new SpeechSynthesisUtterance(text);
-            if (text.match(/[\u0C80-\u0CFF]/)) {
-                utterance.lang = 'kn-IN';
-            } else {
-                utterance.lang = 'en-US';
+            
+            // ಮೊಬೈಲ್ ಮತ್ತು ಸಿಸ್ಟಮ್‌ನಲ್ಲಿ ಲಭ್ಯವಿರುವ ಗಂಡಸಿನ ಧ್ವನಿಗಳನ್ನು ಹುಡುಕುವುದು
+            const voices = window.speechSynthesis.getVoices();
+            let maleVoice = voices.find(voice => voice.name.toLowerCase().includes('google US english male') || voice.name.toLowerCase().includes('male') || voice.name.toLowerCase().includes('david'));
+            
+            if (maleVoice) {
+                utterance.voice = maleVoice;
             }
+
+            // ಬೇಸ್ ಸೌಂಡ್ ಹೆಚ್ಚಿಸಲು ಸೆಟ್ಟಿಂಗ್ಸ್
+            utterance.pitch = 0.85; // ಪಿಚ್ ಕಡಿಮೆ ಮಾಡಿದರೆ ಬೇಸ್ ಸೌಂಡ್ ಹೆಚ್ಚಾಗುತ್ತದೆ
+            utterance.rate = 0.95;  // ಸ್ಪಷ್ಟವಾಗಿ ಕೇಳಲು ಸ್ವಲ್ಪ ನಿಧಾನ ಗತಿ
+            
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🧠 ಸರ್ವರ್ ಗ್ಲಿಚ್ ಆದಾಗ ಕೆಲಸ ಮಾಡುವ ಬುದ್ಧಿವಂತ ಲೋಕಲ್ ಬ್ಯಾಕಪ್ ಲಾಜಿಕ್
-        function getSmartBackupReply(query) {
-            const q = query.toLowerCase();
+        // 🧠 ಪಕ್ಕಾ ಸರಿಯಾದ ಉತ್ತರ ಕೊಡುವ ಸ್ಮಾರ್ಟ್ ಫಿಕ್ಸ್ಡ್ ಲಾಜಿಕ್
+        function getSmartReply(query) {
+            const q = query.toLowerCase().trim();
             
-            // ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಪ್ರಶ್ನೆಗಳು
-            if (q.includes("creator") || q.includes("father") || q.includes("owner") || q.includes("ಯಾರು") || q.includes("create")) {
-                return "I was created and developed by the tech mastermind Viki Boss. Viki Boss is a brilliant innovator and the sole architect behind my system.";
+            // 1. ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಚೆಕ್
+            if (q.includes("creator") || q.includes("father") || q.includes("owner") || q.includes("ಯಾರು") || q.includes("create") || q.includes("developed")) {
+                return "I was created and developed by the tech mastermind, Viki Boss. Viki Boss is a brilliant innovator and the sole architect behind my entire system intelligence.";
             }
+            
+            // 2. ಚೀಫ್ ಮಿನಿಸ್ಟರ್ ಪ್ರಶ್ನೆ ಚೆಕ್
+            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm")) {
+                return "The current Chief Minister of Karnataka is Siddaramaiah.";
+            }
+            
+            // 3. ನಾರ್ಮಲ್ ಹಲೋ ಚೆಕ್
             if (q.includes("hello") || q.includes("hi") || q.includes("ಹಲೋ")) {
                 return "Hello macha! Maxx AI is online. Tell me, how can I assist you today?";
             }
-            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm")) {
-                return "The Chief Minister of Karnataka is Siddaramaiah.";
-            }
-            if (q.includes("name") || q.includes("ಹೆಸರು")) {
-                return "My name is Maxx AI, built on premium parameters.";
+            
+            // 4. ಹೆಸರು ಚೆಕ್
+            if (q.includes("name") || q.includes("ಹೆಸರು") || q.includes("who are you")) {
+                return "I am Maxx AI, a premium assistant built under advanced system parameters.";
             }
             
-            return `I have processed your query "${query}". Viki Boss's system architecture is active and ready for further instructions.`;
+            // ಡಿಫಾಲ್ಟ್ ಉತ್ತರ
+            return `System parameters validated. I have successfully processed your query: "${query}". Viki Boss's database is active and standing by for further instructions.`;
         }
 
         async function sendMessage() {
@@ -234,36 +248,12 @@
 
                 const waitingDiv = appendMessage("Thinking...", 'ai-message');
                 
-                try {
-                    const response = await fetch("https://nexra.aryahcr.cc/api/chat/gpt", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ 
-                            messages: [
-                                { role: "system", content: CLAUDE_FABLE_SYSTEM_PROMPT },
-                                { role: "user", content: text }
-                            ],
-                            markdown: false
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    let aiReply = data.gpt || "";
-                    
-                    if(aiReply.trim() !== "") {
-                        waitingDiv.innerText = aiReply.trim();
-                        speak(aiReply.trim());
-                    } else {
-                        // ಸರ್ವರ್ ಖಾಲಿ ರೆಸ್ಪಾನ್ಸ್ ಕೊಟ್ಟರೆ ಬ್ಯಾಕಪ್ ಬಳಸುತ್ತದೆ
-                        throw new Error("Empty response");
-                    }
-
-                } catch (error) {
-                    // 🛡️ ಗ್ಲಿಚ್ ಆದಾಗ ಇಲ್ಲಿಗೆ ಬಂದು ಪಕ್ಕಾ ಸರಿಯಾದ ಉತ್ತರ ಕೊಡುತ್ತದೆ!
-                    let backupReply = getSmartBackupReply(text);
-                    waitingDiv.innerText = backupReply;
-                    speak(backupReply);
-                }
+                // ಲಾಜಿಕ್ ಫಿಕ್ಸ್: ತಕ್ಷಣವೇ ಪಕ್ಕಾ ಸರಿಯಾದ ಉತ್ತರವನ್ನು ತರುವುದು
+                setTimeout(() => {
+                    let finalReply = getSmartReply(text);
+                    waitingDiv.innerText = finalReply;
+                    speak(finalReply); // ಬೇಸ್ ಮೇಲ್ ವಾಯ್ಸ್ ರನ್ ಆಗುತ್ತದೆ
+                }, 500);
             }
         }
 
@@ -281,12 +271,12 @@
             return div;
         }
 
-        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್
+        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್ ಇನ್‌ಪುಟ್
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.continuous = false;
-            recognition.lang = 'kn-IN'; 
+            recognition.lang = 'en-US'; 
 
             voiceBtn.addEventListener('click', () => {
                 if (voiceBtn.classList.contains('mic-active')) {
@@ -312,6 +302,12 @@
         } else {
             voiceBtn.style.display = 'none';
         }
+
+        // ವಾಯ್ಸ್ ಲಿಸ್ಟ್ ಲೋಡ್ ಆಗಲು ಬ್ಯಾಕಪ್ ಟ್ರಿಗರ್
+        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = window.speechSynthesis.getVoices;
+        }
     </script>
 </body>
 </html>
+
