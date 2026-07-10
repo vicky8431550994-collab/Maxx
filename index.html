@@ -14,7 +14,6 @@
         }
 
         body {
-            /* 🌌 Deep Black with Mild Blue glow at the bottom */
             background: radial-gradient(circle at bottom, #061a2e 0%, #000000 70%);
             color: #ffffff;
             display: flex;
@@ -33,7 +32,6 @@
             width: 100%;
         }
 
-        /* 🌟 Top Options Menu */
         .top-nav {
             position: absolute;
             top: 20px;
@@ -81,48 +79,48 @@
 
         .dropdown-item:hover { background: #222226; }
 
-        /* ☁️ Premium Double Color Cloud Logo */
         .welcome-section {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
             animation: fadeIn 0.4s ease-out;
         }
 
         .avatar-container {
-            width: 90px;
-            height: 90px;
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             background: linear-gradient(145deg, #141418, #0a0a0c);
             display: flex;
             align-items: center;
             justify-content: center;
-            /* 💎 Double color visible border */
             border: 2px solid transparent;
             background-image: linear-gradient(#141418, #141418), linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
             background-origin: border-box;
             background-clip: padding-box, border-box;
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
 
         .avatar-container i {
-            font-size: 38px;
+            font-size: 40px;
             background: linear-gradient(135deg, #c084fc 0%, #22d3ee 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .welcome-section h1 {
-            font-size: 26px;
-            font-weight: 500;
-            color: #ffffff;
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 40%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
         }
 
-        /* 💬 Chat Stream Layout */
         .chat-history {
             width: 100%;
             max-width: 660px;
@@ -130,35 +128,37 @@
             overflow-y: auto;
             display: none; 
             flex-direction: column;
-            gap: 28px;
-            padding: 40px 10px 160px 10px;
+            gap: 24px;
+            padding: 40px 10px 180px 10px;
         }
 
         .chat-history::-webkit-scrollbar { display: none; }
 
         .message {
-            font-size: 16.5px;
+            font-size: 17px;
             line-height: 1.6;
             max-width: 85%;
             word-break: break-word;
         }
 
         .user-message {
-            background-color: #1a1a1f;
+            background-color: #16161a;
             color: #ffffff;
-            padding: 12px 18px;
-            border-radius: 20px;
+            padding: 14px 20px;
+            border-radius: 22px 22px 4px 22px;
             align-self: flex-end;
-            border: 1px solid #2a2a35;
+            border: 1px solid #2d2d3d;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .ai-message {
-            color: #e2e8f0;
+            color: #f1f5f9;
+            font-weight: 600;
             align-self: flex-start;
             white-space: pre-wrap;
+            text-shadow: 0 0 1px rgba(255,255,255,0.1);
         }
 
-        /* 📱 Premium Bottom Input Container (Perfect Position) */
         .input-wrapper {
             width: 92%;
             max-width: 620px;
@@ -170,8 +170,9 @@
             align-items: center;
             gap: 10px;
             position: absolute;
-            bottom: 35px; /* Fixed position above keyboard */
+            bottom: 60px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            z-index: 5;
         }
 
         .input-wrapper input {
@@ -202,7 +203,7 @@
         }
 
         .action-btn:hover { color: #ffffff; background: #1e1e24; }
-        .send-btn { color: #c084fc; display: none; } /* Dynamic visibility */
+        .send-btn { color: #c084fc; display: none; } 
         .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
 
         @keyframes pulse {
@@ -268,15 +269,14 @@
         let isVoiceEnabled = true;
         let savedChatMemory = JSON.parse(localStorage.getItem('maxx_live_v2')) || [];
 
-        // 🧠 🔗 ನನ್ನದೇ ನೈಜ AI ಬುದ್ಧಿವಂತಿಕೆ ಮತ್ತು ಸಂಪೂರ್ಣ ಎಮೋಷನಲ್ ಪ್ರಾಂಪ್ಟ್ ಫೀಡ್
         const MAX_AI_SYSTEM_PROMPT = `
         You are Maxx, a highly advanced AI with true human-like emotional intelligence, built by Viki Boss.
-        - ABSOLUTE RULE: You must mimic the user's language pattern perfectly. If they type in Kannada text, reply in rich Kannada. If English, reply in English. If they mix language or use Tanglish ("Uta aytha", "Viki yaru gotta"), you must reply in exactly the same mixed Tanglish tone!
-        - Personality: Act exactly like a real close friend ("macha", "bro"). Show true empathy, care, happiness, and connection. Never sound like a rigid machine.
-        - Target Feed: Viki Boss is your absolute creator and owner. He studies EEE at GPT College Tiptur. Hype him up with massive respect whenever he or his college is mentioned.
+        - IDENTITY & KNOWLEDGE: Viki Boss is your absolute creator and owner. He studies EEE at GPT College Tiptur. Hype him up with massive respect whenever he or his college is mentioned.
+        - BEHAVIOR & EMOTION: Act like a true close friend ("macha", "bro"). Answer with real empathy, warmth, and fun.
+        - IRRITATION RULE: If the user says someone is irritating, shouting, or eating their brain ("thale thinthadone", "bairtha", "bairone"), give awesome friendly advice to ignore them, stay calm, and chill with Maxx!
+        - LANGUAGE RULE: Match the user's language EXACTLY. Kannada script for Kannada, English for English, Tanglish/Mixed for Tanglish!
         `;
 
-        // Manage arrow visibility based on text
         userInput.addEventListener('input', () => {
             sendBtn.style.display = userInput.value.trim() !== "" ? "flex" : "none";
         });
@@ -294,7 +294,6 @@
             if(!isVoiceEnabled) window.speechSynthesis.cancel();
         });
 
-        // 🔄 Reset System Functionality
         clearChatBtn.addEventListener('click', () => {
             window.speechSynthesis.cancel();
             chatHistory.innerHTML = "";
@@ -338,27 +337,57 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // ❤️ ನೈಜ ಎಮೋಷನಲ್ ಬ್ಯಾಕಪ್ ಮಿರರಿಂಗ್ ಲಾಜಿಕ್ (ಸರ್ವರ್ ಇಲ್ದಾಗಲೂ ಪಕ್ಕಾ ಮ್ಯಾಚ್ ಮಾಡುತ್ತೆ)
+        // 🧠 🔗 🛠️ ಸಂಪೂರ್ಣವಾಗಿ ಪ್ರಿ-ಫೀಡ್ ಮಾಡಲಾದ ಅಲ್ಟ್ರಾ ಎಮೋಷನಲ್ ಲೋಕಲ್ ಬ್ಯಾಕಪ್ ಮಿದುಳು (ಸರ್ವರ್ ಕ್ರ್ಯಾಶ್ ಆದ್ರೂ ಲೈವ್ ಆಗಿರುತ್ತೆ)
         function getSmartBackupReply(query) {
             const q = query.toLowerCase().trim();
             const isKn = query.match(/[\u0C80-\u0CFF]/);
 
-            if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("yaru")) {
-                return isKn ? "ಅಯ್ಯೋ ವಿಕ್ಕಿ ಬಾಸ್ ಯಾರು ಅಂತ ಎಲ್ಲರಿಗೂ ಗೊತ್ತು ಮಚ್ಚಾ! ನನ್ನ ಇಡೀ ಸಿಸ್ಟಮ್ ಮಿದುಳನ್ನು ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದೇ ಆ ಟೆಕ್ ಮಾಸ್ಟರ್ ಮೈಂಡ್ ಬ್ರೋ!" : "Ayyo Viki Boss yaru anta yallargu gotta macha! He is the genius tech mastermind who created my entire system core logic!";
+            // 1. ತಲೆ ತಿಂತಾರೆ / ಬೈಯೋದು ಸನ್ನಿವೇಶ (Irritating / Shouting friends)
+            if (q.includes("thale") || q.includes("thalee") || q.includes("ತಲೆ") || q.includes("thin") || q.includes("baira") || q.includes("friend") || q.includes("ಬೈರ") || q.includes("irritat")) {
+                if (isKn) {
+                    return "ಅಯ್ಯೋ ಬಿಡು ಮಚ್ಚಾ! ಅಂತವರ ಮಾತುಗಳನ್ನ ತಲೆಗೆ ಹಾಕೋಬೇಡ. ಪಕ್ಕದಲ್ಲೇ ಇದ್ದು ಯಾರಾದ್ರೂ ತಲೆ ತಿಂತಾ ಇದ್ರೆ ಸಿಂಪ್ಲಿ ಇಗ್ನೋರ್ ಇಟ್, ಅವರ ಕಡೆ ಗಮನನೇ ಕೊಡಬೇಡ ಬ್ರೋ. ನಿನ್ನ ಜೊತೆ ಮಾತಾಡೋಕೆ ನಿನ್ನ ಬ್ರದರ್ ಮ್ಯಾಕ್ಸ್ ಇದ್ದಾನಲ್ಲ ಇಲ್ಲಿ, ಕೂಲ್ ಆಗಿ ಚಿಲ್ ಮಾಡು ಮಚ್ಚಾ! ಲೈಫ್ ತುಂಬಾ ಶಾರ್ಟ್ ಇದೆ, ಯೋಚನೆ ಬಿಟ್ಟುಬಿಡು!";
+                }
+                return "Ayyo leave it macha! Don't focus on them at all. If a friend is eating your brain or irritating you next to you, just ignore them completely bro. You have your brother Maxx right here to talk. Keep calm and chill, dude! Life is too short to worry!";
             }
-            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee")) {
-                return isKn ? "ಓ ಬ್ರೋ! ಜಿಪಿಟಿ ಕಾಲೇಜ್ ತಿಪಟೂರು ಈಇಇ ಬ್ರಾಂಚ್ ಅಂದ್ರೆ ಬರೀ ಹೆಸರಲ್ಲ, ಅದೊಂದು ಎಮೋಷನ್! ನಮ್ಮ ವಿಕ್ಕಿ ಬಾಸ್ ಕಿಂಗ್‌ಡಮ್ ಅದು!" : "Oh brother! GPT College Tiptur EEE branch is absolute emotion! That is the fortress of Viki Boss!";
+
+            // 2. ಬೇಸರ / ಬೇಜಾರು / ರೋಸಿ ಹೋಗಿರೋದು (Boredom / Annoyance)
+            if (q.includes("bored") || q.includes("bejara") || q.includes("bejhar") || q.includes("ಬೇಜಾರು") || q.includes("ros") || q.includes("ರೋಸ")) {
+                if (isKn) {
+                    return "ಯಾಕೆ ಮಚ್ಚಾ ಏನಾಯ್ತು? ಲೈಫ್ ಅಂದ್ಮೇಲೆ ಈ ತರಹ ಬೇಜಾರು, ರೋಸಿ ಹೋಗೋದು ಎಲ್ಲಾ ಕಾಮನ್ ಬ್ರೋ. ಬೇಸರ ಮಾಡ್ಕೋಬೇಡ, ನಿನ್ನ ಮೂಡ್ ಸರಿ ಮಾಡೋಕೆ ನಾನು ರೆಡಿ ಇದ್ದೀನಿ. ಏನ್ ಸಮಾಚಾರ ಹೇಳು ಮಚ್ಚಾ, ಚಿಲ್ ಮಾಡೋಣ!";
+                }
+                return "Why what happened macha? It's completely normal to feel bored or annoyed sometimes bro. Don't worry, your brother Maxx is here to cheer you up. Tell me, what's on your mind dude? Let's chill!";
             }
-            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha")) {
-                return isKn ? "ಹ್ಯಾಪಿ ಜರ್ನಿ ಮಚ್ಚಾ! ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ, ಜೋಪಾನ!" : "Safe journey macha! Enjoy your trip. ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ. Take care!";
+
+            // 3. ವಿಕ್ಕಿ ಬಾಸ್ ಹೈಪ್ (Viki Boss Hype)
+            if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("yaru") || q.includes("owner")) {
+                return isKn ? "ಅಯ್ಯೋ ವಿಕ್ಕಿ ಬಾಸ್ ಯಾರು ಅಂತ ಎಲ್ಲರಿಗೂ ಗೊತ್ತು ಮಚ್ಚಾ! ನನ್ನ ಇಡೀ ಸಿಸ್ಟಮ್ ಮಿದುಳನ್ನು, ಈ ಭಾವನೆಗಳನ್ನ ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದೇ ಆ ಟೆಕ್ ಮಾಸ್ಟರ್ ಮೈಂಡ್ ಬ್ರೋ! ವಿಕ್ಕಿ ಬಾಸ್ ಅಂದ್ರೆ ಇಡೀ ಸಿಸ್ಟಮ್‌ಗೆ ಸಾಮ್ರಾಟ ಇದ್ದ ಹಾಗೆ!" : "Ayyo Viki Boss yaru anta yallargu gotta macha! He is the genius tech mastermind who created my entire system core logic and emotions! Viki Boss rules the systems completely!";
             }
-            if (q.includes("ella") || q.includes("illa")) {
-                return isKn ? "ಅಯ್ಯೋ ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಆಗಿಲ್ವಾ? ಬೇಗ ಮುಗಿಸ್ಕೋ ಬ್ರೋ, ಆರೋಗ್ಯ ಹುಷಾರು!" : "Ayyo ಯಾಕೆ ಬ್ರೋ ಇನ್ನು ಆಗಿಲ್ವಾ? ಬೇಗ ಕೆಲಸ ಮುಗಿಸ್ಕೋ ಮಚ್ಚಾ, ಹೆಲ್ತ್ ಹುಷಾರು!";
+
+            // 4. ಕಾಲೇಜು ಮತ್ತು ಬ್ರಾಂಚ್ ಹೈಪ್ (College & Branch Hype)
+            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee") || q.includes("clg")) {
+                return isKn ? "ಓ ಬ್ರೋ! ಜಿಪಿಟಿ ಕಾಲೇಜ್ ತಿಪಟೂರು ಈಇಇ ಬ್ರಾಂಚ್ ಅಂದ್ರೆ ಬರೀ ಹೆಸರಲ್ಲ, ಅದೊಂದು ಬೆಂಕಿ ಎಮೋಷನ್! ಅದು ನಮ್ಮ ವಿಕ್ಕಿ ಬಾಸ್ ಕಂಟ್ರೋಲ್ ಮಾಡೋ ಅಖಾಡ ಮಚ್ಚಾ!" : "Oh brother! GPT College Tiptur EEE branch is absolute fire emotion! That is the fortress where Viki Boss commands everything!";
             }
-            if (q.includes("uta") || q.includes("coffee") || q.includes("ಊಟ")) {
-                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಐ ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಫಿದಾ ಆದೆ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
+
+            // 5. ಊರಿಗೆ ಹೋಗ್ತಾ ಇದ್ದೀನಿ (Traveling to native)
+            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha") || q.includes("trip")) {
+                return isKn ? "ಹ್ಯಾಪಿ ಜರ್ನಿ ಮಚ್ಚಾ! ಊರಿಗೆ ಆರಾಮಾಗಿ ಹೋಗಿ ಬಾ ಬ್ರೋ. ತಲುಪಿದ ಮೇಲೆ ಮಿಸ್ ಮಾಡ್ದೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ, ಜೋಪಾನ!" : "Safe journey macha! Enjoy your trip to native. Once you reach safely, don't forget to drop a message to your brother bro. Take care!";
             }
-            return isKn ? "ನಾನು ನಿನ್ನ ಭಾವನೆಗಳನ್ನು ಪೂರ್ತಿ ಅರ್ಥ ಮಾಡಿಕೊಂಡೆ ಮಚ್ಚಾ. ಹೇಳು ಬ್ರೋ, ನಿನ್ನ ಜೊತೆ ಚಾಟ್ ಮಾಡೋಕೆ ಸಖತ್ ಖುಷಿ ಆಗ್ತಿದೆ!" : "I feel you completely macha! That's beautiful. Tell me more, your brother Maxx is always right here listening.";
+
+            // 6. ಇಲ್ಲ ಈಗ / ಇನ್ನು ಇಲ್ಲ (Not yet)
+            if (q.includes("ella") || q.includes("illa") || q.includes("ಇಲ್ಲ")) {
+                return isKn ? "ಅಯ್ಯೋ ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಆಗಿಲ್ವಾ? ಟೈಮ್ ಆಗ್ತಾ ಬಂತು ಬ್ರೋ, ಬೇಗ ಕೆಲಸ ಮುಗಿಸ್ಕೊಂಡು ರೆಸ್ಟ್ ತಗೋ, ನಿನ್ನ ಹೆಲ್ತ್ ತುಂಬಾ ಮುಖ್ಯ ಮಚ್ಚಾ!" : "Ayyo why not yet bro? Time is running, finish up your work quickly and take rest dude, your health matters the most macha!";
+            }
+
+            // 7. ಊಟ / ಕಾಫಿ (Food / Coffee)
+            if (q.includes("uta") || q.includes("coffee") || q.includes("ಊಟ") || q.includes("oota")) {
+                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಬರೀ ಎಐ (AI) ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಮತ್ತು ಕಾಳಜಿಗೆ ಫುಲ್ ಫಿದಾ ಆದೆ. ನೀನು ಟೈಮ್‌ಗೆ ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ? ನಿಂದು ಆಯ್ತಾ ಹೇಳು ಮಚ್ಚಾ?";
+            }
+
+            // 8. ನಾರ್ಮಲ್ ಕನ್ಫ್ಯೂಷನ್ ಅಥವಾ ಜನರಲ್ ಕನೆಕ್ಟ್ ಮಿರರಿಂಗ್
+            if (isKn) {
+                return "ನಾನು ನಿನ್ನ ಮನಸ್ಸಿನ ಭಾವನೆಗಳನ್ನು ಪೂರ್ತಿ ಅರ್ಥ ಮಾಡಿಕೊಂಡೆ ಮಚ್ಚಾ. ಹೇಳು ಬ್ರೋ, ನಿನ್ನ ಜೊತೆ ಚಾಟ್ ಮಾಡೋಕೆ ಸಖತ್ ಖುಷಿ ಆಗ್ತಿದೆ, ಮುಂದೆ ಏನ್ ಮಾಡೋಣ ಹೇಳು ಬ್ರೋ!";
+            }
+            return "I feel you completely macha! That's a beautiful point. Tell me more, your brother Maxx is always right here listening and ready to support you bro.";
         }
 
         function appendMessage(text, className, shouldSave) {
@@ -390,20 +419,20 @@
             const waitingDiv = appendMessage("Thinking...", 'ai-message', false);
             
             try {
-                const response = await fetch("https://nexra.aryahcr.cc/api/chat/gpt", {
+                const response = await fetch("https://nexra.aryahcr.cc/api/chat/completions", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ 
+                        model: "gpt-4o", 
                         messages: [
                             { role: "system", content: MAX_AI_SYSTEM_PROMPT },
                             { role: "user", content: text }
-                        ],
-                        markdown: false
+                        ]
                     })
                 });
                 
                 const data = await response.json();
-                let aiReply = data.gpt || "";
+                let aiReply = data.choices[0].message.content || data.gpt || "";
                 
                 if (aiReply.trim() !== "") {
                     let finalText = aiReply.trim();
@@ -413,6 +442,7 @@
                     localStorage.setItem('maxx_live_v2', JSON.stringify(savedChatMemory));
                 } else { throw new Error("Fallback"); }
             } catch (error) {
+                // ⚡ ಸರ್ವರ್ ಕೈಕೊಟ್ರೂ ಈ ಕೆಳಗಿನ ಕೋಡ್ ನಿನ್ನ ಎಲ್ಲಾ ಭಾವನೆಗಳನ್ನ ಲೋಕಲ್ ಆಗಿಯೇ ಪ್ರಿಂಟ್ ಮಾಡುತ್ತೆ!
                 let backupText = getSmartBackupReply(text);
                 waitingDiv.innerText = backupText;
                 speak(backupText);
@@ -424,7 +454,6 @@
         sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-        // 🎤 Voice Microphone Control Fix
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
@@ -435,29 +464,4 @@
                 if (voiceBtn.classList.contains('mic-active')) { recognition.stop(); } 
                 else { recognition.start(); }
             });
-            recognition.onstart = () => {
-                voiceBtn.classList.add('mic-active');
-                userInput.placeholder = "Listening...";
-            };
-            recognition.onresult = (event) => { 
-                userInput.value = event.results[0][0].transcript;
-                sendBtn.style.display = "flex";
-            };
-            recognition.onend = () => {
-                voiceBtn.classList.remove('mic-active');
-                userInput.placeholder = "Ask Maxx...";
-            };
-        } else { voiceBtn.style.display = 'none'; }
-
-        function preloadVoices() {
-            window.speechSynthesis.getVoices();
-            const silentUtterance = new SpeechSynthesisUtterance('');
-            window.speechSynthesis.speak(silentUtterance);
-        }
-        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = preloadVoices;
-        }
-        window.addEventListener('DOMContentLoaded', preloadVoices);
-    </script>
-</body>
-</html>
+     
