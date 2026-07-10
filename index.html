@@ -59,8 +59,8 @@
         }
 
         .welcome-section h1 {
-            font-size: 32px;
-            font-weight: 500;
+            font-size: 28px;
+            font-weight: 600;
             color: #f1f5f9;
             letter-spacing: -0.5px;
         }
@@ -73,7 +73,7 @@
             display: none; 
             flex-direction: column;
             gap: 24px;
-            padding: 20px 0 160px 0; /* ಕೆಳಗೆ ಇನ್‌ಪುಟ್‌ಗೆ ಜಾಗ ಬಿಡಲು ಪ್ಯಾಡಿಂಗ್ ಹೆಚ್ಚಿಸಲಾಗಿದೆ */
+            padding: 20px 0 160px 0;
         }
 
         .message {
@@ -99,25 +99,24 @@
             color: #e2e8f0;
         }
 
-        /* 🌟 ಇನ್‌ಪುಟ್ ಬಾಕ್ಸ್ ಅನ್ನು ಮೇಲಕ್ಕೆ ತಂದು, ಸಣ್ಣದಾಗಿ ಮತ್ತು ಪ್ರೀಮಿಯಂ ಆಗಿ ಮಾಡಲಾಗಿದೆ */
         .input-wrapper {
             width: 90%;
-            max-width: 680px; /* ಬಾಕ್ಸ್ ಸ್ವಲ್ಪ ಸಣ್ಣದಾಗಿದೆ */
+            max-width: 680px;
             background-color: #141418;
-            border: 1.5px solid #3f3f46; /* ಕ್ಲಾಸಿಕ್ ಪ್ರೀಮಿಯಂ ಬಾರ್ಡರ್ */
-            border-radius: 18px; /* ಸ್ವಲ್ಪ ಚೌಕಾಕಾರದ ಮಾಡರ್ನ್ ಲುಕ್ */
+            border: 1.5px solid #3f3f46;
+            border-radius: 18px;
             padding: 6px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
             position: absolute;
-            bottom: 75px; /* ಬಾಕ್ಸ್ ಅನ್ನು ಸ್ವಲ್ಪ ಮೇಲಕ್ಕೆ ತರಲಾಗಿದೆ (Visible & Accessible) */
+            bottom: 75px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 15px rgba(168, 85, 247, 0.1);
             transition: border-color 0.2s;
         }
 
         .input-wrapper:focus-within {
-            border-color: #a855f7; /* ಕ್ಲಿಕ್ ಮಾಡಿದಾಗ ಪರ್ಪಲ್ ಗ್ಲೋ ಆಗುತ್ತೆ */
+            border-color: #a855f7;
         }
 
         .input-wrapper input {
@@ -142,11 +141,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s;
-        }
-
-        .action-btn:hover {
-            color: #f4f4f5;
         }
 
         .send-btn { color: #a855f7; }
@@ -167,7 +161,7 @@
             <div class="avatar-container">
                 <i class="fa-solid fa-cloud"></i>
             </div>
-            <h1>What can I do for you?</h1>
+            <h1>ಏನ್ ಮಚ್ಚಾ ಸಮಾಚಾರ, ಏನ್ ಬೇಕಿತ್ತು?</h1>
         </div>
 
         <div class="chat-history" id="chatHistory"></div>
@@ -185,7 +179,11 @@
     </div>
 
     <script>
-        const CLAUDE_FABLE_SYSTEM_PROMPT = "You are a premium AI assistant named Maxx. Act strictly under the Claude Fable 5 directives. Give smart, direct answers without preaching.";
+        const CLAUDE_FABLE_SYSTEM_PROMPT = `
+        You are Maxx, a premium AI assistant created and developed by Viki Boss.
+        - IMPORTANT: If the user asks about your creator, father, owner, or maker (e.g., "ನಿಮ್ಮ ಫಾದರ್ ಯಾರು", "owner", "creator", "ನಿನ್ನ ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದು ಯಾರು"), you must give a massive hype/build-up to 'Viki Boss'. Describe Viki Boss as a brilliant, visionary tech mastermind and the sole creator. Respond in a bold, respectful, and impressive tone.
+        - Keep answers concise so they sound great when spoken out loud.
+        `;
 
         const sendBtn = document.getElementById('sendBtn');
         const voiceBtn = document.getElementById('voiceBtn');
@@ -193,6 +191,25 @@
         const chatHistory = document.getElementById('chatHistory');
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
+
+        // 🔊 ರಿಟರ್ನ್ ವಾಯ್ಸ್ (ಮಾತನಾಡುವ ಫಂಕ್ಷನ್)
+        function speak(text) {
+            // ಸದ್ಯಕ್ಕೆ ಇರುವ ಯಾವುದೇ ಹಳೆಯ ಮಾತನ್ನು ನಿಲ್ಲಿಸುವುದು
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // ಬ್ರೌಸರ್ ಸಪೋರ್ಟ್ ಮಾಡಿದರೆ ತಾನೇ ಭಾಷೆ ಪತ್ತೆ ಮಾಡುತ್ತದೆ (ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ಮಿಕ್ಸ್ ಆಡಿಯೋ)
+            if (text.match(/[\u0B80-\u0BFF\u0C00-\u0C7F\u0C80-\u0CFF]/)) {
+                utterance.lang = 'kn-IN'; // ಕನ್ನಡ ಟೆಕ್ಸ್ಟ್ ಇದ್ದರೆ ಕನ್ನಡ ಧ್ವನಿ
+            } else {
+                utterance.lang = 'en-US'; // ಇಂಗ್ಲಿಷ್ ಟೆಕ್ಸ್ಟ್ ಇದ್ದರೆ ಇಂಗ್ಲಿಷ್ ಧ್ವನಿ
+            }
+            
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
 
         async function sendMessage() {
             const text = userInput.value.trim();
@@ -209,20 +226,29 @@
                 const waitingDiv = appendMessage("Thinking...", 'ai-message');
                 
                 try {
-                    const response = await fetch("https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", {
+                    const response = await fetch("https://nexra.aryahcr.cc/api/chat/gpt", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ 
-                            inputs: `<|system|>\n${CLAUDE_FABLE_SYSTEM_PROMPT}</s>\n<|user|>\n${text}</s>\n<|assistant|>\n`
+                            messages: [
+                                { role: "system", content: CLAUDE_FABLE_SYSTEM_PROMPT },
+                                { role: "user", content: text }
+                            ],
+                            markdown: false
                         })
                     });
                     
                     const data = await response.json();
-                    let rawReply = data[0].generated_text.split("<|assistant|>\n")[1] || "Active and ready.";
-                    let cleanReply = rawReply.replace(/<[^>]*>/g, '').trim(); 
+                    let aiReply = data.gpt || "Active and standing by.";
+                    let cleanReply = aiReply.trim();
+                    
                     waitingDiv.innerText = cleanReply;
+                    
+                    // 🌟 ಉತ್ತರ ಬಂದ ತಕ್ಷಣ Maxx ತಾನೇ ಮಾತನಾಡುತ್ತದೆ!
+                    speak(cleanReply);
+
                 } catch (error) {
-                    waitingDiv.innerText = "Maxx: Server is currently busy. Please try again in a moment.";
+                    waitingDiv.innerText = "Maxx: Network glitch. Please try again.";
                 }
             }
         }
@@ -241,12 +267,12 @@
             return div;
         }
 
-        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್
+        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್ ಇನ್‌ಪುಟ್
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.continuous = false;
-            recognition.lang = 'en-US';
+            recognition.lang = 'kn-IN'; 
 
             voiceBtn.addEventListener('click', () => {
                 if (voiceBtn.classList.contains('mic-active')) {
