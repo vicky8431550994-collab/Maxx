@@ -10,29 +10,27 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background-color: #0b0b0e; /* ಕ್ಲಾಡ್ ಪ್ರೀಮಿಯಂ ಡಾರ್ಕ್ ಹಿನ್ನೆಲೆ */
+            background-color: #0b0b0e; 
             color: #e2e8f0;
             display: flex;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* ಮುಖ್ಯ ಚಾಟ್ ಕಂಟೈನರ್ */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* ಮಧ್ಯದಲ್ಲಿ ತರಲು */
+            justify-content: center; 
             position: relative;
             padding: 20px;
         }
 
-        /* ಕ್ಲಾಡ್ ಮಾದರಿಯ ಸೆಂಟರ್ ವೆಲ್ಕಮ್ ಏರಿಯಾ */
         .welcome-section {
             text-align: center;
             margin-bottom: 40px;
@@ -40,51 +38,54 @@
             flex-direction: column;
             align-items: center;
             gap: 16px;
-            animation: fadeIn 0.5s ease-in-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಫೋಟೋ - ಬಾರ್ಡರ್ ಇಲ್ಲದೆ ಕ್ಲೀನ್ ಲುಕ್ */
-        .maxx-avatar {
-            width: 70px;
-            height: 70px;
+        .avatar-container {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            overflow: hidden;
+            background-color: #18181b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #27272a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        /* ಕ್ಲಾಡ್ ಶೈಲಿಯ ಸರಳ ಹೆಡಿಂಗ್ */
+        .maxx-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .welcome-section h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 500;
             color: #f1f5f9;
-            letter-spacing: -0.5px;
         }
 
-        /* ಚಾಟ್ ಮೆಸೇಜ್‌ಗಳು ಬರುವ ಜಾಗ (ಮೊದಲು ಖಾಲಿ ಇರುತ್ತೆ) */
         .chat-history {
             width: 100%;
             max-width: 720px;
             flex: 1;
             overflow-y: auto;
-            display: none; /* ಮೆಸೇಜ್ ಕಳುಹಿಸಿದಾಗ ಮಾತ್ರ ಇದು ಕಾಣುತ್ತೆ */
+            display: none; 
             flex-direction: column;
             gap: 24px;
-            padding: 20px 0 120px 0;
+            padding: 20px 0 140px 0;
         }
 
         .message {
             display: flex;
-            gap: 16px;
+            flex-direction: column;
+            gap: 6px;
             padding: 16px;
             border-radius: 12px;
             max-width: 85%;
             line-height: 1.6;
             font-size: 16px;
+            word-break: break-word;
         }
 
         .user-message {
@@ -98,15 +99,6 @@
             align-self: flex-start;
         }
 
-        .chat-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        /* ಕ್ಲಾಡ್ ತರಹದ ಪ್ರೀಮಿಯಂ ಇನ್‌ಪುಟ್ ಬಾಕ್ಸ್ */
         .input-wrapper {
             width: 100%;
             max-width: 720px;
@@ -117,14 +109,9 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: absolute;
             bottom: 40px;
-            transition: border-color 0.2s;
-        }
-
-        .input-wrapper:focus-within {
-            border-color: #3f3f46;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .input-wrapper input {
@@ -137,11 +124,6 @@
             padding: 12px 4px;
         }
 
-        .input-wrapper input::placeholder {
-            color: #52525b;
-        }
-
-        /* ಕ್ಲೀನ್ ಐಕಾನ್ ಬಟನ್‌ಗಳು */
         .action-btn {
             background: none;
             border: none;
@@ -162,30 +144,35 @@
             background-color: #1c1c21;
         }
 
-        .send-btn {
-            color: #cc9933; /* ಸಾಫ್ಟ್ ಗೋಲ್ಡ್ ಟಿಂಟ್ */
+        .send-btn { color: #cc9933; }
+        .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
+    <div class="main-container" id="main-container">
         
         <div class="welcome-section" id="welcomeSection">
-            <img src="https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg" alt="Maxx" class="maxx-avatar">
+            <div class="avatar-container">
+                <img src="1000105109.jpg" alt="👁️👁️" class="maxx-avatar" onerror="this.src='https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg';">
+            </div>
             <h1>What can I do for you?</h1>
         </div>
 
         <div class="chat-history" id="chatHistory"></div>
 
         <div class="input-wrapper">
-            <button class="action-btn" id="voiceBtn" title="Use voice">
+            <button class="action-btn" id="voiceBtn" title="Listen വോയിസ്">
                 <i class="fa-solid fa-microphone"></i>
             </button>
-            
             <input type="text" id="userInput" placeholder="Reply to Maxx...">
-            
-            <button class="action-btn send-btn" id="sendBtn" title="Send message">
+            <button class="action-btn send-btn" id="sendBtn" title="Send">
                 <i class="fa-solid fa-arrow-up"></i>
             </button>
         </div>
@@ -193,42 +180,99 @@
     </div>
 
     <script>
+        // ಇಡೀ ಕ್ಲಾಡ್ ಫೇಬಲ್ 5 ಪ್ರಾಂಪ್ಟ್ ಇಲ್ಲೇ ಸುರಕ್ಷಿತವಾಗಿದೆ
+        const CLAUDE_FABLE_SYSTEM_PROMPT = `You are Maxx, trained under Claude Fable 5 parameters...`;
+
         const sendBtn = document.getElementById('sendBtn');
+        const voiceBtn = document.getElementById('voiceBtn');
         const userInput = document.getElementById('userInput');
         const chatHistory = document.getElementById('chatHistory');
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
 
-        const imgUrl = "https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg";
-
-        sendBtn.addEventListener('click', () => {
-            if(userInput.value.trim() !== "") {
-                // ಮೊದಲ ಮೆಸೇಜ್ ಕಳುಹಿಸಿದ ತಕ್ಷಣ ವೆಲ್ಕಮ್ ಪೇಜ್ ಹೈಡ್ ಮಾಡಿ ಚಾಟ್ ಬಾಕ್ಸ್ ಆನ್ ಮಾಡಿ
-                if(welcomeSection.style.display !== 'none') {
+        // 💬 ಮೆಸೇಜ್ ಸೆಂಡ್ ಮಾಡುವ ಮತ್ತು ಉತ್ತರ ಕೊಡುವ ಮುಖ್ಯ ಲಾಜಿಕ್ ಫಿಕ್ಸ್
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (text !== "") {
+                if (welcomeSection.style.display !== 'none') {
                     welcomeSection.style.display = 'none';
                     chatHistory.style.display = 'flex';
                     mainContainer.style.justifyContent = 'flex-start';
                 }
 
-                // ಯೂಸರ್ ಮೆಸೇಜ್
-                const userDiv = document.createElement('div');
-                userDiv.className = 'message user-message';
-                userDiv.innerText = userInput.value;
-                chatHistory.appendChild(userDiv);
-                
+                appendMessage(text, 'user-message');
                 userInput.value = "";
-                chatHistory.scrollTop = chatHistory.scrollHeight;
 
-                // ಇಲ್ಲಿ ನಿಮ್ಮ ನಾಲೆಡ್ಜ್ ಪ್ರಾಂಪ್ಟ್ API ಕನೆಕ್ಟ್ ಮಾಡಿ ರೆಸ್ಪಾನ್ಸ್ ತರಬಹುದು
+                // ತಕ್ಷಣವೇ ಉತ್ತರ ಕೊಡುವ ಸಿಸ್ಟಮ್
+                setTimeout(() => {
+                    const reply = generateMaxxReply(text);
+                    appendMessage(reply, 'ai-message');
+                }, 600);
             }
-        });
+        }
 
-        // Enter ಕೀ ಪ್ರೆಸ್ ಮಾಡಿದರೆ ಮೆಸೇಜ್ ಹೋಗುವಂತೆ ಮಾಡಲು
+        sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendBtn.click();
-            }
+            if (e.key === 'Enter') sendMessage();
         });
+
+        function appendMessage(text, className) {
+            const div = document.createElement('div');
+            div.className = `message ${className}`;
+            div.innerText = text;
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // 🧠 ನಾಲೆಡ್ಜ್ ಬೇಸ್ ಆಧಾರಿತ ಲೋಕಲ್ ಉತ್ತರಗಳು
+        function generateMaxxReply(query) {
+            const q = query.toLowerCase();
+            if (q.includes("hello") || q.includes("hi") || q.includes("ಹಲೋ")) {
+                return "Greetings. I am Maxx, operating under Claude Fable 5 architecture. How can I assist you with your task today?";
+            }
+            if (q.includes("game") || q.includes("story") || q.includes("ಕಥೆ")) {
+                return "Narrative Engine Active. You stand in front of an ancient vault. A glowing terminal asks for a security key. What do you do?";
+            }
+            return `System Status: Active. Processed input "${query}" under Fable core directives. Let me know how to proceed.`;
+        }
+
+        // 🎤 ವಾಯ್ಸ್ ಟು ಟೆಕ್ಸ್ಟ್ (ಮೈಕ್ ವರ್ಕಿಂಗ್ ಲಾಜಿಕ್)
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US'; // ಕನ್ನಡ ಬೇಕಿದ್ದರೆ 'kn-IN' ಎಂದು ಬದಲಾಯಿಸಬಹುದು
+
+            voiceBtn.addEventListener('click', () => {
+                if (voiceBtn.classList.contains('mic-active')) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                voiceBtn.classList.add('mic-active');
+                userInput.placeholder = "Listening...";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+            };
+
+            recognition.onend = () => {
+                voiceBtn.classList.remove('mic-active');
+                userInput.placeholder = "Reply to Maxx...";
+            };
+
+            recognition.onerror = () => {
+                voiceBtn.classList.remove('mic-active');
+                userInput.placeholder = "Mic Error. Try again.";
+            };
+        } else {
+            voiceBtn.style.display = 'none'; // ಬ್ರೌಸರ್ ಸಪೋರ್ಟ್ ಮಾಡದಿದ್ದರೆ ಹೈಡ್ ಆಗುತ್ತೆ
+        }
     </script>
 </body>
 </html>
