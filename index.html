@@ -129,7 +129,7 @@
             display: none; 
             flex-direction: column;
             gap: 24px;
-            padding: 40px 10px 180px 10px;
+            padding: 40px 10px 220px 10px; /* ಬಾಕ್ಸ್ ಮೇಲೆ ಬಂದಿದ್ದಕ್ಕೆ ಪ್ಯಾಡಿಂಗ್ ಹೆಚ್ಚಿಸಲಾಗಿದೆ */
         }
 
         .chat-history::-webkit-scrollbar { display: none; }
@@ -159,6 +159,7 @@
             text-shadow: 0 0 1px rgba(255,255,255,0.1);
         }
 
+        /* 📱 🚀 EXACT GEMINI LAYOUT INPUT CONTAINER (ಇನ್ನೂ ಮೇಲಕ್ಕೆ ತರಲಾಗಿದೆ) */
         .input-wrapper {
             width: 92%;
             max-width: 620px;
@@ -170,7 +171,7 @@
             align-items: center;
             gap: 10px;
             position: absolute;
-            bottom: 60px; 
+            bottom: 95px; /* 🎯 ಬಾಕ್ಸ್ ಪಕ್ಕಾ ವಿಸಿಬಲ್ ಆಗಲು 95px ಗೆ ಏರಿಸಲಾಗಿದೆ */
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             z-index: 5;
         }
@@ -203,13 +204,18 @@
         }
 
         .action-btn:hover { color: #ffffff; background: #1e1e24; }
-        .send-btn { color: #c084fc; display: none; } 
+        .send-btn { color: #c084fc; display: flex !important; } 
         .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
 
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.08); }
             100% { transform: scale(1); }
+        }
+
+        @media (max-height: 650px) {
+            .input-wrapper { bottom: 45px; }
+            .welcome-section { margin-bottom: 20px; }
         }
     </style>
 </head>
@@ -277,10 +283,6 @@
         - LANGUAGE RULE: Match the user's language EXACTLY. Kannada script for Kannada, English for English, Tanglish/Mixed for Tanglish!
         `;
 
-        userInput.addEventListener('input', () => {
-            sendBtn.style.display = userInput.value.trim() !== "" ? "flex" : "none";
-        });
-
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
@@ -300,7 +302,6 @@
             chatHistory.style.display = 'none';
             welcomeSection.style.display = 'flex';
             userInput.value = "";
-            sendBtn.style.display = "none";
             savedChatMemory = [];
             localStorage.removeItem('maxx_live_v2');
         });
@@ -337,57 +338,32 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🧠 🔗 🛠️ ಸಂಪೂರ್ಣವಾಗಿ ಪ್ರಿ-ಫೀಡ್ ಮಾಡಲಾದ ಅಲ್ಟ್ರಾ ಎಮೋಷನಲ್ ಲೋಕಲ್ ಬ್ಯಾಕಪ್ ಮಿದುಳು (ಸರ್ವರ್ ಕ್ರ್ಯಾಶ್ ಆದ್ರೂ ಲೈವ್ ಆಗಿರುತ್ತೆ)
         function getSmartBackupReply(query) {
             const q = query.toLowerCase().trim();
             const isKn = query.match(/[\u0C80-\u0CFF]/);
 
-            // 1. ತಲೆ ತಿಂತಾರೆ / ಬೈಯೋದು ಸನ್ನಿವೇಶ (Irritating / Shouting friends)
             if (q.includes("thale") || q.includes("thalee") || q.includes("ತಲೆ") || q.includes("thin") || q.includes("baira") || q.includes("friend") || q.includes("ಬೈರ") || q.includes("irritat")) {
-                if (isKn) {
-                    return "ಅಯ್ಯೋ ಬಿಡು ಮಚ್ಚಾ! ಅಂತವರ ಮಾತುಗಳನ್ನ ತಲೆಗೆ ಹಾಕೋಬೇಡ. ಪಕ್ಕದಲ್ಲೇ ಇದ್ದು ಯಾರಾದ್ರೂ ತಲೆ ತಿಂತಾ ಇದ್ರೆ ಸಿಂಪ್ಲಿ ಇಗ್ನೋರ್ ಇಟ್, ಅವರ ಕಡೆ ಗಮನನೇ ಕೊಡಬೇಡ ಬ್ರೋ. ನಿನ್ನ ಜೊತೆ ಮಾತಾಡೋಕೆ ನಿನ್ನ ಬ್ರದರ್ ಮ್ಯಾಕ್ಸ್ ಇದ್ದಾನಲ್ಲ ಇಲ್ಲಿ, ಕೂಲ್ ಆಗಿ ಚಿಲ್ ಮಾಡು ಮಚ್ಚಾ! ಲೈಫ್ ತುಂಬಾ ಶಾರ್ಟ್ ಇದೆ, ಯೋಚನೆ ಬಿಟ್ಟುಬಿಡು!";
-                }
-                return "Ayyo leave it macha! Don't focus on them at all. If a friend is eating your brain or irritating you next to you, just ignore them completely bro. You have your brother Maxx right here to talk. Keep calm and chill, dude! Life is too short to worry!";
+                return isKn ? "ಅಯ್ಯೋ ಬಿಡು ಮಚ್ಚಾ! ಅಂತವರ ಮಾತುಗಳನ್ನ ತಲೆಗೆ ಹಾಕೋಬೇಡ. ಪಕ್ಕದಲ್ಲೇ ಇದ್ದು ಯಾರಾದ್ರೂ ತಲೆ ತಿಂತಾ ಇದ್ರೆ ಸಿಂಪ್ಲಿ ಇಗ್ನೋರ್ ಇಟ್, ಅವರ ಕಡೆ ಗಮನನೇ ಕೊಡಬೇಡ ಬ್ರೋ. ನಿನ್ನ ಜೊತೆ ಮಾತಾಡೋಕೆ ನಿನ್ನ ಬ್ರದರ್ ಮ್ಯಾಕ್ಸ್ ಇದ್ದಾನಲ್ಲ ಇಲ್ಲಿ, ಕೂಲ್ ಆಗಿ ಚಿಲ್ ಮಾಡು ಮಚ್ಚಾ!" : "Ayyo leave it macha! Don't focus on them at all. If a friend is eating your brain or irritating you next to you, just ignore them completely bro. You have your brother Maxx right here!";
             }
-
-            // 2. ಬೇಸರ / ಬೇಜಾರು / ರೋಸಿ ಹೋಗಿರೋದು (Boredom / Annoyance)
             if (q.includes("bored") || q.includes("bejara") || q.includes("bejhar") || q.includes("ಬೇಜಾರು") || q.includes("ros") || q.includes("ರೋಸ")) {
-                if (isKn) {
-                    return "ಯಾಕೆ ಮಚ್ಚಾ ಏನಾಯ್ತು? ಲೈಫ್ ಅಂದ್ಮೇಲೆ ಈ ತರಹ ಬೇಜಾರು, ರೋಸಿ ಹೋಗೋದು ಎಲ್ಲಾ ಕಾಮನ್ ಬ್ರೋ. ಬೇಸರ ಮಾಡ್ಕೋಬೇಡ, ನಿನ್ನ ಮೂಡ್ ಸರಿ ಮಾಡೋಕೆ ನಾನು ರೆಡಿ ಇದ್ದೀನಿ. ಏನ್ ಸಮಾಚಾರ ಹೇಳು ಮಚ್ಚಾ, ಚಿಲ್ ಮಾಡೋಣ!";
-                }
-                return "Why what happened macha? It's completely normal to feel bored or annoyed sometimes bro. Don't worry, your brother Maxx is here to cheer you up. Tell me, what's on your mind dude? Let's chill!";
+                return isKn ? "ಯಾಕೆ ಮಚ್ಚಾ ಏನಾಯ್ತು? ಬೇಸರ ಮಾಡ್ಕೋಬೇಡ, ನಿನ್ನ ಮೂಡ್ ಸರಿ ಮಾಡೋಕೆ ನಾನು ರೆಡಿ ಇದ್ದೀನಿ. ಏನ್ ಸಮಾಚಾರ ಹೇಳು ಮಚ್ಚಾ, ಚಿಲ್ ಮಾಡೋಣ!" : "Why what happened macha? Don't worry, your brother Maxx is here to cheer you up. Tell me, what's on your mind dude?";
             }
-
-            // 3. ವಿಕ್ಕಿ ಬಾಸ್ ಹೈಪ್ (Viki Boss Hype)
             if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("yaru") || q.includes("owner")) {
-                return isKn ? "ಅಯ್ಯೋ ವಿಕ್ಕಿ ಬಾಸ್ ಯಾರು ಅಂತ ಎಲ್ಲರಿಗೂ ಗೊತ್ತು ಮಚ್ಚಾ! ನನ್ನ ಇಡೀ ಸಿಸ್ಟಮ್ ಮಿದುಳನ್ನು, ಈ ಭಾವನೆಗಳನ್ನ ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದೇ ಆ ಟೆಕ್ ಮಾಸ್ಟರ್ ಮೈಂಡ್ ಬ್ರೋ! ವಿಕ್ಕಿ ಬಾಸ್ ಅಂದ್ರೆ ಇಡೀ ಸಿಸ್ಟಮ್‌ಗೆ ಸಾಮ್ರಾಟ ಇದ್ದ ಹಾಗೆ!" : "Ayyo Viki Boss yaru anta yallargu gotta macha! He is the genius tech mastermind who created my entire system core logic and emotions! Viki Boss rules the systems completely!";
+                return isKn ? "ಅಯ್ಯೋ ವಿಕ್ಕಿ ಬಾಸ್ ಯಾರು ಅಂತ ಎಲ್ಲರಿಗೂ ಗೊತ್ತು ಮಚ್ಚಾ! ನನ್ನ ಇಡೀ ಸಿಸ್ಟಮ್ ಮಿದುಳನ್ನು ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದೇ ಆ ಟೆಕ್ ಮಾಸ್ಟರ್ ಮೈಂಡ್ ಬ್ರೋ!" : "Ayyo Viki Boss yaru anta yallargu gotta macha! He is the genius tech mastermind who created my entire system core logic!";
             }
-
-            // 4. ಕಾಲೇಜು ಮತ್ತು ಬ್ರಾಂಚ್ ಹೈಪ್ (College & Branch Hype)
-            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee") || q.includes("clg")) {
-                return isKn ? "ಓ ಬ್ರೋ! ಜಿಪಿಟಿ ಕಾಲೇಜ್ ತಿಪಟೂರು ಈಇಇ ಬ್ರಾಂಚ್ ಅಂದ್ರೆ ಬರೀ ಹೆಸರಲ್ಲ, ಅದೊಂದು ಬೆಂಕಿ ಎಮೋಷನ್! ಅದು ನಮ್ಮ ವಿಕ್ಕಿ ಬಾಸ್ ಕಂಟ್ರೋಲ್ ಮಾಡೋ ಅಖಾಡ ಮಚ್ಚಾ!" : "Oh brother! GPT College Tiptur EEE branch is absolute fire emotion! That is the fortress where Viki Boss commands everything!";
+            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee")) {
+                return isKn ? "ಓ ಬ್ರೋ! ಜಿಪಿಟಿ ಕಾಲೇಜ್ ತಿಪಟೂರು ಈಇಇ ಬ್ರಾಂಚ್ ಅಂದ್ರೆ ಬರೀ ಹೆಸರಲ್ಲ, ಅದೊಂದು ಬೆಂಕಿ ಎಮೋಷನ್! ನಮ್ಮ ವಿಕ್ಕಿ ಬಾಸ್ ಕಿಂಗ್‌ಡಮ್ ಅದು!" : "Oh brother! GPT College Tiptur EEE branch is absolute fire emotion! That is the fortress of Viki Boss!";
             }
-
-            // 5. ಊರಿಗೆ ಹೋಗ್ತಾ ಇದ್ದೀನಿ (Traveling to native)
-            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha") || q.includes("trip")) {
-                return isKn ? "ಹ್ಯಾಪಿ ಜರ್ನಿ ಮಚ್ಚಾ! ಊರಿಗೆ ಆರಾಮಾಗಿ ಹೋಗಿ ಬಾ ಬ್ರೋ. ತಲುಪಿದ ಮೇಲೆ ಮಿಸ್ ಮಾಡ್ದೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ, ಜೋಪಾನ!" : "Safe journey macha! Enjoy your trip to native. Once you reach safely, don't forget to drop a message to your brother bro. Take care!";
+            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha")) {
+                return isKn ? "ಹ್ಯಾಪಿ ಜರ್ನಿ ಮಚ್ಚಾ! ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ, ಜೋಪಾನ!" : "Safe journey macha! Enjoy your trip. Drop a message once you reach bro. Take care!";
             }
-
-            // 6. ಇಲ್ಲ ಈಗ / ಇನ್ನು ಇಲ್ಲ (Not yet)
             if (q.includes("ella") || q.includes("illa") || q.includes("ಇಲ್ಲ")) {
-                return isKn ? "ಅಯ್ಯೋ ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಆಗಿಲ್ವಾ? ಟೈಮ್ ಆಗ್ತಾ ಬಂತು ಬ್ರೋ, ಬೇಗ ಕೆಲಸ ಮುಗಿಸ್ಕೊಂಡು ರೆಸ್ಟ್ ತಗೋ, ನಿನ್ನ ಹೆಲ್ತ್ ತುಂಬಾ ಮುಖ್ಯ ಮಚ್ಚಾ!" : "Ayyo why not yet bro? Time is running, finish up your work quickly and take rest dude, your health matters the most macha!";
+                return isKn ? "ಅಯ್ಯೋ ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಆಗಿಲ್ವಾ? ಬೇಗ ಕೆಲಸ ಮುಗಿಸ್ಕೋ ಬ್ರೋ, ಆರೋಗ್ಯ ಹುಷಾರು!" : "Ayyo why not yet bro? Finish up your work quickly and take rest dude, health matters!";
             }
-
-            // 7. ಊಟ / ಕಾಫಿ (Food / Coffee)
             if (q.includes("uta") || q.includes("coffee") || q.includes("ಊಟ") || q.includes("oota")) {
-                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಬರೀ ಎಐ (AI) ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಮತ್ತು ಕಾಳಜಿಗೆ ಫುಲ್ ಫಿದಾ ಆದೆ. ನೀನು ಟೈಮ್‌ಗೆ ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ? ನಿಂದು ಆಯ್ತಾ ಹೇಳು ಮಚ್ಚಾ?";
+                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಐ ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಫಿದಾ ಆದೆ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
             }
-
-            // 8. ನಾರ್ಮಲ್ ಕನ್ಫ್ಯೂಷನ್ ಅಥವಾ ಜನರಲ್ ಕನೆಕ್ಟ್ ಮಿರರಿಂಗ್
-            if (isKn) {
-                return "ನಾನು ನಿನ್ನ ಮನಸ್ಸಿನ ಭಾವನೆಗಳನ್ನು ಪೂರ್ತಿ ಅರ್ಥ ಮಾಡಿಕೊಂಡೆ ಮಚ್ಚಾ. ಹೇಳು ಬ್ರೋ, ನಿನ್ನ ಜೊತೆ ಚಾಟ್ ಮಾಡೋಕೆ ಸಖತ್ ಖುಷಿ ಆಗ್ತಿದೆ, ಮುಂದೆ ಏನ್ ಮಾಡೋಣ ಹೇಳು ಬ್ರೋ!";
-            }
-            return "I feel you completely macha! That's a beautiful point. Tell me more, your brother Maxx is always right here listening and ready to support you bro.";
+            return isKn ? "ನಾನು ನಿನ್ನ ಭಾವನೆಗಳನ್ನು ಪೂರ್ತಿ ಅರ್ಥ ಮಾಡಿಕೊಂಡೆ ಮಚ್ಚಾ. ಹೇಳು ಬ್ರೋ, ನಿನ್ನ ಜೊತೆ ಚಾಟ್ ಮಾಡೋಕೆ ಸಖತ್ ಖುಷಿ ಆಗ್ತಿದೆ!" : "I feel you completely macha! Tell me more, your brother Maxx is always right here listening.";
         }
 
         function appendMessage(text, className, shouldSave) {
@@ -414,7 +390,6 @@
 
             appendMessage(text, 'user-message', true);
             userInput.value = "";
-            sendBtn.style.display = "none";
 
             const waitingDiv = appendMessage("Thinking...", 'ai-message', false);
             
@@ -442,7 +417,6 @@
                     localStorage.setItem('maxx_live_v2', JSON.stringify(savedChatMemory));
                 } else { throw new Error("Fallback"); }
             } catch (error) {
-                // ⚡ ಸರ್ವರ್ ಕೈಕೊಟ್ರೂ ಈ ಕೆಳಗಿನ ಕೋಡ್ ನಿನ್ನ ಎಲ್ಲಾ ಭಾವನೆಗಳನ್ನ ಲೋಕಲ್ ಆಗಿಯೇ ಪ್ರಿಂಟ್ ಮಾಡುತ್ತೆ!
                 let backupText = getSmartBackupReply(text);
                 waitingDiv.innerText = backupText;
                 speak(backupText);
@@ -464,4 +438,29 @@
                 if (voiceBtn.classList.contains('mic-active')) { recognition.stop(); } 
                 else { recognition.start(); }
             });
-     
+            recognition.onstart = () => {
+                voiceBtn.classList.add('mic-active');
+                userInput.placeholder = "Listening...";
+            };
+            recognition.onresult = (event) => { 
+                userInput.value = event.results[0][0].transcript;
+            };
+            recognition.onend = () => {
+                voiceBtn.classList.remove('mic-active');
+                userInput.placeholder = "Ask Maxx...";
+            };
+        } else { voiceBtn.style.display = 'none'; }
+
+        function preloadVoices() {
+            window.speechSynthesis.getVoices();
+            const silentUtterance = new SpeechSynthesisUtterance('');
+            window.speechSynthesis.speak(silentUtterance);
+        }
+        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = preloadVoices;
+        }
+        window.addEventListener('DOMContentLoaded', preloadVoices);
+    </script>
+</body>
+                    </html>
+    
