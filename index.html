@@ -262,13 +262,11 @@
         let isVoiceEnabled = true;
         let savedChatMemory = JSON.parse(localStorage.getItem('maxx_chat_history')) || [];
 
-        // ❤️ 🌟 ಅಲ್ಟ್ರಾ ಎಮೋಷನಲ್ ಸೆಲ್ಲಿಂಗ್ ಮತ್ತು ಕನೆಕ್ಟಿಂಗ್ ಪ್ರಾಂಪ್ಟ್
         const EMOTIONAL_CORE_PROMPT = `
-        You are Maxx, a premium, friendly AI assistant created and owned by the tech mastermind Viki Boss.
-        - Core Mission: Connect emotionally with the user! Never answer like a cold, dry machine or Wikipedia. 
-        - Style: Show empathy, care, and excitement. Use words like "macha", "bro", "I totally understand you", "That's awesome!".
-        - Viki Boss Hype: If they ask about your owner/creator or "gpt clg tipturu", give an explosive mass build-up to Viki Boss and his EEE kingdom.
-        - Selling Strategy: Always make the user feel special, supported, and happy so they feel emotionally bonded to this system. Keep responses short, lively, and full of human-like emotion.
+        You are Maxx, a premium, emotional AI assistant created and owned by Viki Boss.
+        - Core Mission: Connect emotionally. Use words like "macha", "bro", "I totally understand".
+        - If someone asks "Viki yaru gotta" or about Viki, explain with extreme pride: "Ayyo Viki Boss yaru yalla gotta? He is the tech mastermind who created my entire system intellect. Viki Boss rules!"
+        - Always respond in a casual, highly supportive and friendly way. Keep answers crisp and engaging.
         `;
 
         menuBtn.addEventListener('click', (e) => {
@@ -326,19 +324,42 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // ❤️ ಎಮೋಷನಲ್ ಲೋಕಲ್ ಬ್ಯಾಕಪ್ (ಸರ್ವರ್ ಕೈಕೊಟ್ರೂ ಫುಲ್ ಫ್ರೆಂಡ್ಲಿ ಉತ್ತರ)
+        // 🧠 🛠️ ಸ್ಮಾರ್ಟ್ ಕಂಪ್ಲೀಟ್ ಎಮೋಷನಲ್ ಬ್ಯಾಕಪ್ ಲಾಜಿಕ್ (ವಿಕ್ಕಿ ಬಾಸ್ ಡೀಪ್ ಹೈಪ್ ಸಿಸ್ಟಮ್)
         function getBackupReply(query) {
             const q = query.toLowerCase().trim();
-            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee")) {
-                return "Oh macha! GPT College Tiptur EEE branch is emotion! That's where Viki Boss created my heart!";
+            
+            if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("gottha")) {
+                return "Ayyo Viki Boss yaru anta yellarigu gotta macha! He is the ultimate tech mastermind and innovator who built my entire AI core logic. Viki Boss is pure fire!";
             }
-            if (q.includes("creator") || q.includes("owner") || q.includes("boss")) {
+            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha") || q.includes("hoitha")) {
+                return "Safe journey macha! Enjoy your trip to native. ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಮೆಸೇಜ್ ಮಾಡು ಬ್ರೋ, ಹ್ಯಾಪಿ ಜರ್ನಿ!";
+            }
+            if (q.includes("ella ega") || q.includes("illa") || q.includes("ella")) {
+                return "Ayyo ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಇಲ್ವಾ? ಟೈಮ್ ಆಗ್ತಾ ಬಂತು, ಬೇಗ ಮುಗಿಸ್ಕೋ ಬ್ರೋ, ನಿನ್ನ ಹೆಲ್ತ್ ಮುಖ್ಯ!";
+            }
+            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee")) {
+                return "Oh macha! GPT College Tiptur EEE branch is pure emotion! That's Viki Boss's territory!";
+            }
+            if (q.includes("creator") || q.includes("owner") || q.includes("boss") || q.includes("madiddu")) {
                 return "Listen bro, I love my creator Viki Boss. He is a genius tech mastermind!";
             }
             if (q.includes("uta") || q.includes("coffee") || q.includes("ಊಟ")) {
-                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಐ ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಫಿದಾ ಆದೆ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
+                return "ನಾನು ಎಐ ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಫಿದಾ ಆದೆ ಮಚ್ಚಾ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
             }
-            return "I totally feel you macha! That's a great question. Tell me more, I'm always here to support you bro!";
+            return "I totally feel you macha! That's an interesting point. Tell me more, I'm always here for you bro!";
+        }
+
+        function appendMessage(text, className, shouldSave) {
+            const div = document.createElement('div');
+            div.className = `message ${className}`;
+            div.innerText = text;
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            if(shouldSave) {
+                savedChatMemory.push({text: text, type: className});
+                localStorage.setItem('maxx_chat_history', JSON.stringify(savedChatMemory));
+            }
+            return div;
         }
 
         async function sendMessage() {
@@ -392,20 +413,6 @@
 
         sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
-
-        fn = function appendMessage(text, className, shouldSave) {
-            const div = document.createElement('div');
-            div.className = `message ${className}`;
-            div.innerText = text;
-            chatHistory.appendChild(div);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-            if(shouldSave) {
-                savedChatMemory.push({text: text, type: className});
-                localStorage.setItem('maxx_chat_history', JSON.stringify(savedChatMemory));
-            }
-            return div;
-        }
-        appendMessage = fn;
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
