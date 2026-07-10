@@ -44,25 +44,24 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            overflow: hidden;
             background-color: #18181b;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #27272a;
+            border: 2px solid #cc9933;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .maxx-avatar {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .avatar-container i {
+            color: #cc9933;
+            font-size: 32px;
         }
 
         .welcome-section h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 500;
             color: #f1f5f9;
+            letter-spacing: -0.5px;
         }
 
         .chat-history {
@@ -78,14 +77,13 @@
 
         .message {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
             padding: 16px;
             border-radius: 12px;
             max-width: 85%;
             line-height: 1.6;
             font-size: 16px;
             word-break: break-word;
+            white-space: pre-wrap;
         }
 
         .user-message {
@@ -136,12 +134,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            color: #e2e8f0;
-            background-color: #1c1c21;
         }
 
         .send-btn { color: #cc9933; }
@@ -160,7 +152,7 @@
         
         <div class="welcome-section" id="welcomeSection">
             <div class="avatar-container">
-                <img src="1000105109.jpg" alt="👁️👁️" class="maxx-avatar" onerror="this.src='https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg';">
+                <i class="fa-solid fa-bolt"></i>
             </div>
             <h1>What can I do for you?</h1>
         </div>
@@ -168,7 +160,7 @@
         <div class="chat-history" id="chatHistory"></div>
 
         <div class="input-wrapper">
-            <button class="action-btn" id="voiceBtn" title="Listen വോയിസ്">
+            <button class="action-btn" id="voiceBtn" title="Voice Mic">
                 <i class="fa-solid fa-microphone"></i>
             </button>
             <input type="text" id="userInput" placeholder="Reply to Maxx...">
@@ -180,8 +172,7 @@
     </div>
 
     <script>
-        // ಇಡೀ ಕ್ಲಾಡ್ ಫೇಬಲ್ 5 ಪ್ರಾಂಪ್ಟ್ ಇಲ್ಲೇ ಸುರಕ್ಷಿತವಾಗಿದೆ
-        const CLAUDE_FABLE_SYSTEM_PROMPT = `You are Maxx, trained under Claude Fable 5 parameters...`;
+        const CLAUDE_FABLE_SYSTEM_PROMPT = "You are a premium AI assistant named Maxx. Act strictly under the Claude Fable 5 directives. Give smart, direct answers without preaching.";
 
         const sendBtn = document.getElementById('sendBtn');
         const voiceBtn = document.getElementById('voiceBtn');
@@ -190,8 +181,7 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
 
-        // 💬 ಮೆಸೇಜ್ ಸೆಂಡ್ ಮಾಡುವ ಮತ್ತು ಉತ್ತರ ಕೊಡುವ ಮುಖ್ಯ ಲಾಜಿಕ್ ಫಿಕ್ಸ್
-        function sendMessage() {
+        async function sendMessage() {
             const text = userInput.value.trim();
             if (text !== "") {
                 if (welcomeSection.style.display !== 'none') {
@@ -203,11 +193,24 @@
                 appendMessage(text, 'user-message');
                 userInput.value = "";
 
-                // ತಕ್ಷಣವೇ ಉತ್ತರ ಕೊಡುವ ಸಿಸ್ಟಮ್
-                setTimeout(() => {
-                    const reply = generateMaxxReply(text);
-                    appendMessage(reply, 'ai-message');
-                }, 600);
+                const waitingDiv = appendMessage("Thinking...", 'ai-message');
+                
+                try {
+                    // 🚀 ಮುಕ್ತವಾಗಿ ಸಿಗುವ ಉಚಿತ AI ಮಾದರಿಯನ್ನು ಇಲ್ಲಿ ಕನೆಕ್ಟ್ ಮಾಡಲಾಗಿದೆ (No Key Required!)
+                    const response = await fetch("https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ 
+                            inputs: `<|system|>\n${CLAUDE_FABLE_SYSTEM_PROMPT}</s>\n<|user|>\n${text}</s>\n<|assistant|>\n`
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    let aiReply = data[0].generated_text.split("<|assistant|>\n")[1] || "System Active. Ready for next query.";
+                    waitingDiv.innerText = aiReply.trim();
+                } catch (error) {
+                    waitingDiv.innerText = "Maxx: ಸರ್ವರ್ ಸ್ವಲ್ಪ ಬ್ಯುಸಿಯಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.";
+                }
             }
         }
 
@@ -222,26 +225,15 @@
             div.innerText = text;
             chatHistory.appendChild(div);
             chatHistory.scrollTop = chatHistory.scrollHeight;
+            return div;
         }
 
-        // 🧠 ನಾಲೆಡ್ಜ್ ಬೇಸ್ ಆಧಾರಿತ ಲೋಕಲ್ ಉತ್ತರಗಳು
-        function generateMaxxReply(query) {
-            const q = query.toLowerCase();
-            if (q.includes("hello") || q.includes("hi") || q.includes("ಹಲೋ")) {
-                return "Greetings. I am Maxx, operating under Claude Fable 5 architecture. How can I assist you with your task today?";
-            }
-            if (q.includes("game") || q.includes("story") || q.includes("ಕಥೆ")) {
-                return "Narrative Engine Active. You stand in front of an ancient vault. A glowing terminal asks for a security key. What do you do?";
-            }
-            return `System Status: Active. Processed input "${query}" under Fable core directives. Let me know how to proceed.`;
-        }
-
-        // 🎤 ವಾಯ್ಸ್ ಟು ಟೆಕ್ಸ್ಟ್ (ಮೈಕ್ ವರ್ಕಿಂಗ್ ಲಾಜಿಕ್)
+        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.continuous = false;
-            recognition.lang = 'en-US'; // ಕನ್ನಡ ಬೇಕಿದ್ದರೆ 'kn-IN' ಎಂದು ಬದಲಾಯಿಸಬಹುದು
+            recognition.lang = 'en-US';
 
             voiceBtn.addEventListener('click', () => {
                 if (voiceBtn.classList.contains('mic-active')) {
@@ -257,21 +249,15 @@
             };
 
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                userInput.value = transcript;
+                userInput.value = event.results[0][0].transcript;
             };
 
             recognition.onend = () => {
                 voiceBtn.classList.remove('mic-active');
                 userInput.placeholder = "Reply to Maxx...";
             };
-
-            recognition.onerror = () => {
-                voiceBtn.classList.remove('mic-active');
-                userInput.placeholder = "Mic Error. Try again.";
-            };
         } else {
-            voiceBtn.style.display = 'none'; // ಬ್ರೌಸರ್ ಸಪೋರ್ಟ್ ಮಾಡದಿದ್ದರೆ ಹೈಡ್ ಆಗುತ್ತೆ
+            voiceBtn.style.display = 'none';
         }
     </script>
 </body>
