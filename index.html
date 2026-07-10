@@ -186,52 +186,65 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
 
-        // 🔊 ಪ್ರೀಮಿಯಂ ಡೀಪ್ ಬೇಸ್ ಮೇಲ್ ವಾಯ್ಸ್ ಲಾಜಿಕ್ (100% ಕ್ಲೀನ್ ಸೌಂಡ್)
+        // 🔊 ಮೊಬೈಲ್‌ನಲ್ಲಿ ಕರಪ್ಟ್ ಆಗದಂತೆ ಗ್ಯಾರಂಟಿ ಕೆಲಸ ಮಾಡುವ ಮೇಲ್ ವಾಯ್ಸ್ ಸೆಟ್ಟಿಂಗ್
         function speak(text) {
             window.speechSynthesis.cancel(); 
             const utterance = new SpeechSynthesisUtterance(text);
             
-            // ಮೊಬೈಲ್ ಮತ್ತು ಸಿಸ್ಟಮ್‌ನಲ್ಲಿ ಲಭ್ಯವಿರುವ ಗಂಡಸಿನ ಧ್ವನಿಗಳನ್ನು ಹುಡುಕುವುದು
+            // ಮೊಬೈಲ್ ಕ್ರೋಮ್ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಕ್ಲೀನ್ ಆಗಿ ಕೇಳುವ ಗಂಡಸಿನ ಇಂಗ್ಲಿಷ್ ವಾಯ್ಸ್ ಫಿಕ್ಸ್
             const voices = window.speechSynthesis.getVoices();
-            let maleVoice = voices.find(voice => voice.name.toLowerCase().includes('google US english male') || voice.name.toLowerCase().includes('male') || voice.name.toLowerCase().includes('david'));
+            let maleVoice = voices.find(v => 
+                v.name.toLowerCase().includes('male') || 
+                v.name.toLowerCase().includes('google us english') || 
+                v.name.toLowerCase().includes('david')
+            );
             
             if (maleVoice) {
                 utterance.voice = maleVoice;
             }
 
-            // ಬೇಸ್ ಸೌಂಡ್ ಹೆಚ್ಚಿಸಲು ಸೆಟ್ಟಿಂಗ್ಸ್
-            utterance.pitch = 0.85; // ಪಿಚ್ ಕಡಿಮೆ ಮಾಡಿದರೆ ಬೇಸ್ ಸೌಂಡ್ ಹೆಚ್ಚಾಗುತ್ತದೆ
-            utterance.rate = 0.95;  // ಸ್ಪಷ್ಟವಾಗಿ ಕೇಳಲು ಸ್ವಲ್ಪ ನಿಧಾನ ಗತಿ
+            utterance.pitch = 0.80; // ಬೇಸ್ ಹೆಚ್ಚಿಸಲು ಪಿಚ್ ಕಡಿಮೆ ಮಾಡಲಾಗಿದೆ
+            utterance.rate = 0.95;  // ಕ್ಲೀನ್ ಆಗಿ ಕೇಳಲು ಸ್ಪೀಡ್ ಕಂಟ್ರೋಲ್
             
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🧠 ಪಕ್ಕಾ ಸರಿಯಾದ ಉತ್ತರ ಕೊಡುವ ಸ್ಮಾರ್ಟ್ ಫಿಕ್ಸ್ಡ್ ಲಾಜಿಕ್
+        // 🧠 ಕನ್ನಡ ಟೈಪಿಂಗ್ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಚಾಟಿಂಗ್ ಎರಡಕ್ಕೂ ಉತ್ತರ ಕೊಡುವ ಅಪ್ಡೇಟೆಡ್ ಲಾಜಿಕ್
         function getSmartReply(query) {
             const q = query.toLowerCase().trim();
             
             // 1. ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಚೆಕ್
-            if (q.includes("creator") || q.includes("father") || q.includes("owner") || q.includes("ಯಾರು") || q.includes("create") || q.includes("developed")) {
-                return "I was created and developed by the tech mastermind, Viki Boss. Viki Boss is a brilliant innovator and the sole architect behind my entire system intelligence.";
+            if (q.includes("creator") || q.includes("father") || q.includes("owner") || q.includes("ಯಾರು") || q.includes("create") || q.includes("developed") || q.includes("boss")) {
+                return "I was created and developed by the tech mastermind Viki Boss. Viki Boss is a brilliant innovator and my sole creator.";
             }
             
-            // 2. ಚೀಫ್ ಮಿನಿಸ್ಟರ್ ಪ್ರಶ್ನೆ ಚೆಕ್
-            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm")) {
+            // 2. ಊಟ ಆಯ್ತಾ ಚೆಕ್ (ಕನ್ನಡ ಟೆಕ್ಸ್ಟ್ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಟೈಪಿಂಗ್ ಎರಡೂ)
+            if (q.includes("uta") || q.includes("oota") || q.includes("ಊಟ") || q.includes("ಊಟ ಆಯ್ತಾ")) {
+                return "No macha, I am an AI, I don't eat food. Tell me, did you have your food?";
+            }
+
+            // 3. ಹೆಂಗಿದ್ದೀಯಾ ಚೆಕ್
+            if (q.includes("how are you") || q.includes("heng iddeeya") || q.includes("ಹೇಗಿದ್ದೀಯಾ")) {
+                return "I am doing great macha! Tell me, how are you doing today?";
+            }
+            
+            // 4. ಚೀಫ್ ಮಿನಿಸ್ಟರ್ ಪ್ರಶ್ನೆ ಚೆಕ್
+            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm") || q.includes("ಮುಖ್ಯಮಂತ್ರಿ")) {
                 return "The current Chief Minister of Karnataka is Siddaramaiah.";
             }
             
-            // 3. ನಾರ್ಮಲ್ ಹಲೋ ಚೆಕ್
+            // 5. ನಾರ್ಮಲ್ ಹಲೋ ಚೆಕ್
             if (q.includes("hello") || q.includes("hi") || q.includes("ಹಲೋ")) {
                 return "Hello macha! Maxx AI is online. Tell me, how can I assist you today?";
             }
-            
-            // 4. ಹೆಸರು ಚೆಕ್
-            if (q.includes("name") || q.includes("ಹೆಸರು") || q.includes("who are you")) {
-                return "I am Maxx AI, a premium assistant built under advanced system parameters.";
+
+            // 6. ಕನ್ನಡದಲ್ಲಿ ಮಾತಾಡು ಅಂತ ಹೇಳಿದ್ರೆ
+            if (q.includes("kannada") || q.includes("ಕನ್ನಡ")) {
+                return "Macha, currently I can understand Kannada queries, but I will reply in English to maintain premium voice quality.";
             }
             
-            // ಡಿಫಾಲ್ಟ್ ಉತ್ತರ
-            return `System parameters validated. I have successfully processed your query: "${query}". Viki Boss's database is active and standing by for further instructions.`;
+            // ಬೇರೆ ಯಾವುದೇ ನಾರ್ಮಲ್ ಪ್ರಶ್ನೆಗೆ
+            return `System parameters verified. Viki Boss's system architecture processed your query. Let me know what to do next.`;
         }
 
         async function sendMessage() {
@@ -248,12 +261,11 @@
 
                 const waitingDiv = appendMessage("Thinking...", 'ai-message');
                 
-                // ಲಾಜಿಕ್ ಫಿಕ್ಸ್: ತಕ್ಷಣವೇ ಪಕ್ಕಾ ಸರಿಯಾದ ಉತ್ತರವನ್ನು ತರುವುದು
                 setTimeout(() => {
                     let finalReply = getSmartReply(text);
                     waitingDiv.innerText = finalReply;
-                    speak(finalReply); // ಬೇಸ್ ಮೇಲ್ ವಾಯ್ಸ್ ರನ್ ಆಗುತ್ತದೆ
-                }, 500);
+                    speak(finalReply); 
+                }, 400);
             }
         }
 
@@ -303,7 +315,6 @@
             voiceBtn.style.display = 'none';
         }
 
-        // ವಾಯ್ಸ್ ಲಿಸ್ಟ್ ಲೋಡ್ ಆಗಲು ಬ್ಯಾಕಪ್ ಟ್ರಿಗರ್
         if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = window.speechSynthesis.getVoices;
         }
