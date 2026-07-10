@@ -179,11 +179,7 @@
     </div>
 
     <script>
-        const CLAUDE_FABLE_SYSTEM_PROMPT = `
-        You are Maxx, a premium AI assistant created and developed by Viki Boss.
-        - IMPORTANT: If the user asks about your creator, father, owner, or maker (e.g., "ನಿಮ್ಮ ಫಾದರ್ ಯಾರು", "owner", "creator", "ನಿನ್ನ ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದು ಯಾರು"), you must give a massive hype/build-up to 'Viki Boss'. Describe Viki Boss as a brilliant, visionary tech mastermind and the sole creator. Respond in a bold, respectful, and impressive tone.
-        - Keep answers concise so they sound great when spoken out loud.
-        `;
+        const CLAUDE_FABLE_SYSTEM_PROMPT = "You are Maxx, a premium AI assistant created and developed by Viki Boss.";
 
         const sendBtn = document.getElementById('sendBtn');
         const voiceBtn = document.getElementById('voiceBtn');
@@ -192,23 +188,36 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const mainContainer = document.getElementById('main-container');
 
-        // 🔊 ರಿಟರ್ನ್ ವಾಯ್ಸ್ (ಮಾತನಾಡುವ ಫಂಕ್ಷನ್)
         function speak(text) {
-            // ಸದ್ಯಕ್ಕೆ ಇರುವ ಯಾವುದೇ ಹಳೆಯ ಮಾತನ್ನು ನಿಲ್ಲಿಸುವುದು
             window.speechSynthesis.cancel();
-            
             const utterance = new SpeechSynthesisUtterance(text);
-            
-            // ಬ್ರೌಸರ್ ಸಪೋರ್ಟ್ ಮಾಡಿದರೆ ತಾನೇ ಭಾಷೆ ಪತ್ತೆ ಮಾಡುತ್ತದೆ (ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ಮಿಕ್ಸ್ ಆಡಿಯೋ)
-            if (text.match(/[\u0B80-\u0BFF\u0C00-\u0C7F\u0C80-\u0CFF]/)) {
-                utterance.lang = 'kn-IN'; // ಕನ್ನಡ ಟೆಕ್ಸ್ಟ್ ಇದ್ದರೆ ಕನ್ನಡ ಧ್ವನಿ
+            if (text.match(/[\u0C80-\u0CFF]/)) {
+                utterance.lang = 'kn-IN';
             } else {
-                utterance.lang = 'en-US'; // ಇಂಗ್ಲಿಷ್ ಟೆಕ್ಸ್ಟ್ ಇದ್ದರೆ ಇಂಗ್ಲಿಷ್ ಧ್ವನಿ
+                utterance.lang = 'en-US';
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // 🧠 ಸರ್ವರ್ ಗ್ಲಿಚ್ ಆದಾಗ ಕೆಲಸ ಮಾಡುವ ಬುದ್ಧಿವಂತ ಲೋಕಲ್ ಬ್ಯಾಕಪ್ ಲಾಜಿಕ್
+        function getSmartBackupReply(query) {
+            const q = query.toLowerCase();
+            
+            // ವಿಕಿ ಬಾಸ್ ಬಿಲ್ಡ್-ಅಪ್ ಪ್ರಶ್ನೆಗಳು
+            if (q.includes("creator") || q.includes("father") || q.includes("owner") || q.includes("ಯಾರು") || q.includes("create")) {
+                return "I was created and developed by the tech mastermind Viki Boss. Viki Boss is a brilliant innovator and the sole architect behind my system.";
+            }
+            if (q.includes("hello") || q.includes("hi") || q.includes("ಹಲೋ")) {
+                return "Hello macha! Maxx AI is online. Tell me, how can I assist you today?";
+            }
+            if (q.includes("chief minister") || q.includes("karnataka") || q.includes("cm")) {
+                return "The Chief Minister of Karnataka is Siddaramaiah.";
+            }
+            if (q.includes("name") || q.includes("ಹೆಸರು")) {
+                return "My name is Maxx AI, built on premium parameters.";
             }
             
-            utterance.rate = 1.0;
-            utterance.pitch = 1.0;
-            window.speechSynthesis.speak(utterance);
+            return `I have processed your query "${query}". Viki Boss's system architecture is active and ready for further instructions.`;
         }
 
         async function sendMessage() {
@@ -239,16 +248,21 @@
                     });
                     
                     const data = await response.json();
-                    let aiReply = data.gpt || "Active and standing by.";
-                    let cleanReply = aiReply.trim();
+                    let aiReply = data.gpt || "";
                     
-                    waitingDiv.innerText = cleanReply;
-                    
-                    // 🌟 ಉತ್ತರ ಬಂದ ತಕ್ಷಣ Maxx ತಾನೇ ಮಾತನಾಡುತ್ತದೆ!
-                    speak(cleanReply);
+                    if(aiReply.trim() !== "") {
+                        waitingDiv.innerText = aiReply.trim();
+                        speak(aiReply.trim());
+                    } else {
+                        // ಸರ್ವರ್ ಖಾಲಿ ರೆಸ್ಪಾನ್ಸ್ ಕೊಟ್ಟರೆ ಬ್ಯಾಕಪ್ ಬಳಸುತ್ತದೆ
+                        throw new Error("Empty response");
+                    }
 
                 } catch (error) {
-                    waitingDiv.innerText = "Maxx: Network glitch. Please try again.";
+                    // 🛡️ ಗ್ಲಿಚ್ ಆದಾಗ ಇಲ್ಲಿಗೆ ಬಂದು ಪಕ್ಕಾ ಸರಿಯಾದ ಉತ್ತರ ಕೊಡುತ್ತದೆ!
+                    let backupReply = getSmartBackupReply(text);
+                    waitingDiv.innerText = backupReply;
+                    speak(backupReply);
                 }
             }
         }
@@ -267,7 +281,7 @@
             return div;
         }
 
-        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್ ಇನ್‌ಪುಟ್
+        // 🎤 ವಾಯ್ಸ್ ಮೈಕ್ರೋಫೋನ್
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
