@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether AI - Premium Assistant</title>
+    <title>Maxx AI - Premium Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -21,7 +21,7 @@
             overflow: hidden;
         }
 
-        /* ಸೈಡ್‌ಬಾರ್ */
+        /* ಡೆಸ್ಕ್‌ಟಾಪ್ ಸೈಡ್‌ಬಾರ್ */
         .sidebar {
             width: 260px;
             background-color: #16161a;
@@ -32,7 +32,10 @@
             justify-content: space-between;
         }
 
-        /* ನಿಮ್ಮ ಕಸ್ಟಮ್ ಲೋಗೋ ಸ್ಟೈಲ್ */
+        @media (max-width: 768px) {
+            .sidebar { display: none; } 
+        }
+
         .logo-section {
             display: flex;
             align-items: center;
@@ -45,12 +48,12 @@
         .custom-logo {
             width: 40px;
             height: 40px;
-            border-radius: 50%; /* ದುಂಡಗಿನ ಲೋಗೋ */
+            border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #d4af37; /* ಗೋಲ್ಡನ್ ಬಾರ್ಡರ್ */
+            border: 2px solid #d4af37;
         }
 
-        /* ಮುಖ್ಯ ಚಾಟ್ ಏರಿಯಾ */
+        /* ಮುಖ್ಯ ಚಾಟ್ ಸ್ಕ್ರೀನ್ */
         .main-chat {
             flex: 1;
             display: flex;
@@ -59,24 +62,43 @@
             position: relative;
         }
 
-        /* ಚಾಟ್ ಹಿಸ್ಟರಿ ಬಾಕ್ಸ್ */
+        /* ಮೊಬೈಲ್ ಟಾಪ್ ಹೆಡರ್ */
+        .mobile-header {
+            display: none;
+            padding: 15px;
+            background-color: #16161a;
+            border-bottom: 1px solid #232329;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; }
+        }
+
+        /* ಚಾಟ್ ಕಂಟೈನರ್ */
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 40px 15% 120px 15%; 
+            padding: 30px 15% 120px 15%; 
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
-        /* ಮೆಸೇಜ್ ಬಾಕ್ಸ್‌ಗಳು */
+        @media (max-width: 1024px) {
+            .chat-container { padding: 20px 5% 120px 5%; }
+        }
+
+        /* ಚಾಟ್ ಮೆಸೇಜ್ ಬಾಕ್ಸ್ */
         .message {
             display: flex;
-            gap: 16px;
-            padding: 20px;
-            border-radius: 12px;
+            gap: 14px;
+            padding: 15px 20px;
+            border-radius: 16px;
             max-width: 85%;
-            line-height: 1.6;
+            line-height: 1.5;
+            word-break: break-word;
         }
 
         .user-message {
@@ -90,30 +112,35 @@
             align-self: flex-start;
         }
 
-        /* AI ಪ್ರೊಫೈಲ್ ಚಿತ್ರದ ಸ್ಟೈಲ್ */
+        /* ಪ್ರೊಫೈಲ್ ಅವತಾರ್ */
         .ai-avatar {
             width: 35px;
             height: 35px;
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid #d4af37;
+            flex-shrink: 0;
         }
 
-        /* ಇನ್‌ಪುಟ್ ಕಂಟೈನರ್ (ಟೈಪಿಂಗ್ ಮತ್ತು ವಾಯ್ಸ್ ಬಾಕ್ಸ್) */
+        /* ಟೈಪಿಂಗ್ ಮತ್ತು ವಾಯ್ಸ್ ಬಾರ್ */
         .input-area {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 70%;
             background-color: #16161a;
             border: 1px solid #2d2d38;
             border-radius: 30px;
-            padding: 10px 20px;
+            padding: 5px 15px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .input-area { width: 90%; bottom: 15px; }
         }
 
         .input-area input {
@@ -123,7 +150,7 @@
             outline: none;
             color: #f5f5f7;
             font-size: 16px;
-            padding: 10px 0;
+            padding: 12px 5px;
         }
 
         .icon-btn {
@@ -132,51 +159,46 @@
             color: #a1a1aa;
             font-size: 18px;
             cursor: pointer;
-            transition: color 0.2s;
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .icon-btn:hover {
-            color: #d4af37;
-            background-color: #232329;
-        }
-
-        .send-btn {
-            color: #d4af37;
-        }
+        .send-btn { color: #d4af37; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
         <div class="logo-section">
-            <img src="logo.jpg" alt="Aether Logo" class="custom-logo">
-            <span>Aether</span>
+            <img src="https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg" alt="Maxx" class="custom-logo">
+            <span>Maxx</span>
         </div>
-        <div style="color: #666; font-size: 12px;">© 2026 Aether AI</div>
+        <div style="color: #666; font-size: 12px;">© 2026 Maxx AI</div>
     </div>
 
     <div class="main-chat">
         
+        <div class="mobile-header">
+            <img src="https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg" alt="Maxx" class="custom-logo" style="width:35px; height:35px;">
+            <span style="font-weight: 600; color: #d4af37;">Maxx AI</span>
+        </div>
+        
         <div class="chat-container" id="chatContainer">
             <div class="message ai-message">
-                <img src="logo.jpg" alt="AI Avatar" class="ai-avatar">
-                <div>ಹಲೋ ವಿಕ್ಕಿ, ನಾನು ನಿಮ್ಮ ನಾಲೆಡ್ಜ್ ಕ್ಲೌಡ್ ಆಧಾರಿತ **Aether AI**. ಇಂದು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?</div>
+                <img src="https://i.pinimg.com/736x/f5/61/de/f561de0bc706ec6fae8df991a0298a09.jpg" alt="Maxx" class="ai-avatar">
+                <div>ಹಲೋ ವಿಕ್ಕಿ, ನಾನು ನಿಮ್ಮ ಹೊಸ ಪ್ರೀಮಿಯಂ ಅಸಿಸ್ಟೆಂಟ್ **Maxx**. ಇಂದು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?</div>
             </div>
         </div>
 
         <div class="input-area">
-            <button class="icon-btn" id="voiceBtn" title="ಮೈಕ್ ಬಳಸಿ ಮಾತನಾಡಿ">
+            <button class="icon-btn" id="voiceBtn">
                 <i class="fa-solid fa-microphone"></i>
             </button>
-            
-            <input type="text" id="userInput" placeholder="Ask Aether anything...">
-            
+            <input type="text" id="userInput" placeholder="Ask Maxx anything...">
             <button class="icon-btn send-btn" id="sendBtn">
                 <i class="fa-solid fa-paper-plane"></i>
             </button>
@@ -190,7 +212,6 @@
 
         sendBtn.addEventListener('click', () => {
             if(userInput.value.trim() !== "") {
-                // ಯೂಸರ್ ಮೆಸೇಜ್ ಅಳವಡಿಕೆ
                 const userDiv = document.createElement('div');
                 userDiv.className = 'message user-message';
                 userDiv.innerText = userInput.value;
@@ -198,8 +219,6 @@
                 
                 userInput.value = "";
                 chatContainer.scrollTop = chatContainer.scrollHeight;
-                
-                // ನಿಮ್ಮ ನಾಲೆಡ್ಜ್ ಕ್ಲೌಡ್ ಪ್ರಾಂಪ್ಟ್ ಮತ್ತು API ಲಾಜಿಕ್ ಅನ್ನು ಇಲ್ಲಿ ಸೇರಿಸಬಹುದು
             }
         });
     </script>
