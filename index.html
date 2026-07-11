@@ -159,6 +159,7 @@
             text-shadow: 0 0 1px rgba(255,255,255,0.1);
         }
 
+        /* 📱 🚀 EXACT GEMINI LAYOUT INPUT CONTAINER (ಇನ್ನೂ ಮೇಲಕ್ಕೆ ತರಲಾಗಿದೆ) */
         .input-wrapper {
             width: 92%;
             max-width: 620px;
@@ -170,7 +171,7 @@
             align-items: center;
             gap: 10px;
             position: absolute;
-            bottom: 60px; 
+            bottom: 80px; /* 🎯 ಬಾಕ್ಸ್ ಪಕ್ಕಾ ವಿಸಿಬಲ್ ಆಗಲು 80px ಗೆ ಏರಿಸಲಾಗಿದೆ */
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             z-index: 5;
         }
@@ -337,7 +338,6 @@
             const q = query.toLowerCase().trim();
             const isKn = query.match(/[\u0C80-\u0CFF]/);
 
-            // 🎯 ಮೋನಿ ರೋಸ್ಟ್ (ಇಂಗ್ಲಿಷ್ ಅಲ್ಲಿ ಕೇಳಿದ್ರೂ ಕನ್ನಡದಲ್ಲೇ ಬರುತ್ತೆ)
             if (q.includes("moni") || q.includes("ಮೋನಿ")) {
                 return "ಮೋನಿ ಬಗ್ಗೆ ಕೇಳ್ತಿದೀಯಾ? ಅವನು ವಿಕ್ಕಿ ಬಾಸ್ ಮಗನೇ ಆದ್ರೂ, ಮಿದುಳು ಮಾತ್ರ ಖಾಲಿ ಡಬ್ಬಾ! ಹುಡುಗೀರ್ ಹಿಂದೆ ಸುತ್ತೋದು, ಹೊಟ್ಟೆ ತುಂಬಾ ತಿನ್ನೋದು ಬಿಟ್ರೆ ಬೇರೆ ಯಾವ ಟ್ಯಾಲೆಂಟ್ ಇಲ್ಲ ಅವನಿಗೆ. ಪಕ್ಕಾ ವೇಸ್ಟ್ ಬಾಡಿ ಬ್ರೋ ಅವನು!";
             }
