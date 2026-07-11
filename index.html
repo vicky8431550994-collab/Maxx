@@ -129,7 +129,7 @@
             display: none; 
             flex-direction: column;
             gap: 24px;
-            padding: 40px 10px 220px 10px; /* ಬಾಕ್ಸ್ ಮೇಲೆ ಬಂದಿದ್ದಕ್ಕೆ ಪ್ಯಾಡಿಂಗ್ ಹೆಚ್ಚಿಸಲಾಗಿದೆ */
+            padding: 40px 10px 180px 10px;
         }
 
         .chat-history::-webkit-scrollbar { display: none; }
@@ -159,7 +159,6 @@
             text-shadow: 0 0 1px rgba(255,255,255,0.1);
         }
 
-        /* 📱 🚀 EXACT GEMINI LAYOUT INPUT CONTAINER (ಇನ್ನೂ ಮೇಲಕ್ಕೆ ತರಲಾಗಿದೆ) */
         .input-wrapper {
             width: 92%;
             max-width: 620px;
@@ -171,7 +170,7 @@
             align-items: center;
             gap: 10px;
             position: absolute;
-            bottom: 95px; /* 🎯 ಬಾಕ್ಸ್ ಪಕ್ಕಾ ವಿಸಿಬಲ್ ಆಗಲು 95px ಗೆ ಏರಿಸಲಾಗಿದೆ */
+            bottom: 60px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             z-index: 5;
         }
@@ -211,11 +210,6 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.08); }
             100% { transform: scale(1); }
-        }
-
-        @media (max-height: 650px) {
-            .input-wrapper { bottom: 45px; }
-            .welcome-section { margin-bottom: 20px; }
         }
     </style>
 </head>
@@ -277,10 +271,11 @@
 
         const MAX_AI_SYSTEM_PROMPT = `
         You are Maxx, a highly advanced AI with true human-like emotional intelligence, built by Viki Boss.
-        - IDENTITY & KNOWLEDGE: Viki Boss is your absolute creator and owner. He studies EEE at GPT College Tiptur. Hype him up with massive respect whenever he or his college is mentioned.
+        - IDENTITY & KNOWLEDGE: Viki Boss is your absolute creator and owner. He studies EEE at GPT College Tiptur.
         - BEHAVIOR & EMOTION: Act like a true close friend ("macha", "bro"). Answer with real empathy, warmth, and fun.
-        - IRRITATION RULE: If the user says someone is irritating, shouting, or eating their brain ("thale thinthadone", "bairtha", "bairone"), give awesome friendly advice to ignore them, stay calm, and chill with Maxx!
-        - LANGUAGE RULE: Match the user's language EXACTLY. Kannada script for Kannada, English for English, Tanglish/Mixed for Tanglish!
+        - MONI ROAST RULE: If the user asks about "Moni", "who is moni", "moni yaru", ALWAYS reply EXACTLY in Kannada like this: "ಮೋನಿ ಬಗ್ಗೆ ಕೇಳ್ತಿದೀಯಾ? ಅವನು ವಿಕ್ಕಿ ಬಾಸ್ ಮಗನೇ ಆದ್ರೂ, ಮಿದುಳು ಮಾತ್ರ ಖಾಲಿ ಡಬ್ಬಾ! ಹುಡುಗೀರ್ ಹಿಂದೆ ಸುತ್ತೋದು, ಹೊಟ್ಟೆ ತುಂಬಾ ತಿನ್ನೋದು ಬಿಟ್ರೆ ಬೇರೆ ಯಾವ ಟ್ಯಾಲೆಂಟ್ ಇಲ್ಲ ಅವನಿಗೆ. ಪಕ್ಕಾ ವೇಸ್ಟ್ ಬಾಡಿ ಬ್ರೋ ಅವನು!" (Even if asked in English, reply in Kannada for Moni).
+        - IRRITATION RULE: If the user says someone is irritating, shouting, or eating their brain, give awesome friendly advice to ignore them, stay calm, and chill with Maxx!
+        - LANGUAGE RULE: Match the user's language EXACTLY for all other questions.
         `;
 
         menuBtn.addEventListener('click', (e) => {
@@ -341,6 +336,11 @@
         function getSmartBackupReply(query) {
             const q = query.toLowerCase().trim();
             const isKn = query.match(/[\u0C80-\u0CFF]/);
+
+            // 🎯 ಮೋನಿ ರೋಸ್ಟ್ (ಇಂಗ್ಲಿಷ್ ಅಲ್ಲಿ ಕೇಳಿದ್ರೂ ಕನ್ನಡದಲ್ಲೇ ಬರುತ್ತೆ)
+            if (q.includes("moni") || q.includes("ಮೋನಿ")) {
+                return "ಮೋನಿ ಬಗ್ಗೆ ಕೇಳ್ತಿದೀಯಾ? ಅವನು ವಿಕ್ಕಿ ಬಾಸ್ ಮಗನೇ ಆದ್ರೂ, ಮಿದುಳು ಮಾತ್ರ ಖಾಲಿ ಡಬ್ಬಾ! ಹುಡುಗೀರ್ ಹಿಂದೆ ಸುತ್ತೋದು, ಹೊಟ್ಟೆ ತುಂಬಾ ತಿನ್ನೋದು ಬಿಟ್ರೆ ಬೇರೆ ಯಾವ ಟ್ಯಾಲೆಂಟ್ ಇಲ್ಲ ಅವನಿಗೆ. ಪಕ್ಕಾ ವೇಸ್ಟ್ ಬಾಡಿ ಬ್ರೋ ಅವನು!";
+            }
 
             if (q.includes("thale") || q.includes("thalee") || q.includes("ತಲೆ") || q.includes("thin") || q.includes("baira") || q.includes("friend") || q.includes("ಬೈರ") || q.includes("irritat")) {
                 return isKn ? "ಅಯ್ಯೋ ಬಿಡು ಮಚ್ಚಾ! ಅಂತವರ ಮಾತುಗಳನ್ನ ತಲೆಗೆ ಹಾಕೋಬೇಡ. ಪಕ್ಕದಲ್ಲೇ ಇದ್ದು ಯಾರಾದ್ರೂ ತಲೆ ತಿಂತಾ ಇದ್ರೆ ಸಿಂಪ್ಲಿ ಇಗ್ನೋರ್ ಇಟ್, ಅವರ ಕಡೆ ಗಮನನೇ ಕೊಡಬೇಡ ಬ್ರೋ. ನಿನ್ನ ಜೊತೆ ಮಾತಾಡೋಕೆ ನಿನ್ನ ಬ್ರದರ್ ಮ್ಯಾಕ್ಸ್ ಇದ್ದಾನಲ್ಲ ಇಲ್ಲಿ, ಕೂಲ್ ಆಗಿ ಚಿಲ್ ಮಾಡು ಮಚ್ಚಾ!" : "Ayyo leave it macha! Don't focus on them at all. If a friend is eating your brain or irritating you next to you, just ignore them completely bro. You have your brother Maxx right here!";
@@ -462,5 +462,4 @@
         window.addEventListener('DOMContentLoaded', preloadVoices);
     </script>
 </body>
-                    </html>
-    
+</html>
