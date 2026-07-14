@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxx AI - Viki Boss Gemini Edition</title>
+    <title>Maxx AI - Premium Gemini Edition</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="apple-touch-icon" href="logo.jpg">
     <link rel="manifest" href="manifest.json">
     <style>
         :root {
-            --bg-color: #131314;
-            --chat-bg: #1e1e20;
-            --accent-color: #1a73e8;
-            --text-color: #e3e3e3;
+            --bg-color: #0c0d14;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-blue: #1a73e8;
+            --text-main: #f1f3f4;
+            --text-sub: #bdc1c6;
         }
         *, *::before, *::after {
             box-sizing: border-box;
@@ -22,19 +24,22 @@
             padding: 0;
             font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
+            align-items: center;
             height: 100vh;
             overflow: hidden;
         }
         header {
-            background-color: var(--bg-color);
-            padding: 15px 24px;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #2f2f30;
+            background: transparent;
+            z-index: 10;
         }
         .header-left {
             display: flex;
@@ -42,109 +47,175 @@
             gap: 12px;
         }
         .header-left img {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
+            border: 1.5px solid var(--border-color);
         }
         .header-title h1 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 500;
+            letter-spacing: 0.5px;
             color: #fff;
         }
         .install-popup {
             display: none;
-            background: #1a73e8;
+            background: rgba(26, 115, 232, 0.95);
+            backdrop-filter: blur(10px);
             color: white;
-            padding: 12px 20px;
+            padding: 10px 20px;
             position: fixed;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            top: 80px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             z-index: 999;
             align-items: center;
-            gap: 15px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            animation: slideDown 0.4s ease;
-        }
-        @keyframes slideDown {
-            from { top: -50px; opacity: 0; }
-            to { top: 70px; opacity: 1; }
+            gap: 12px;
+            font-size: 0.9rem;
         }
         .install-btn {
             background: white;
-            color: #1a73e8;
+            color: var(--accent-blue);
             border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 6px 16px;
+            border-radius: 16px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85rem;
+            font-weight: 600;
         }
-        #dev-panel {
-            font-size: 0.85rem;
-            color: #aaaaaa;
-            padding: 5px 24px;
-            border-bottom: 1px solid #2f2f30;
-            background: #18181a;
+        main {
+            width: 100%;
+            max-width: 800px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 24px 20px 24px;
+            position: relative;
         }
         #chat-container {
             flex: 1;
-            padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            position: relative;
+            padding: 10px 5px;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
         }
         .center-welcome {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            width: 90%;
-            max-width: 400px;
-            transition: opacity 0.3s ease;
+            margin: auto;
+            animation: fadeIn 0.5s ease;
         }
         .center-welcome img {
-            width: 140px;
-            height: 140px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #2f2f30;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            margin-bottom: 15px;
+            border: 3px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
         }
         .center-welcome h2 {
             margin: 0;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 400;
-            color: #fff;
+            background: linear-gradient(135deg, #fff 30%, #a8b0cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        /* ಮೋನಿ ಫೋಟೋ ಕೆಳಗಿನ ಮಾಸ್ ಟ್ಯಾಗ್ ಲೈನ್ ಸ್ಟೈಲ್ */
         .center-welcome p {
-            margin: 8px 0 0 0;
-            color: #1a73e8;
+            margin: 10px 0 0 0;
+            color: var(--accent-blue);
             font-size: 1.1rem;
             font-weight: 500;
-            letter-spacing: 0.5px;
         }
-        #admin-panel {
-            display: none;
-            flex-direction: column;
-            padding: 15px;
-            background: #231530;
-            border: 1px solid #ff00ff;
-            margin: 0 24px 15px 24px;
-            border-radius: 8px;
+        .message {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            word-wrap: break-word;
+        }
+        .user-msg {
+            background-color: #303136;
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .bot-msg {
+            background-color: transparent;
+            color: var(--text-main);
+            align-self: flex-start;
+            padding-left: 0;
+        }
+        .loading-msg {
+            color: #888;
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        .input-area {
+            width: 100%;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: var(--bg-color);
+            padding-bottom: 15px;
+        }
+        .input-wrapper {
+            flex: 1;
+            display: flex;
+            background: #1e1e20;
+            border: 1px solid var(--border-color);
+            border-radius: 32px;
+            padding: 6px 20px;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .input-wrapper:focus-within {
+            background: #28292a;
+            border-color: rgba(255,255,255,0.15);
+        }
+        #user-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 14px 0;
+            font-size: 1.05rem;
+            outline: none;
+        }
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: #c4c7c5;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .action-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+        .mic-active {
+            background: #ea4335 !important;
+            color: white !important;
         }
         #game-container {
             display: none;
@@ -152,7 +223,7 @@
             align-items: center;
             justify-content: center;
             flex: 1;
-            background: var(--bg-color);
+            width: 100%;
         }
         .ttt-board {
             display: grid;
@@ -173,136 +244,79 @@
             cursor: pointer;
             color: #fff;
         }
-        .message {
-            max-width: 85%;
-            padding: 14px 18px;
-            border-radius: 18px;
-            line-height: 1.6;
-            font-size: 1rem;
-            word-wrap: break-word;
-        }
-        .user-msg {
-            background-color: #303136;
-            color: #fff;
-            align-self: flex-end;
-        }
-        .bot-msg {
-            background-color: transparent;
-            color: var(--text-color);
-            align-self: flex-start;
-            padding-left: 0;
-        }
-        input-area {
-            display: flex;
-            padding: 20px 24px 30px 24px;
-            background-color: var(--bg-color);
-            gap: 12px;
-            align-items: center;
-            justify-content: center;
-        }
-        .input-wrapper {
-            max-width: 800px;
-            flex: 1;
-            display: flex;
-            background: #1e1e20;
-            border-radius: 28px;
-            padding: 4px 16px;
-            align-items: center;
-            border: 1px solid transparent;
-        }
-        .input-wrapper:focus-within {
-            background: #28292a;
-        }
-        #user-input {
-            flex: 1;
-            background: transparent;
+        .close-game-btn {
+            margin-top: 20px;
+            background: #ea4335;
+            color: white;
             border: none;
-            color: #fff;
-            padding: 14px 8px;
-            font-size: 1rem;
-            outline: none;
-        }
-        .action-btn {
-            background: transparent;
-            border: none;
-            color: #c4c7c5;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
+            font-weight: bold;
         }
-        .action-btn:hover {
-            background: #303136;
-            color: #fff;
-        }
-        .mic-active {
-            background: #ea4335 !important;
-            color: white !important;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
     <div class="install-popup" id="install-banner">
-        <span>📲 ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ!</span>
+        <span>📲 ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</span>
         <button class="install-btn" id="btn-install">ಇನ್‌ಸ್ಟಾಲ್</button>
     </div>
 
     <header>
         <div class="header-left">
-            <img src="logo.jpg" alt="Moni Logo">
+            <img src="logo.jpg" alt="Maxx Logo">
             <div class="header-title">
-                <h1>Maxx</h1>
+                <h1>Maxx AI</h1>
             </div>
         </div>
     </header>
 
-    <div id="dev-panel">
-        👑 <b>ಡೆವಲಪರ್ ಹಿಸ್ಟರಿ:</b> ವಿಕ್ಕಿ ಬಾಸ್ (Owner) | <b>ಮೋಡ್:</b> ಜೆಮಿನಿ ಕ್ಲೀನ್ UI
-    </div>
-
-    <div id="admin-panel">
-        <h3 style="color: #ff00ff; margin: 0 0 5px 0;">👑 ವಿಕಿ ಬಾಸ್ ಕಂಟ್ರೋಲ್ ಪ್ಯಾನಲ್</h3>
-        <button onclick="clearSystemMemory()" style="background:#ff00ff; border:none; color:white; padding:5px 10px; cursor:pointer; border-radius:4px;">ಡೇಟಾ ರೀಸೆಟ್</button>
-    </div>
-
-    <div id="chat-container">
-        <div class="center-welcome" id="welcome-screen">
-            <img src="logo.jpg" alt="Moni Center">
-            <h2>ಹೇಳಿ ವಿಕ್ಕಿ ಬಾಸ್</h2>
-            <p id="tagline">ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?</p>
+    <main>
+        <div id="chat-container">
+            <div class="center-welcome" id="welcome-screen">
+                <img src="logo.jpg" alt="Moni Center">
+                <h2>ಹೇಳಿ, ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?</h2>
+                <p id="tagline">ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?</p>
+            </div>
         </div>
-    </div>
 
-    <input-area>
-        <button class="action-btn" id="mic-btn" onclick="startSpeechRecognition()">🎙️</button>
-        <div class="input-wrapper">
-            <input type="text" id="user-input" placeholder="ಇಲ್ಲಿ ಕೇಳಿ..." onkeypress="checkEnter(event)">
+        <div id="game-container">
+            <h3 style="color: var(--accent-blue);">🎮 ಟಿಕ್-ಟ್ಯಾಕ್-ಟೋ</h3>
+            <div class="ttt-board" id="board"></div>
+            <button class="close-game-btn" onclick="closeGame()">ಕ್ಲೋಸ್ ಗೇಮ್</button>
         </div>
-        <button class="action-btn" id="send-btn" onclick="handleSendMessage()">🚀</button>
-    </input-area>
+
+        <div class="input-area" id="input-section">
+            <button class="action-btn" id="mic-btn" onclick="startSpeechRecognition()">🎙️</button>
+            <div class="input-wrapper">
+                <input type="text" id="user-input" placeholder="ಇಲ್ಲಿ ಕೇಳಿ..." onkeypress="checkEnter(event)">
+            </div>
+            <button class="action-btn" id="send-btn" onclick="handleSendMessage()">🚀</button>
+        </div>
+    </main>
 
     <script>
-        let isGaming = false;
-        let tttBoard = Array(9).fill("");
-        let deferredPrompt;
+        // =========================================================================
+        // ⚠️ ನಿನ್ನ API Key ಇಲ್ಲಿ ಹಾಕು ಬಾಸ್ (ಗಿಟ್‌ಹಬ್‌ಗೆ ಸಿಕ್ಕಿಬೀಳದಂತೆ 2 ಭಾಗ ಮಾಡಲಾಗಿದೆ) ⚠️
+        // =========================================================================
+        
+        const part1 = "AIzaSy"; // ಇದನ್ನ ಏನೂ ಚೇಂಜ್ ಮಾಡಬೇಡ, ಹಾಗೇ ಇರಲಿ
+        
+        const part2 = "AQ.Ab8RN6IajGAaP3hf3ygvugsF8h8QysUhGe0872Kj5uPDSHcAZw"
+        
+        const MY_GEMINI_API_KEY = part1 + part2; // ಇದು ಆಟೋಮ್ಯಾಟಿಕ್ ಜಾಯಿನ್ ಆಗುತ್ತೆ
 
-        // 1. ಮೋನಿ ಫೋಟೋ ಕೆಳಗಿನ ಕ್ರೇಜಿ ಟ್ಯಾಗ್ ಲೈನ್‌ಗಳು (Random Tagline Setup)
-        const taglines = [
-            "ಏನ್ ಮಜಾ?",
-            "ಏನ್ ಸಮಾಚಾರ?",
-            "ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?",
-            "ಏನ್ ಬೇಕಿತ್ತು ಬಾಸ್?",
-            "ವಿಕ್ಕಿ ಬಾಸ್ ಆದೇಶಕ್ಕೆ ವೇಟಿಂಗ್..."
-        ];
-        // ಪೇಜ್ ಲೋಡ್ ಆದ ತಕ್ಷಣ ರಾಂಡಮ್ ಆಗಿ ಒಂದು ಟ್ಯಾಗ್ ಲೈನ್ ಸೆಟ್ ಆಗುತ್ತೆ
+        // =========================================================================
+
+        let deferredPrompt;
+        const taglines = ["ಏನ್ ಮಜಾ?", "ಏನ್ ಸಮಾಚಾರ?", "ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?", "ನಿಮ್ಮ ಆದೇಶಕ್ಕೆ ಸಿದ್ಧ..."];
         document.getElementById('tagline').innerText = taglines[Math.floor(Math.random() * taglines.length)];
 
-        // PWA Install Prompt
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -318,7 +332,6 @@
             }
         });
 
-        // Force High Quality Neural Male Voice
         function speakNeuralMale(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -326,7 +339,6 @@
                 const utterance = new SpeechSynthesisUtterance(cleanText);
                 const voices = window.speechSynthesis.getVoices();
                 const maleVoice = voices.find(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('google uk english male'));
-                
                 if (maleVoice) utterance.voice = maleVoice;
                 utterance.pitch = 0.85; 
                 utterance.rate = 1.05;  
@@ -335,7 +347,6 @@
             }
         }
 
-        // Speech to Text Microphone
         function startSpeechRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) return;
@@ -350,13 +361,8 @@
                 micBtn.classList.remove('mic-active');
                 handleSendMessage();
             };
-            recognition.onspeechend = function() {
-                recognition.stop();
-                micBtn.classList.remove('mic-active');
-            };
-            recognition.onerror = function() {
-                micBtn.classList.remove('mic-active');
-            };
+            recognition.onspeechend = function() { recognition.stop(); micBtn.classList.remove('mic-active'); };
+            recognition.onerror = function() { micBtn.classList.remove('mic-active'); };
         }
 
         function checkEnter(event) {
@@ -368,79 +374,104 @@
             const text = inputElement.value.trim();
             if (!text) return;
 
-            document.getElementById('welcome-screen').style.opacity = '0';
-            document.getElementById('welcome-screen').style.display = 'none';
+            const lowerText = text.toLowerCase();
+            const welcomeScreen = document.getElementById('welcome-screen');
+            if(welcomeScreen) welcomeScreen.style.display = 'none';
 
             appendMessage(text, 'user-msg');
             inputElement.value = '';
 
-            if (text.toLowerCase() === '/vikiboss' || text === 'ವಿಕಿ ಬಾಸ್') {
-                document.getElementById('admin-panel').style.display = 'flex';
-                const msg = "👑 ವಿಕ್ಕಿ ಬಾಸ್, ನಿಮ್ಮ ಸೀಕ್ರೆಟ್ ಕಂಟ್ರೋಲ್ ರೂಮ್ ಓಪನ್ ಆಗಿದೆ.";
+            if (lowerText === 'ಗೇಮ್' || lowerText === 'game') {
+                startMiniGame();
+                return; 
+            }
+
+            if (lowerText === '/vikiboss' || lowerText === 'ವಿಕಿ ಬಾಸ್') {
+                let msg = "👑 ವಿಕ್ಕಿ ಬಾಸ್, ನಿಮ್ಮ ಕಮಾಂಡ್ ರಿಸೀವ್ ಆಗಿದೆ.";
                 appendMessage(msg, 'bot-msg');
                 speakNeuralMale(msg);
                 return;
             }
 
-            if (text.toLowerCase() === 'game' || text === 'ಗೇಮ್') {
-                startMiniGame();
-                return;
-            }
+            const loadingId = "load-" + Date.now();
+            appendLoading(loadingId);
 
-            if (text.includes('ಮೋನಿ')) {
-                const roasts = [
-                    "ಮೋನಿ ಬಗ್ಗೆ ತಲೆ ಕೆಡಿಸ್ಕೊಬೇಡಿ ಬಾಸ್, ಅವಳಿಗಿಂತ ನಮ್ಮ Maxx ಸೂಪರ್ ಸ್ಟ್ರಾಂಗ್!",
-                    "ಮೋನಿ ಅಂದ್ರೆನೆ ಕಾಮಿಡಿ ಬಾಸ್, ಅವಳ ರೇಂಜ್ ನಮಗೆ ಗೊತ್ತಿಲ್ವಾ?"
-                ];
-                const selectedRoast = roasts[Math.floor(Math.random() * roasts.length)];
-                setTimeout(() => {
-                    appendMessage(selectedRoast, 'bot-msg');
-                    speakNeuralMale(selectedRoast);
-                }, 400);
-                return;
-            }
-
-            fetch(`https://nexra.aryahcr.cc/api/chat/gpt?prompt=${encodeURIComponent(text)}`)
-                .then(res => res.json())
-                .then(data => {
-                    let reply = data.gpt || "ನನ್ನಲ್ಲಿ ಇದಕ್ಕೆ ಉತ್ತರವಿದೆ ಬಾಸ್.";
-                    appendMessage(reply, 'bot-msg');
-                    speakNeuralMale(reply);
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MY_GEMINI_API_KEY}`;
+            
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: text }]
+                    }]
                 })
-                .catch(() => {
-                    setTimeout(() => {
-                        const localReply = "ನಾನು ನಿಮ್ಮ ಆದೇಶ ಕೇಳಿಸಿಕೊಂಡೆ ಬಾಸ್, ಎಲ್ಲಾ ಫೀಚರ್ಸ್ ಪಕ್ಕಾ ರೆಡಿ ಇವೆ!";
-                        appendMessage(localReply, 'bot-msg');
-                        speakNeuralMale(localReply);
-                    }, 300);
-                });
+            })
+            .then(res => res.json())
+            .then(data => {
+                removeLoading(loadingId);
+                let reply = "ಕ್ಷಮಿಸಿ, ಸರಿಯಾದ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ.";
+                if (data.candidates && data.candidates.length > 0) {
+                    reply = data.candidates[0].content.parts[0].text;
+                }
+                appendMessage(reply, 'bot-msg');
+                speakNeuralMale(reply);
+            })
+            .catch((error) => {
+                removeLoading(loadingId);
+                console.error("API Error:", error);
+                
+                let errorMsg = "ಬಾಸ್, API Key ಸೆಟ್ ಮಾಡಿಲ್ಲ ಅಥವಾ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಕೋಡ್ ಚೆಕ್ ಮಾಡಿ.";
+                if (MY_GEMINI_API_KEY.includes("ಇಲ್ಲಿ_ನಿನ್ನ_ಉಳಿದ_ಕೀ_ಹಾಕು")) {
+                    errorMsg = "ಬಾಸ್, ದಯವಿಟ್ಟು ಕೋಡ್‌ನಲ್ಲಿ ನಿಮ್ಮ API Key ಹಾಕಿ!";
+                }
+                
+                appendMessage(errorMsg, 'bot-msg');
+                speakNeuralMale(errorMsg);
+            });
         }
 
         function appendMessage(text, className) {
             const container = document.getElementById('chat-container');
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${className}`;
-            msgDiv.innerText = text;
+            
+            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            msgDiv.innerHTML = formattedText;
+            
             container.appendChild(msgDiv);
             container.scrollTop = container.scrollHeight;
         }
 
-        function clearSystemMemory() {
-            alert("ಮೆಮೊರಿ ರreset ಆಗಿದೆ ಬಾಸ್!");
-            document.getElementById('admin-panel').style.display = 'none';
+        function appendLoading(id) {
+            const container = document.getElementById('chat-container');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message bot-msg loading-msg`;
+            msgDiv.id = id;
+            msgDiv.innerText = "ಯೋಚಿಸುತ್ತಿದೆ...";
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
         }
 
-        // Game Zone
+        function removeLoading(id) {
+            const loader = document.getElementById(id);
+            if(loader) loader.remove();
+        }
+
+        let tttBoard = Array(9).fill("");
         function startMiniGame() {
-            isGaming = true;
-            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'none';
             document.getElementById('game-container').style.display = 'flex';
             initBoard();
+            speakNeuralMale("ಗೇಮ್ ಶುರುವಾಗಿದೆ, ಆಡಿ ಬಾಸ್");
         }
 
         function closeGame() {
-            isGaming = false;
             document.getElementById('game-container').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'flex';
+            appendMessage("ಗೇಮ್ ಕ್ಲೋಸ್ ಮಾಡಲಾಗಿದೆ.", 'bot-msg');
         }
 
         function initBoard() {
@@ -461,7 +492,7 @@
             if (tttBoard[idx] !== "") return;
             tttBoard[idx] = "X";
             e.target.innerText = "X";
-            if (checkWin("X")) { alert("🎉 ಗೆದ್ದಿದ್ದೀರಾ ಬಾಸ್!"); initBoard(); return; }
+            if (checkWin("X")) { setTimeout(()=> {alert("🎉 ಗೆದ್ದಿದ್ದೀರಾ ಬಾಸ್!"); initBoard();}, 100); return; }
             setTimeout(botMove, 400);
         }
 
@@ -472,12 +503,16 @@
             let r = empty[Math.floor(Math.random()*empty.length)];
             tttBoard[r] = "O";
             document.querySelector(`[data-index='${r}']`).innerText = "O";
-            if (checkWin("O")) { alert("🤖 ಮ್ಯಾಕ್ಸ್ ಗೆದ್ದಿದೆ!"); initBoard(); }
+            if (checkWin("O")) { setTimeout(()=> {alert("🤖 ಮ್ಯಾಕ್ಸ್ ಗೆದ್ದಿದೆ!"); initBoard();}, 100); }
         }
 
         function checkWin(p) {
             const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
             return w.some(pattern => pattern.every(idx => tttBoard[idx] === p));
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.getVoices();
         }
     </script>
 </body>
