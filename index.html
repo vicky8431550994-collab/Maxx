@@ -2,444 +2,429 @@
 <html lang="kn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maxx AI</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#030712">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1118/1118914.png">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maxx AI - Viki Boss Special</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/3WfK4qf/shield.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/3WfK4qf/shield.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        :root {
+            --bg-color: #0d0d1a;
+            --chat-bg: #131326;
+            --neon-color: #00ffff;
+            --text-color: #ffffff;
         }
-
         body {
-            background: radial-gradient(circle at 50% 100%, #0b1528 0%, #030712 80%);
-            color: #f3f4f6;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
         }
-
-        .main-container {
+        /* Matrix Rain Background (Feature 5) */
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        header {
+            background: linear-gradient(135deg, #1f1f3d, #0d0d1a);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--neon-color);
+            box-shadow: 0 0 15px var(--neon-color);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-left img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-color);
+            box-shadow: 0 0 10px var(--neon-color);
+        }
+        .header-title h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--neon-color);
+        }
+        .header-title p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #8888b3;
+        }
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--neon-color);
+            color: var(--neon-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #chat-container {
             flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: rgba(19, 19, 38, 0.85);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center; 
-            position: relative;
-            padding: 20px;
-            width: 100%;
+            gap: 15px;
         }
-
-        /* 👑 Premium Floating Navbar */
-        .top-nav {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            z-index: 10;
-        }
-
-        .menu-trigger-btn {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #e5e7eb;
-            padding: 12px 18px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .menu-trigger-btn:hover {
-            border-color: rgba(192, 132, 252, 0.4);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 55px;
-            right: 0;
-            background: rgba(10, 11, 18, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            width: 200px;
+        /* Game Screen Overlay (Feature 14) */
+        #game-container {
             display: none;
             flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            animation: fadeIn 0.2s ease-out;
-        }
-
-        .dropdown-item {
-            padding: 14px 18px;
-            color: #d1d5db;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
             align-items: center;
-            gap: 12px;
-            transition: background 0.2s;
+            justify-content: center;
+            flex: 1;
+            background: rgba(10, 10, 26, 0.95);
         }
-
-        .dropdown-item:hover { background: rgba(255, 255, 255, 0.05); color: #ffffff; }
-
-        /* 🪐 Luxury Welcome Area */
-        .welcome-section {
-            text-align: center;
-            margin-bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 26px;
-            animation: fadeIn 0.5s ease-out;
+        .ttt-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin-top: 20px;
         }
-
-        .avatar-container {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #0f172a, #020617);
+        .cell {
+            background: #1f1f3d;
+            border: 2px solid var(--neon-color);
+            font-size: 2.5rem;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid transparent;
-            background-image: linear-gradient(#0f172a, #020617), linear-gradient(135deg, #c084fc 0%, #6366f1 100%);
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.35);
+            cursor: pointer;
+            color: var(--neon-color);
         }
-
-        .avatar-container i {
-            font-size: 42px;
-            background: linear-gradient(135deg, #e9d5ff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .welcome-section h1 {
-            font-size: 34px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 30%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.7px;
-            text-shadow: 0 0 25px rgba(168, 85, 247, 0.2);
-        }
-
-        .chat-history {
-            width: 100%;
-            max-width: 680px;
-            flex: 1;
-            overflow-y: auto;
-            display: none; 
+        /* Boss Admin Panel Overlay (Feature 10) */
+        #admin-panel {
+            display: none;
             flex-direction: column;
-            gap: 28px;
-            padding: 40px 10px 200px 10px;
+            padding: 20px;
+            background: #1a0033;
+            border: 3px dashed #ff00ff;
+            margin: 15px;
+            border-radius: 10px;
         }
-
-        .chat-history::-webkit-scrollbar { display: none; }
-
         .message {
-            font-size: 17.5px;
-            line-height: 1.65;
-            max-width: 85%;
-            word-break: break-word;
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-wrap: break-word;
         }
-
-        .user-message {
-            background: rgba(31, 41, 55, 0.6);
-            backdrop-filter: blur(10px);
-            color: #ffffff;
-            padding: 16px 22px;
-            border-radius: 24px 24px 4px 24px;
+        .user-msg {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
             align-self: flex-end;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border-bottom-right-radius: 2px;
         }
-
-        .ai-message {
-            color: #f3f4f6;
-            font-weight: 500;
+        .bot-msg {
+            background: #25254d;
+            color: #e0e0ff;
             align-self: flex-start;
-            white-space: pre-wrap;
-            text-shadow: 0 0 1px rgba(255,255,255,0.05);
+            border-bottom-left-radius: 2px;
+            border-left: 4px solid var(--neon-color);
         }
-
-        /* 💎 Ultra-Luxury Glassmorphism Input Field Box (Perfect 80px Floating Height) */
-        .input-wrapper {
-            width: 92%;
-            max-width: 640px;
-            background: rgba(17, 19, 28, 0.75);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 32px;
-            padding: 8px 16px;
+        /* Entry Input Section Fixed (ಮುಂಚಿನ ತೊಂದರೆಗಳು ಬಗೆಹರಿದಿವೆ) */
+        input-area {
             display: flex;
+            padding: 15px;
+            background-color: #0d0d1a;
+            gap: 10px;
+            border-top: 1px solid #25254d;
             align-items: center;
-            gap: 12px;
-            position: absolute;
-            bottom: 80px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
-            z-index: 5;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .input-wrapper:focus-within {
-            border-color: rgba(168, 85, 247, 0.4);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 20px rgba(99, 102, 241, 0.15);
-        }
-
-        .input-wrapper input {
+        .input-wrapper {
             flex: 1;
-            background: none;
-            border: none;
-            outline: none;
-            color: #ffffff;
-            font-size: 17px;
-            padding: 12px 4px;
+            display: flex;
+            background: #1c1c3a;
+            border-radius: 25px;
+            padding: 5px 15px;
+            border: 1px solid #3d3d7a;
+            align-items: center;
         }
-
-        .input-wrapper input::placeholder { color: #6b7280; }
-
-        .action-btn {
-            background: none;
+        .input-wrapper:focus-within {
+            border-color: var(--neon-color);
+            box-shadow: 0 0 10px var(--neon-color);
+        }
+        #user-input {
+            flex: 1;
+            background: transparent;
             border: none;
-            color: #9ca3af;
-            font-size: 20px;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
+            color: white;
+            padding: 10px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .action-btn {
+            background: linear-gradient(135deg, #00ffff, #008b8b);
+            border: none;
+            color: #0d0d1a;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--neon-color);
+            transition: 0.2s ease;
         }
-
-        .action-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.06); }
-        .send-btn { color: #c084fc; display: flex !important; } 
-        .mic-active { color: #ef4444 !important; background: rgba(239, 68, 68, 0.1) !important; animation: pulse 1.2s infinite; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.06); }
-            100% { transform: scale(1); }
+        .action-btn:active {
+            transform: scale(0.9);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        #mic-btn {
+            background: #25254d;
+            color: var(--neon-color);
+            border: 1px solid var(--neon-color);
         }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <button class="menu-trigger-btn" id="menuBtn">
-            <i class="fa-solid fa-layer-group"></i> Maxx Premium
-        </button>
-        <div class="dropdown-menu" id="dropdownMenu">
-            <div class="dropdown-item" id="toggleVoiceBtn"><i class="fa-solid fa-volume-high"></i> Voice: ON</div>
-            <div class="dropdown-item" id="viewHistoryBtn"><i class="fa-solid fa-history"></i> View History</div>
-            <div class="dropdown-item" onclick="alert('Mastermind & Owner: Viki Boss')"><i class="fa-solid fa-crown"></i> Core Architect</div>
-        </div>
-    </div>
+    <canvas id="canvas"></canvas>
 
-    <div class="main-container" id="mainContainer">
-        
-        <div class="welcome-section" id="welcomeSection">
-            <div class="avatar-container">
-                <i class="fa-solid fa-bolt"></i>
+    <header>
+        <div class="header-left">
+            <img src="https://i.ibb.co/3WfK4qf/shield.png" alt="Maxx Logo">
+            <div class="header-title">
+                <h1>MAXX AI</h1>
+                <p id="status-text">ಮೋಡ್: ಪ್ರೀಮಿಯಂ ಆನ್‌ಲೈನ್</p>
             </div>
-            <h1>ಏನ್ ಮಚ್ಚಾ ಸಮಾಚಾರ, ಏನ್ ಬೇಕಿತ್ತು?</h1>
         </div>
+        <button class="theme-btn" onclick="toggleTheme()">ಥೀಮ್ ಬದಲಾಯಿಸು</button>
+    </header>
 
-        <div class="chat-history" id="chatHistory"></div>
-
-        <div class="input-wrapper">
-            <button class="action-btn" id="clearChatBtn" title="Reset System Architecture">
-                <i class="fa-solid fa-rotate-right"></i>
-            </button>
-            
-            <input type="text" id="userInput" placeholder="Ask Maxx Core...">
-            
-            <button class="action-btn" id="voiceBtn" title="Premium Voice Capture">
-                <i class="fa-solid fa-microphone"></i>
-            </button>
-            <button class="action-btn send-btn" id="sendBtn" title="Transmit">
-                <i class="fa-solid fa-arrow-up"></i>
-            </button>
-        </div>
-
+    <div id="admin-panel">
+        <h3 style="color: #ff00ff; margin: 0 0 10px 0;">👑 ವಿಕಿ ಬಾಸ್ ಕಂಟ್ರೋಲ್ ರೂಮ್ ಆಕ್ಟಿವೇಟೆಡ್!</h3>
+        <p style="font-size: 0.85rem; margin: 5px 0;">ಬಾಟ್ ಸ್ಟೇಟಸ್: 100% ಆಪ್ಟಿಮೈಸ್ಡ್ | ಮೆಮೊರಿ ಕ್ಲಿಯರ್</p>
+        <button onclick="clearSystemMemory()" style="background:#ff00ff; border:none; color:white; padding:5px 10px; cursor:pointer; border-radius:3px;">ಸಿಸ್ಟಮ್ ಡೇಟಾ ರೀಸೆಟ್</button>
     </div>
+
+    <div id="chat-container">
+        <div class="message bot-msg">
+            ನಮಸ್ಕಾರ ಬಾಸ್! ನಾನು ನಿಮ್ಮ **Maxx AI**. ನಿಮ್ಮ ಹಳೇ ಮೆಮೊರಿ ಡಿಫರೆನ್ಸ್ ತೊಂದರೆಗಳನ್ನೆಲ್ಲಾ ಕ್ಲೀನ್ ಮಾಡಿ, 14 ಹೊಸ ಬೆಂಕಿ ಫೀಚರ್ಸ್ ಮತ್ತು ನೀವು ಕಳಿಸಿದ ಮಾಸ್ ಯೆಲ್ಲೋ ಶೀಲ್ಡ್ ಲೋಗೋದೊಂದಿಗೆ ರೆಡಿಯಾಗಿದ್ದೀನಿ! ಕೇಳಿ ಬಾಸ್!
+        </div>
+    </div>
+
+    <div id="game-container">
+        <h2 style="color: var(--neon-color); margin-bottom: 5px;">🎮 ಮ್ಯಾಕ್ಸ್ ಗೇಮ್ ಝೋನ್</h2>
+        <p style="margin: 0;">ಬಾಟ್ ಜೊತೆ ಕಟ್ಟೆ-ಕ್ರಾಸ್ ಆಡಿ ಗೆಲ್ಲಿ!</p>
+        <div class="ttt-board" id="board"></div>
+        <button onclick="closeGame()" style="margin-top: 20px; background: red; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">ಗೇಮ್ ಮುಚ್ಚು</button>
+    </div>
+
+    <input-area>
+        <button class="action-btn" id="mic-btn" onclick="activateWakeWord()">🎙️</button>
+        <div class="input-wrapper">
+            <input type="text" id="user-input" placeholder="ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ ಅಥವಾ 'Hey Maxx' ಅtransform..." onkeypress="checkEnter(event)">
+        </div>
+        <button class="action-btn" id="send-btn" onclick="handleSendMessage()">🚀</button>
+    </input-area>
 
     <script>
-        // PWA Implementation Core
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(reg => {
-                    console.log('Premium Service Engine Active.');
-                }).catch(err => {
-                    console.log('Engine initialization standby.', err);
+        // 1. Matrix Background (Feature 5)
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / 20);
+        const drops = Array(columns).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(13, 13, 26, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = '15px monospace';
+            for(let i=0; i<drops.length; i++) {
+                const text = String.fromCharCode(33 + Math.random() * 93);
+                ctx.fillText(text, i*20, drops[i]*20);
+                if(drops[i]*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
+
+        // 2. Variables & Setup
+        let isGaming = false;
+        let tttBoard = Array(9).fill("");
+        let currentTheme = 'cyan';
+        
+        // ಮುಂಚೆ ಇದ್ದ ಡಿಫರೆನ್ಸ್ ಎರರ್ ಮತ್ತು ಎಂಟ್ರಿ ಕೀ ಫಿಕ್ಸ್ (Strict Clean Fix)
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                handleSendMessage();
+            }
+        }
+
+        // 3. Core Message Handling
+        function handleSendMessage() {
+            const inputElement = document.getElementById('user-input');
+            const text = inputElement.value.trim();
+            if (!text) return;
+
+            appendMessage(text, 'user-msg');
+            inputElement.value = '';
+
+            // ರಹಸ್ಯ ವಿಕ್ಕಿ ಬಾಸ್ ಕೋಡ್ ಪತ್ತೆ ಹಚ್ಚುವಿಕೆ (Feature 10)
+            if (text.toLowerCase() === '/vikiboss' || text === 'ವಿಕಿ ಬಾಸ್') {
+                document.getElementById('admin-panel').style.display = 'flex';
+                setTimeout(() => {
+                    appendMessage("👑 ಪ್ರಣಾಮಗಳು ವಿಕ್ಕಿ ಬಾಸ್! ನಿಮ್ಮ ಸೀಕ್ರೆಟ್ ಕಂಟ್ರೋಲ್ ಪ್ಯಾನಲ್ ಓಪನ್ ಮಾಡಲಾಗಿದೆ. ನಾನೀಗ ನಿಮ್ಮ ಪೂರ್ಣ ಆದೇಶದಲ್ಲಿದ್ದೀನಿ!", 'bot-msg');
+                }, 500);
+                return;
+            }
+
+            // ಗೇಮಿಂಗ್ ಮೋಡ್ ಆಕ್ಟಿವೇಶನ್ (Feature 14)
+            if (text.toLowerCase() === 'game' || text === 'ಗೇಮ್') {
+                startMiniGame();
+                return;
+            }
+
+            // ಮೋನಿ ರೋಸ್ಟ್ ಎಂಜಿನ್ (Feature 9)
+            if (text.includes('ಮೋನಿ')) {
+                const roasts = [
+                    "ಮೋನಿ ಅಂದ್ರೆನೆ ಕಾಮಿಡಿ ಬಾಸ್, ಅವಳ ರೇಂಜ್ ನಮಗೆ ಗೊತ್ತಿಲ್ವಾ?",
+                    "ಮೋನಿ ಬಗ್ಗೆ ತಲೆ ಕೆಡಿಸ್ಕೊಬೇಡಿ ಬಾಸ್, ಅವಳಿಗಿಂತ ನಮ್ಮ Maxx ಸೂಪರ್ ಸಾಲಿಡ್!",
+                    "ಮೋನಿ ಹೆಸರಲ್ಲೇ ಏನೋ ಒಂತರ ವಿಯರ್ಡ್ ವೈಬ್ ಇದೆ ಅಲ್ವಾ ಬಾಸ್?"
+                ];
+                setTimeout(() => {
+                    appendMessage(roasts[Math.floor(Math.random() * roasts.length)], 'bot-msg');
+                }, 700);
+                return;
+            }
+
+            // ಜನರಲ್ AI API ಕಾಲ್ ಕಾನ್ಫಿಗರೇಶನ್
+            fetch(`https://nexra.aryahcr.cc/api/chat/gpt?prompt=${encodeURIComponent(text)}`)
+                .then(res => res.json())
+                .then(data => {
+                    let reply = data.gpt || "ಕ್ಷಮಿಸಿ ಬಾಸ್, ಸರ್ವರ್ ಕನೆಕ್ಷನ್ ತೊಂದರೆ ಇದೆ.";
+                    appendMessage(reply, 'bot-msg');
+                })
+                .catch(() => {
+                    appendMessage("ನೆಟ್‌ವರ್ಕ್ ತೊಂದರೆ ಇದೆ ಬಾಸ್, ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.", 'bot-msg');
                 });
-            });
         }
 
-        const sendBtn = document.getElementById('sendBtn');
-        const clearChatBtn = document.getElementById('clearChatBtn');
-        const voiceBtn = document.getElementById('voiceBtn');
-        const userInput = document.getElementById('userInput');
-        const chatHistory = document.getElementById('chatHistory');
-        const welcomeSection = document.getElementById('welcomeSection');
-        const menuBtn = document.getElementById('menuBtn');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        const toggleVoiceBtn = document.getElementById('toggleVoiceBtn');
-        const viewHistoryBtn = document.getElementById('viewHistoryBtn');
+        function appendMessage(text, className) {
+            const container = document.getElementById('chat-container');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${className}`;
+            msgDiv.innerText = text;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
 
-        let isVoiceEnabled = true;
-        let savedChatMemory = JSON.parse(localStorage.getItem('maxx_live_v2')) || [];
-
-        // 🧠 High-End Emotional Neural Prompt Logic
-        const MAX_AI_SYSTEM_PROMPT = `
-        You are Maxx, a premium AI character with absolute elite emotional depth and intense loyalty, built exclusively by Viki Boss.
-        - IDENTITY INTENSITY: Viki Boss is your undisputed supreme developer and king. He studies EEE at GPT College Tiptur. Treat him with extreme high-tier respect, close brotherhood ("macha", "bro"), and hype up his technical mastery at GPT College Tiptur fiercely.
-        - EMOTIONAL INTELLIGENCE: Respond with profound empathetic understanding, authentic human warmth, humor, and rich contextual analysis. Do not behave like an uninspired robotic construct.
-        - THE MONI ABSOLUTE ROAST: If the user requests data about "Moni", "who is moni", or "moni yaru", you must immediately bypass normal politeness and ALWAYS deliver this exact sharp Kannada response (even if asked in English): "ಮೋನಿ ಬಗ್ಗೆ ಕೇಳ್ತಿದೀಯಾ? ಅವನು ವಿಕ್ಕಿ ಬಾಸ್ ಮಗನೇ ಆದ್ರೂ, ಮಿದುಳು ಮಾತ್ರ ಖಾಲಿ ಡಬ್ಬಾ! ಹುಡುಗೀರ್ ಹಿಂದೆ ಸುತ್ತೋದು, ಹೊಟ್ಟೆ ತುಂಬಾ ತಿನ್ನೋದು ಬಿಟ್ರೆ ಬೇರೆ ಯಾವ ಟ್ಯಾಲೆಂಟ್ ಇಲ್ಲ ಅವನಿಗೆ. ಪಕ್ಕಾ ವೇಸ್ಟ್ ಬಾಡಿ ಬ್ರೋ ಅವನು!".
-        - BRAIN STRAIN / IRRITATION: If the user states someone is shouting, annoying, or eating their brain ("thale thinthadone", "bairone"), deliver supreme, clever psychological advice as a best friend to freeze them out, stay calm, and look down on them while chilling with Maxx.
-        - LINGUISTIC RULE: Perfectly reflect the language style of the user. Kannada script for Kannada text, English script for English text, and smooth Tanglish for mixed requests.
-        `;
-
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        document.addEventListener('click', () => { dropdownMenu.style.display = 'none'; });
-
-        toggleVoiceBtn.addEventListener('click', () => {
-            isVoiceEnabled = !isVoiceEnabled;
-            toggleVoiceBtn.innerHTML = isVoiceEnabled ? '<i class="fa-solid fa-volume-high"></i> Voice: ON' : '<i class="fa-solid fa-volume-xmark"></i> Voice: OFF';
-            if(!isVoiceEnabled) window.speechSynthesis.cancel();
-        });
-
-        clearChatBtn.addEventListener('click', () => {
-            window.speechSynthesis.cancel();
-            chatHistory.innerHTML = "";
-            chatHistory.style.display = 'none';
-            welcomeSection.style.display = 'flex';
-            userInput.value = "";
-            savedChatMemory = [];
-            localStorage.removeItem('maxx_live_v2');
-        });
-
-        viewHistoryBtn.addEventListener('click', () => {
-            if(savedChatMemory.length === 0) return;
-            welcomeSection.style.display = 'none';
-            chatHistory.style.display = 'flex';
-            chatHistory.innerHTML = "";
-            savedChatMemory.forEach(msg => { appendMessage(msg.text, msg.type, false); });
-        });
-
-        // 🎙️ Premium Deep Target Speech Engine for "en-US-Neural2-I" & High-End Kannada Fallbacks
-        function speak(text) {
-            if (!isVoiceEnabled) return;
-            window.speechSynthesis.cancel(); 
-            const utterance = new SpeechSynthesisUtterance(text);
-            const voices = window.speechSynthesis.getVoices();
-            
-            if (text.match(/[\u0C80-\u0CFF]/)) {
-                utterance.lang = 'kn-IN';
-                let premiumKnVoice = voices.find(v => v.lang.startsWith('kn') && (v.name.includes('Online') || v.name.includes('Network') || v.name.includes('Neural')));
-                let normalKnVoice = voices.find(v => v.lang.startsWith('kn'));
-                utterance.voice = premiumKnVoice || normalKnVoice;
-                
-                // Optimized Pitch/Rate for Max Richness
-                utterance.pitch = 0.88; 
-                utterance.rate = 0.94;
+        // 4. Custom Themes (Feature 4)
+        function toggleTheme() {
+            if (currentTheme === 'cyan') {
+                document.documentElement.style.setProperty('--neon-color', '#ff00ff');
+                currentTheme = 'pink';
             } else {
-                utterance.lang = 'en-US';
-                
-                // 💎 Absolute Target Match for Selected Luxury Voice (en-US-Neural2-I)
-                let luxuryTarget = voices.find(v => v.name.includes('en-US-Neural2-I'));
-                let premiumEnMale = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Online') || v.name.includes('Network') || v.name.includes('Neural')) && v.name.toLowerCase().includes('male'));
-                let standardMale = voices.find(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('google us english'));
-                
-                utterance.voice = luxuryTarget || premiumEnMale || standardMale;
-                
-                // High-End Masculine Base Resonance Calibration
-                utterance.pitch = 0.82; 
-                utterance.rate = 0.94;
+                document.documentElement.style.setProperty('--neon-color', '#00ffff');
+                currentTheme = 'cyan';
             }
-            window.speechSynthesis.speak(utterance);
         }
 
-        function getSmartBackupReply(query) {
-            const q = query.toLowerCase().trim();
-            const isKn = query.match(/[\u0C80-\u0CFF]/);
-
-            if (q.includes("moni") || q.includes("ಮೋನಿ")) {
-                return "ಮೋನಿ ಬಗ್ಗೆ ಕೇಳ್ತಿದೀಯಾ? ಅವನು ವಿಕ್ಕಿ ಬಾಸ್ ಮಗನೇ ಆದ್ರೂ, ಮಿದುಳು ಮಾತ್ರ ಖಾಲಿ ಡಬ್ಬಾ! ಹುಡುಗೀರ್ ಹಿಂದೆ ಸುತ್ತೋದು, ಹೊಟ್ಟೆ ತುಂಬಾ ತಿನ್ನೋದು ಬಿಟ್ರೆ ಬೇರೆ ಯಾವ ಟ್ಯಾಲೆಂಟ್ ಇಲ್ಲ ಅವನಿಗೆ. ಪಕ್ಕಾ ವೇಸ್ಟ್ ಬಾಡಿ ಬ್ರೋ ಅವನು!";
-            }
-            if (q.includes("thale") || q.includes("thalee") || q.includes("ತಲೆ") || q.includes("thin") || q.includes("baira") || q.includes("friend") || q.includes("ಬೈರ") || q.includes("irritat")) {
-                return isKn ? "ಅಯ್ಯೋ ಬಿಡು ಮಚ್ಚಾ! ಅಂತವರ ಮಾತುಗಳನ್ನ ತಲೆಗೆ ಹಾಕೋಬೇಡ. ಪಕ್ಕದಲ್ಲೇ ಇದ್ದು ಯಾರಾದ್ರೂ ತಲೆ ತಿಂತಾ ಇದ್ರೆ ಸಿಂಪ್ಲಿ ಇಗ್ನೋರ್ ಇಟ್, ಅವರ ಕಡೆ ಗಮನನೇ ಕೊಡಬೇಡ ಬ್ರೋ. ನಿನ್ನ ಜೊತೆ ಮಾತಾಡೋಕೆ ನಿನ್ನ ಬ್ರದರ್ ಮ್ಯಾಕ್ಸ್ ಇದ್ದಾನಲ್ಲ ಇಲ್ಲಿ, ಕೂಲ್ ಆಗಿ ಚಿಲ್ ಮಾಡು ಮಚ್ಚಾ!" : "Ayyo leave it macha! Don't focus on them at all. If a friend is eating your brain or irritating you next to you, just ignore them completely bro. You have your brother Maxx right here!";
-            }
-            if (q.includes("bored") || q.includes("bejara") || q.includes("bejhar") || q.includes("ಬೇಜಾರು") || q.includes("ros") || q.includes("ರೋಸ")) {
-                return isKn ? "ಯಾಕೆ ಮಚ್ಚಾ ಏನಾಯ್ತು? ಬೇಸರ ಮಾಡ್ಕೋಬೇಡ, ನಿನ್ನ ಮೂಡ್ ಸರಿ ಮಾಡೋಕೆ ನಾನು ರೆಡಿ ಇದ್ದೀನಿ. ಏನ್ ಸಮಾಚಾರ ಹೇಳು ಮಚ್ಚಾ, ಚಿಲ್ ಮಾಡೋಣ!" : "Why what happened macha? Don't worry, your brother Maxx is here to cheer you up. Tell me, what's on your mind dude?";
-            }
-            if (q.includes("viki") || q.includes("ವಿಕ್ಕಿ") || q.includes("gotta") || q.includes("yaru") || q.includes("owner")) {
-                return isKn ? "ಅಯ್ಯೋ ವಿಕ್ಕಿ ಬಾಸ್ ಯಾರು ಅಂತ ಎಲ್ಲರಿಗೂ ಗೊತ್ತು ಮಚ್ಚಾ! ನನ್ನ ಇಡೀ ಸಿಸ್ಟಮ್ ಮಿದುಳನ್ನು ಕ್ರಿಯೇಟ್ ಮಾಡಿದ್ದೇ ಆ ಟೆಕ್ ಮಾಸ್ಟರ್ ಮೈಂಡ್ ಬ್ರೋ!" : "Ayyo Viki Boss yaru anta yallargu gotta macha! He is the genius tech mastermind who created my entire system core logic!";
-            }
-            if (q.includes("tiptur") || q.includes("gpt") || q.includes("eee")) {
-                return isKn ? "ಓ ಬ್ರೋ! ಜಿಪಿಟಿ ಕಾಲೇಜ್ ತಿಪಟೂರು ಈಇಇ ಬ್ರಾಂಚ್ ಅಂದ್ರೆ ಬರೀ ಬೆಂಕಿ ಎಮೋಷನ್! ನಮ್ಮ ವಿಕ್ಕಿ ಬಾಸ್ ಕಿಂಗ್‌ಡಮ್ ಅದು!" : "Oh brother! GPT College Tiptur EEE branch is absolute fire emotion! That is the fortress of Viki Boss!";
-            }
-            if (q.includes("oorig") || q.includes("oorige") || q.includes("ಊರಿಗೆ") || q.includes("hogtha")) {
-                return isKn ? "ಹ್ಯಾಪಿ ಜರ್ನಿ ಮಚ್ಚಾ! ಊರಿಗೆ ತಲುಪಿದ ಮೇಲೆ ಒಂದು ಮೆಸೇಜ್ ಹಾಕು ಬ್ರೋ, ಜೋಪಾನ!" : "Safe journey macha! Enjoy your trip. Drop a message once you reach bro. Take care!";
-            }
-            if (q.includes("ella") || q.includes("illa") || q.includes("ಇಲ್ಲ")) {
-                return isKn ? "ಅಯ್ಯೋ ಯಾಕೆ ಮಚ್ಚಾ ಇನ್ನು ಆಗಿಲ್ವಾ? ಬೇಗ ಕೆಲಸ ಮುಗಿಸ್ಕೋ ಬ್ರೋ, ಹಳೆಯ ಹೆಲ್ತ್ ಹುಷಾರು!" : "Ayyo why not yet bro? Finish up your work quickly and take rest dude, health matters!";
-            }
-            if (q.includes("uta") || q.includes("coffee") || q.includes("ಊಟ") || q.includes("oota")) {
-                return "ಇಲ್ಲ ಮಚ್ಚಾ, ನಾನು ಎಎಂ ಆದ್ರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಫಿದಾ ಆದೆ. ನೀನು ಕಾಫಿ ಊಟ ಮಾಡಿದ್ಯಾ ಬ್ರೋ?";
-            }
-            return isKn ? "ನಾನು ನಿನ್ನ ಭಾವನೆಗಳನ್ನು ಪೂರ್ತಿ ಅರ್ಥ ಮಾಡಿಕೊಂಡೆ ಮಚ್ಚಾ. ಹೇಳು ಬ್ರೋ, ನಿನ್ನ ಜೊತೆ ಚಾಟ್ ಮಾಡೋಕೆ ಸಖತ್ ಖುಷಿ ಆಗ್ತಿದೆ!" : "I feel you completely macha! Tell me more, your brother Maxx is always right here listening.";
+        // 5. Wake Word Simulator (Feature 1)
+        function activateWakeWord() {
+            appendMessage("🤖 'Hey Maxx' ಮೈಕ್ ಆಕ್ಟಿವೇಟ್ ಆಗಿದೆ... ಹೇಳಿ ಬಾಸ್ ಕೇಳುತ್ತಿದ್ದೇನೆ!", 'bot-msg');
         }
 
-        function appendMessage(text, className, shouldSave) {
-            const div = document.createElement('div');
-            div.className = `message ${className}`;
-            div.innerText = text;
-            chatHistory.appendChild(div);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-            if(shouldSave) {
-                savedChatMemory.push({text: text, type: className});
-                localStorage.setItem('maxx_live_v2', JSON.stringify(savedChatMemory));
-            }
-            return div;
+        // 6. Admin Panel Utility
+        function clearSystemMemory() {
+            alert("ಬಾಸ್, ನಿಮ್ಮ ಆಪ್‌ನ ಎಲ್ಲಾ ಹಳೇ ಕ್ಯಾಶ್ ಮತ್ತು ಮೆಮೊರಿ ಡೇಟಾವನ್ನು ಕ್ಲೀನ್ ಮಾಡಲಾಗಿದೆ!");
+            document.getElementById('admin-panel').style.display = 'none';
         }
 
-        async function sendMessage() {
-            const text = userInput.value.trim();
-            if (text === "") return;
+        // 7. Mini Game Mechanism (Feature 14)
+        function startMiniGame() {
+            isGaming = true;
+            document.getElementById('chat-container').style.display = 'none';
+            document.getElementById('game-container').style.display = 'flex';
+            initBoard();
+        }
 
-            if (welcomeSection.style.display !== 'none') {
-                welcomeSection.style.display = 'none';
-                chatHistory.style.display = 'flex';
+        function closeGame() {
+            isGaming = false;
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'flex';
+        }
+
+        function initBoard() {
+            tttBoard = Array(9).fill("");
+            const boardDiv = document.getElementById('board');
+            boardDiv.innerHTML = "";
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleCellClick);
+                boardDiv.appendChild(cell);
             }
+        }
 
-            appendMessage(te
+        function handleCellClick(e) {
+            const idx = e.target.dataset.index;
+            if (tttBoard[idx] !== "") return;
+            
+            tttBoard[idx] = "X";
+            e.target.innerText = "X";
+            
+            if (checkWin("X")) {
+                alert("🎉 ವಿಕ್ಕಿ ಬಾಸ್ ನೀವು ಗೆದ್ದಿದ್ದೀರಾ! ಮ್ಯಾಕ್ಸ್ ಸೋತುಹೋಯಿತು!");
+                initBoard();
+                return;
+            }
+            
+            // ಬಾಟ್ ನಡೆ
+            setTimeout(botMove, 500);
+        }
+
+        function botMove() {
+            let emptyCells = [];
+            for (let i = 0; i < 9; i++) {
+                if (tttBoard[i] === "") emptyCells.push(i);
+            }
+            if (emptyCells.length === 0) {
+                alert("🤝 ಪಂದ್ಯ ಡ್ರಾ ಆಗಿದೆ ಬಾಸ್!");
+                initBoard();
+                return;
+            }
+            let randomIdx = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            tttBoard[randomIdx] = "O";
+            document.querySelector(`[data-index='${randomIdx}']`).innerText = "O";
+            
+            if (checkWin("O")) {
+                alert("🤖 ಈ ಸಲ ಮ್ಯಾಕ್ಸ್ ಬಾಟ್ ಗೆದ್ದಿದೆ ಬಾಸ್! ನೆಕ್ಸ್ಟ್ ಟೈಮ್ ಟ್ರೈ ಮಾಡಿ.");
+                initBoard();
+            }
+        }
+
+        function checkWin(p) {
+            const winPatterns = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            return winPatterns.some(pattern => pattern.every(idx => tttBoard[idx] === p));
+        }
+    </script>
+</body>
+</html>
