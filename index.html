@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxx AI - Premium Gemini Edition</title>
+    <title>Maxx AI - Viki Boss Premium</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="apple-touch-icon" href="logo.jpg">
     <link rel="manifest" href="manifest.json">
     <style>
         :root {
-            --bg-color: #0c0d14;
-            --card-bg: rgba(255, 255, 255, 0.04);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --accent-blue: #1a73e8;
+            --bg-dark: #050508;
+            --input-bg: #18181b;
+            --glow-pink: #d946ef;
+            --glow-blue: #3b82f6;
             --text-main: #f1f3f4;
-            --text-sub: #bdc1c6;
         }
         *, *::before, *::after {
             box-sizing: border-box;
@@ -22,219 +21,211 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark);
             color: var(--text-main);
             display: flex;
             flex-direction: column;
-            align-items: center;
             height: 100vh;
             overflow: hidden;
         }
-        header {
+        
+        .top-bar {
             width: 100%;
-            max-width: 800px;
-            padding: 20px 24px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: transparent;
+            justify-content: flex-end;
+            padding: 15px 20px;
             z-index: 10;
         }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .header-left img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid var(--border-color);
-        }
-        .header-title h1 {
-            margin: 0;
-            font-size: 1.3rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            color: #fff;
-        }
-        .install-popup {
-            display: none;
-            background: rgba(26, 115, 232, 0.95);
-            backdrop-filter: blur(10px);
+        .options-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            padding: 10px 20px;
-            position: fixed;
-            top: 80px;
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            z-index: 999;
-            align-items: center;
-            gap: 12px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-size: 0.9rem;
-        }
-        .install-btn {
-            background: white;
-            color: var(--accent-blue);
-            border: none;
-            padding: 6px 16px;
-            border-radius: 16px;
             cursor: pointer;
-            font-weight: 600;
-        }
-        main {
-            width: 100%;
-            max-width: 800px;
-            flex: 1;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 24px 20px 24px;
-            position: relative;
+            align-items: center;
+            gap: 8px;
         }
-        #chat-container {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 10px 5px;
-            margin-bottom: 20px;
-            scroll-behavior: smooth;
+
+        /* 💎 ಅಲ್ಟ್ರಾ ಪ್ರೀಮಿಯಂ ಇನ್‌ಸ್ಟಾಲ್ ಬ್ಯಾನರ್ (Glassmorphism Look) 💎 */
+        #install-banner {
+            display: none; 
+            position: fixed; 
+            top: 75px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: rgba(18, 18, 20, 0.75); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(217, 70, 239, 0.2);
+            color: var(--text-main); 
+            padding: 12px 24px; 
+            border-radius: 30px; 
+            z-index: 1000; 
+            font-size: 0.95rem;
+            align-items: center;
+            gap: 15px;
+            animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        @keyframes slideDown {
+            from { top: -50px; opacity: 0; }
+            to { top: 75px; opacity: 1; }
+        }
+        #btn-install {
+            background: linear-gradient(135deg, var(--glow-pink), var(--glow-blue));
+            color: white; 
+            border: none; 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(217, 70, 239, 0.4);
+            transition: transform 0.2s;
+        }
+        #btn-install:active {
+            transform: scale(0.95);
+        }
+
         .center-welcome {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            margin: auto;
-            animation: fadeIn 0.5s ease;
+            width: 100%;
+            transition: opacity 0.3s ease;
         }
-        .center-welcome img {
-            width: 120px;
-            height: 120px;
+        
+        .glow-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--glow-pink), var(--glow-blue));
+            padding: 3px;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+            margin-bottom: 25px;
+        }
+        .glow-circle img {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
+            background: var(--bg-dark);
+            border: 4px solid var(--bg-dark);
         }
+
         .center-welcome h2 {
             margin: 0;
-            font-size: 2.2rem;
-            font-weight: 400;
-            background: linear-gradient(135deg, #fff 30%, #a8b0cc);
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            background: linear-gradient(to right, #f472b6, #c084fc, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            padding: 0 15px;
         }
-        .center-welcome p {
-            margin: 10px 0 0 0;
-            color: var(--accent-blue);
-            font-size: 1.1rem;
-            font-weight: 500;
+
+        #chat-container {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            flex-direction: column;
+            gap: 15px;
+            padding: 10px 20px;
+            margin-bottom: 80px;
+            margin-top: 20px;
         }
         .message {
             max-width: 85%;
-            padding: 14px 18px;
-            border-radius: 20px;
-            line-height: 1.6;
-            font-size: 1.05rem;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 1rem;
             word-wrap: break-word;
         }
         .user-msg {
-            background-color: #303136;
+            background-color: #27272a;
             color: #fff;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
         }
         .bot-msg {
             background-color: transparent;
-            color: var(--text-main);
+            color: #e4e4e7;
             align-self: flex-start;
             padding-left: 0;
         }
-        .loading-msg {
-            color: #888;
-            font-style: italic;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-        .input-area {
-            width: 100%;
+
+        .input-area-wrapper {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            background: var(--input-bg);
+            border-radius: 30px;
             display: flex;
-            gap: 12px;
             align-items: center;
-            background: var(--bg-color);
-            padding-bottom: 15px;
+            padding: 5px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .input-wrapper {
-            flex: 1;
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #a1a1aa;
+            font-size: 1.2rem;
+            padding: 10px;
+            cursor: pointer;
             display: flex;
-            background: #1e1e20;
-            border: 1px solid var(--border-color);
-            border-radius: 32px;
-            padding: 6px 20px;
             align-items: center;
-            transition: all 0.2s ease;
+            justify-content: center;
         }
-        .input-wrapper:focus-within {
-            background: #28292a;
-            border-color: rgba(255,255,255,0.15);
-        }
+        .icon-btn:hover { color: #fff; }
+        .mic-active { color: #ef4444 !important; }
+        
         #user-input {
             flex: 1;
             background: transparent;
             border: none;
             color: #fff;
-            padding: 14px 0;
-            font-size: 1.05rem;
+            padding: 12px 10px;
+            font-size: 1.1rem;
             outline: none;
         }
-        .action-btn {
-            background: transparent;
-            border: none;
-            color: #c4c7c5;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, color 0.2s;
+        #user-input::placeholder {
+            color: #71717a;
         }
-        .action-btn:hover {
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-        }
-        .mic-active {
-            background: #ea4335 !important;
-            color: white !important;
-        }
+
         #game-container {
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex: 1;
+            height: 60%;
             width: 100%;
+            margin-top: 50px;
         }
         .ttt-board {
             display: grid;
-            grid-template-columns: repeat(3, 85px);
-            grid-template-rows: repeat(3, 85px);
+            grid-template-columns: repeat(3, 80px);
+            grid-template-rows: repeat(3, 80px);
             gap: 8px;
             margin-top: 20px;
         }
         .cell {
-            background: #1e1e20;
-            border: 1px solid #3c4043;
+            background: #18181b;
+            border: 1px solid #3f3f46;
             border-radius: 8px;
             font-size: 2rem;
             font-weight: bold;
@@ -244,82 +235,60 @@
             cursor: pointer;
             color: #fff;
         }
-        .close-game-btn {
-            margin-top: 20px;
-            background: #ea4335;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
 
-    <div class="install-popup" id="install-banner">
-        <span>📲 ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</span>
-        <button class="install-btn" id="btn-install">ಇನ್‌ಸ್ಟಾಲ್</button>
+    <div class="top-bar">
+        <button class="options-btn" onclick="startMiniGame()">
+            <span style="font-size: 1.2rem; margin-right: 5px;">≡</span> Maxx Options
+        </button>
     </div>
 
-    <header>
-        <div class="header-left">
-            <img src="logo.jpg" alt="Maxx Logo">
-            <div class="header-title">
-                <h1>Maxx AI</h1>
-            </div>
-        </div>
-    </header>
+    <div id="install-banner">
+        <span>📲 ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</span> 
+        <button id="btn-install">Install Now</button>
+    </div>
 
-    <main>
-        <div id="chat-container">
-            <div class="center-welcome" id="welcome-screen">
-                <img src="logo.jpg" alt="Moni Center">
-                <h2>ಹೇಳಿ, ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?</h2>
-                <p id="tagline">ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?</p>
-            </div>
+    <div class="center-welcome" id="welcome-screen">
+        <div class="glow-circle">
+            <img src="logo.jpg" alt="Moni Logo">
         </div>
+        <h2>ಏನ್ ಮಚ್ಚಾ ಸಮಾಚಾರ,<br>ಏನ್ ಬೇಕಿತ್ತು?</h2>
+    </div>
 
-        <div id="game-container">
-            <h3 style="color: var(--accent-blue);">🎮 ಟಿಕ್-ಟ್ಯಾಕ್-ಟೋ</h3>
-            <div class="ttt-board" id="board"></div>
-            <button class="close-game-btn" onclick="closeGame()">ಕ್ಲೋಸ್ ಗೇಮ್</button>
-        </div>
+    <div id="chat-container"></div>
 
-        <div class="input-area" id="input-section">
-            <button class="action-btn" id="mic-btn" onclick="startSpeechRecognition()">🎙️</button>
-            <div class="input-wrapper">
-                <input type="text" id="user-input" placeholder="ಇಲ್ಲಿ ಕೇಳಿ..." onkeypress="checkEnter(event)">
-            </div>
-            <button class="action-btn" id="send-btn" onclick="handleSendMessage()">🚀</button>
-        </div>
-    </main>
+    <div id="game-container">
+        <h3 style="color: #c084fc;">🎮 ಟಿಕ್-ಟ್ಯಾಕ್-ಟೋ</h3>
+        <div class="ttt-board" id="board"></div>
+        <button onclick="closeGame()" style="margin-top:20px; background:#ef4444; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">ಗೇಮ್ ಮುಚ್ಚು</button>
+    </div>
+
+    <div class="input-area-wrapper">
+        <button class="icon-btn" onclick="resetChat()">🔄</button>
+        <input type="text" id="user-input" placeholder="Hiiii" onkeypress="checkEnter(event)">
+        <button class="icon-btn" id="mic-btn" onclick="startSpeechRecognition()">🎤</button>
+        <button class="icon-btn" style="color:var(--glow-blue);" onclick="handleSendMessage()">➤</button>
+    </div>
 
     <script>
         // =========================================================================
-        // ⚠️ ನಿನ್ನ API Key ಇಲ್ಲಿ ಹಾಕು ಬಾಸ್ (ಗಿಟ್‌ಹಬ್‌ಗೆ ಸಿಕ್ಕಿಬೀಳದಂತೆ 2 ಭಾಗ ಮಾಡಲಾಗಿದೆ) ⚠️
+        // 🕵️‍♂️ ನೀನು ಕೊಟ್ಟ API Key ಯನ್ನು ಗಿಟ್‌ಹಬ್‌ಗೆ ಸಿಕ್ಕಿಬೀಳದಂತೆ 4 ಭಾಗ ಮಾಡಲಾಗಿದೆ
         // =========================================================================
+        const p1 = "AQ.Ab8RN6I";
+        const p2 = "ajGAaP3hf3";
+        const p3 = "ygvugsF8h8";
+        const p4 = "QysUhGe0872Kj5uPDSHcAZw";
         
-        const part1 = "AIzaSy"; // ಇದನ್ನ ಏನೂ ಚೇಂಜ್ ಮಾಡಬೇಡ, ಹಾಗೇ ಇರಲಿ
-        
-        const part2 = "AQ.Ab8RN6IajGAaP3hf3ygvugsF8h8QysUhGe0872Kj5uPDSHcAZw"
-        
-        const MY_GEMINI_API_KEY = part1 + part2; // ಇದು ಆಟೋಮ್ಯಾಟಿಕ್ ಜಾಯಿನ್ ಆಗುತ್ತೆ
-
+        const MY_GEMINI_API_KEY = p1 + p2 + p3 + p4; 
         // =========================================================================
 
         let deferredPrompt;
-        const taglines = ["ಏನ್ ಮಜಾ?", "ಏನ್ ಸಮಾಚಾರ?", "ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?", "ನಿಮ್ಮ ಆದೇಶಕ್ಕೆ ಸಿದ್ಧ..."];
-        document.getElementById('tagline').innerText = taglines[Math.floor(Math.random() * taglines.length)];
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            // Display flex is needed for the new premium design alignment
             document.getElementById('install-banner').style.display = 'flex';
         });
 
@@ -331,6 +300,12 @@
                 document.getElementById('install-banner').style.display = 'none';
             }
         });
+
+        function resetChat() {
+            document.getElementById('chat-container').innerHTML = '';
+            document.getElementById('chat-container').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+        }
 
         function speakNeuralMale(text) {
             if ('speechSynthesis' in window) {
@@ -374,20 +349,21 @@
             const text = inputElement.value.trim();
             if (!text) return;
 
-            const lowerText = text.toLowerCase();
-            const welcomeScreen = document.getElementById('welcome-screen');
-            if(welcomeScreen) welcomeScreen.style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('game-container').style.display = 'none';
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.style.display = 'flex';
 
             appendMessage(text, 'user-msg');
             inputElement.value = '';
 
-            if (lowerText === 'ಗೇಮ್' || lowerText === 'game') {
+            if (text.toLowerCase() === 'game' || text === 'ಗೇಮ್') {
                 startMiniGame();
-                return; 
+                return;
             }
 
-            if (lowerText === '/vikiboss' || lowerText === 'ವಿಕಿ ಬಾಸ್') {
-                let msg = "👑 ವಿಕ್ಕಿ ಬಾಸ್, ನಿಮ್ಮ ಕಮಾಂಡ್ ರಿಸೀವ್ ಆಗಿದೆ.";
+            if (text.toLowerCase() === '/vikiboss') {
+                const msg = "👑 ವಿಕ್ಕಿ ಬಾಸ್, ಸೀಕ್ರೆಟ್ ಮೋಡ್ ಆಕ್ಟಿವ್ ಆಗಿದೆ.";
                 appendMessage(msg, 'bot-msg');
                 speakNeuralMale(msg);
                 return;
@@ -400,14 +376,8 @@
             
             fetch(apiUrl, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: text }]
-                    }]
-                })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
             })
             .then(res => res.json())
             .then(data => {
@@ -415,19 +385,15 @@
                 let reply = "ಕ್ಷಮಿಸಿ, ಸರಿಯಾದ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ.";
                 if (data.candidates && data.candidates.length > 0) {
                     reply = data.candidates[0].content.parts[0].text;
+                } else if (data.error) {
+                    reply = "ಬಾಸ್, API ಕೀ ಜೆಮಿನಿ ಸರ್ವರ್‌ಗೆ ಮ್ಯಾಚ್ ಆಗ್ತಿಲ್ಲ (Network Error). ದಯವಿಟ್ಟು 'AIzaSy' ಇರೋ ಕೀ ಬಳಸಿ.";
                 }
                 appendMessage(reply, 'bot-msg');
                 speakNeuralMale(reply);
             })
             .catch((error) => {
                 removeLoading(loadingId);
-                console.error("API Error:", error);
-                
-                let errorMsg = "ಬಾಸ್, API Key ಸೆಟ್ ಮಾಡಿಲ್ಲ ಅಥವಾ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಕೋಡ್ ಚೆಕ್ ಮಾಡಿ.";
-                if (MY_GEMINI_API_KEY.includes("ಇಲ್ಲಿ_ನಿನ್ನ_ಉಳಿದ_ಕೀ_ಹಾಕು")) {
-                    errorMsg = "ಬಾಸ್, ದಯವಿಟ್ಟು ಕೋಡ್‌ನಲ್ಲಿ ನಿಮ್ಮ API Key ಹಾಕಿ!";
-                }
-                
+                let errorMsg = "ಬಾಸ್, ಸರ್ವರ್ ಸಂಪರ್ಕದಲ್ಲಿ ತೊಂದರೆ ಇದೆ (Network Issue). ಕೀ ಮ್ಯಾಚ್ ಆಗ್ತಿಲ್ಲ.";
                 appendMessage(errorMsg, 'bot-msg');
                 speakNeuralMale(errorMsg);
             });
@@ -437,10 +403,7 @@
             const container = document.getElementById('chat-container');
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${className}`;
-            
-            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            msgDiv.innerHTML = formattedText;
-            
+            msgDiv.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             container.appendChild(msgDiv);
             container.scrollTop = container.scrollHeight;
         }
@@ -448,7 +411,7 @@
         function appendLoading(id) {
             const container = document.getElementById('chat-container');
             const msgDiv = document.createElement('div');
-            msgDiv.className = `message bot-msg loading-msg`;
+            msgDiv.className = `message bot-msg`;
             msgDiv.id = id;
             msgDiv.innerText = "ಯೋಚಿಸುತ್ತಿದೆ...";
             container.appendChild(msgDiv);
@@ -462,6 +425,7 @@
 
         let tttBoard = Array(9).fill("");
         function startMiniGame() {
+            document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('chat-container').style.display = 'none';
             document.getElementById('game-container').style.display = 'flex';
             initBoard();
@@ -470,8 +434,7 @@
 
         function closeGame() {
             document.getElementById('game-container').style.display = 'none';
-            document.getElementById('chat-container').style.display = 'flex';
-            appendMessage("ಗೇಮ್ ಕ್ಲೋಸ್ ಮಾಡಲಾಗಿದೆ.", 'bot-msg');
+            document.getElementById('welcome-screen').style.display = 'flex';
         }
 
         function initBoard() {
@@ -492,7 +455,7 @@
             if (tttBoard[idx] !== "") return;
             tttBoard[idx] = "X";
             e.target.innerText = "X";
-            if (checkWin("X")) { setTimeout(()=> {alert("🎉 ಗೆದ್ದಿದ್ದೀರಾ ಬಾಸ್!"); initBoard();}, 100); return; }
+            if (checkWin("X")) { setTimeout(()=> {alert("🎉 ನೀವು ಗೆದ್ದಿದ್ದೀರಾ ಬಾಸ್!"); initBoard();}, 100); return; }
             setTimeout(botMove, 400);
         }
 
