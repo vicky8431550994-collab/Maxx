@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxx AI - Viki Boss Premium</title>
+    <title>Maxx AI - Premium Viki Boss</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="apple-touch-icon" href="logo.jpg">
     <link rel="manifest" href="manifest.json">
@@ -30,6 +30,7 @@
             overflow: hidden;
         }
         
+        /* Premium Top Bar */
         .top-bar {
             width: 100%;
             display: flex;
@@ -38,9 +39,9 @@
             z-index: 10;
         }
         .options-btn {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
+            color: #a1a1aa;
             padding: 8px 16px;
             border-radius: 8px;
             font-size: 0.9rem;
@@ -48,49 +49,40 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s;
+        }
+        .options-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        /* 💎 ಅಲ್ಟ್ರಾ ಪ್ರೀಮಿಯಂ ಇನ್‌ಸ್ಟಾಲ್ ಬ್ಯಾನರ್ (Glassmorphism Look) 💎 */
+        /* Subtle Luxury Install Banner */
         #install-banner {
-            display: none; 
-            position: fixed; 
-            top: 75px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background: rgba(18, 18, 20, 0.75); 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(217, 70, 239, 0.2);
-            color: var(--text-main); 
-            padding: 12px 24px; 
-            border-radius: 30px; 
-            z-index: 1000; 
-            font-size: 0.95rem;
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #d4d4d8;
+            z-index: 100;
             align-items: center;
-            gap: 15px;
-            animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes slideDown {
-            from { top: -50px; opacity: 0; }
-            to { top: 75px; opacity: 1; }
+            gap: 10px;
         }
         #btn-install {
-            background: linear-gradient(135deg, var(--glow-pink), var(--glow-blue));
-            color: white; 
-            border: none; 
-            padding: 8px 18px; 
-            border-radius: 20px; 
-            cursor: pointer; 
+            background: transparent;
+            color: var(--glow-blue);
+            border: none;
+            cursor: pointer;
             font-weight: bold;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(217, 70, 239, 0.4);
-            transition: transform 0.2s;
-        }
-        #btn-install:active {
-            transform: scale(0.95);
+            padding: 0;
         }
 
+        /* Center Glowing Layout */
         .center-welcome {
             position: absolute;
             top: 45%;
@@ -110,7 +102,7 @@
             border-radius: 50%;
             background: linear-gradient(135deg, var(--glow-pink), var(--glow-blue));
             padding: 3px;
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
             margin-bottom: 25px;
         }
         .glow-circle img {
@@ -134,6 +126,7 @@
             padding: 0 15px;
         }
 
+        /* Chat Area */
         #chat-container {
             display: none;
             flex: 1;
@@ -142,7 +135,7 @@
             gap: 15px;
             padding: 10px 20px;
             margin-bottom: 80px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .message {
             max-width: 85%;
@@ -165,6 +158,7 @@
             padding-left: 0;
         }
 
+        /* Luxury Bottom Input Bar */
         .input-area-wrapper {
             position: absolute;
             bottom: 20px;
@@ -177,8 +171,8 @@
             display: flex;
             align-items: center;
             padding: 5px 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .icon-btn {
             background: transparent;
@@ -204,9 +198,10 @@
             outline: none;
         }
         #user-input::placeholder {
-            color: #71717a;
+            color: #52525b;
         }
 
+        /* Game Interface */
         #game-container {
             display: none;
             flex-direction: column;
@@ -246,13 +241,13 @@
     </div>
 
     <div id="install-banner">
-        <span>📲 ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</span> 
-        <button id="btn-install">Install Now</button>
+        <span>App ಲಭ್ಯವಿದೆ</span>
+        <button id="btn-install">Install</button>
     </div>
 
     <div class="center-welcome" id="welcome-screen">
         <div class="glow-circle">
-            <img src="logo.jpg" alt="Moni Logo">
+            <img src="logo.jpg" alt="Maxx Logo">
         </div>
         <h2>ಏನ್ ಮಚ್ಚಾ ಸಮಾಚಾರ,<br>ಏನ್ ಬೇಕಿತ್ತು?</h2>
     </div>
@@ -262,7 +257,7 @@
     <div id="game-container">
         <h3 style="color: #c084fc;">🎮 ಟಿಕ್-ಟ್ಯಾಕ್-ಟೋ</h3>
         <div class="ttt-board" id="board"></div>
-        <button onclick="closeGame()" style="margin-top:20px; background:#ef4444; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">ಗೇಮ್ ಮುಚ್ಚು</button>
+        <button onclick="closeGame()" style="margin-top:20px; background:#ef4444; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">Close</button>
     </div>
 
     <div class="input-area-wrapper">
@@ -274,21 +269,19 @@
 
     <script>
         // =========================================================================
-        // 🕵️‍♂️ ನೀನು ಕೊಟ್ಟ API Key ಯನ್ನು ಗಿಟ್‌ಹಬ್‌ಗೆ ಸಿಕ್ಕಿಬೀಳದಂತೆ 4 ಭಾಗ ಮಾಡಲಾಗಿದೆ
+        // ⚠️ ಬಾಸ್, ನಿನ್ನ ಒರಿಜಿನಲ್ ಕೀಯನ್ನು ಈ ಕೆಳಗಿನ ಜಾಗದಲ್ಲಿ ಮಾತ್ರ ಪೇಸ್ಟ್ ಮಾಡು! ⚠️
+        // (ನಾಲ್ಕು ಭಾಗ ಮಾಡೋ ಕನ್ಫ್ಯೂಷನ್ ಬೇಡ, ನೇರವಾಗಿ ಪೂರ್ತಿ ಕೀ ಇಲ್ಲಿ ಹಾಕು)
         // =========================================================================
-        const p1 = "AQ.Ab8RN6I";
-        const p2 = "ajGAaP3hf3";
-        const p3 = "ygvugsF8h8";
-        const p4 = "QysUhGe0872Kj5uPDSHcAZw";
         
-        const MY_GEMINI_API_KEY = p1 + p2 + p3 + p4; 
+        const MY_GEMINI_API_KEY = "ಇಲ್ಲಿ_ನಿನ್ನ_ಪೂರ್ತಿ_ಕೀ_ಪೇಸ್ಟ್_ಮಾಡು"; 
+        
+        // ಉದಾಹರಣೆಗೆ: const MY_GEMINI_API_KEY = "AQ.Ab8RN6I4tAmAU5aOLgrRiYOTD5...";
         // =========================================================================
 
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Display flex is needed for the new premium design alignment
             document.getElementById('install-banner').style.display = 'flex';
         });
 
@@ -386,14 +379,15 @@
                 if (data.candidates && data.candidates.length > 0) {
                     reply = data.candidates[0].content.parts[0].text;
                 } else if (data.error) {
-                    reply = "ಬಾಸ್, API ಕೀ ಜೆಮಿನಿ ಸರ್ವರ್‌ಗೆ ಮ್ಯಾಚ್ ಆಗ್ತಿಲ್ಲ (Network Error). ದಯವಿಟ್ಟು 'AIzaSy' ಇರೋ ಕೀ ಬಳಸಿ.";
+                    // ಗೂಗಲ್ ಕಡೆಯಿಂದಲೇ ಬರುವ ಅಸಲಿ ಎರರ್ ಮೆಸೇಜ್ ತೋರಿಸಲು
+                    reply = "ಬಾಸ್, API ಕೀ ವರ್ಕ್ ಆಗ್ತಿಲ್ಲ. ಎರರ್: " + data.error.message;
                 }
                 appendMessage(reply, 'bot-msg');
                 speakNeuralMale(reply);
             })
             .catch((error) => {
                 removeLoading(loadingId);
-                let errorMsg = "ಬಾಸ್, ಸರ್ವರ್ ಸಂಪರ್ಕದಲ್ಲಿ ತೊಂದರೆ ಇದೆ (Network Issue). ಕೀ ಮ್ಯಾಚ್ ಆಗ್ತಿಲ್ಲ.";
+                let errorMsg = "ಬಾಸ್, ಸರ್ವರ್ ಕನೆಕ್ಷನ್ ಸಿಗ್ತಿಲ್ಲ. ನೆಟ್‌ವರ್ಕ್ ಚೆಕ್ ಮಾಡಿ.";
                 appendMessage(errorMsg, 'bot-msg');
                 speakNeuralMale(errorMsg);
             });
@@ -480,3 +474,4 @@
     </script>
 </body>
 </html>
+
