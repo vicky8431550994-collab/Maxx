@@ -3,18 +3,19 @@
   "short_name": "Maxx",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#030712",
-  "theme_color": "#000000",
+  "background_color": "#131314",
+  "theme_color": "#1a73e8",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1118/1118914.png",
+      "src": "logo.jpg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jpeg"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1118/1118914.png",
+      "src": "logo.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg"
     }
   ]
 }
+
