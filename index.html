@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxx AI - Viki Boss Neural Edition</title>
+    <title>Maxx AI - Viki Boss Gemini Edition</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
-            --bg-color: #050510;
-            --chat-bg: #0b0b1e;
-            --neon-color: #00ffff;
-            --text-color: #ffffff;
+            --bg-color: #131314;
+            --chat-bg: #1e1e20;
+            --accent-color: #1a73e8;
+            --text-color: #e3e3e3;
         }
         *, *::before, *::after {
             box-sizing: border-box;
@@ -19,7 +20,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
@@ -27,85 +28,123 @@
             height: 100vh;
             overflow: hidden;
         }
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.12;
-        }
         header {
-            background: linear-gradient(135deg, #0f0f2d, #050510);
-            padding: 15px 20px;
+            background-color: var(--bg-color);
+            padding: 15px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 2px solid var(--neon-color);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            border-bottom: 1px solid #2f2f30;
         }
         .header-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         .header-left img {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 2px solid var(--neon-color);
-            box-shadow: 0 0 12px var(--neon-color);
             object-fit: cover;
         }
         .header-title h1 {
             margin: 0;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-color);
-            font-weight: 800;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #fff;
         }
-        .header-title p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: #7d7db3;
+        .install-popup {
+            display: none;
+            background: #1a73e8;
+            color: white;
+            padding: 12px 20px;
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 999;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            animation: slideDown 0.4s ease;
         }
-        .theme-btn {
-            background: transparent;
-            border: 1px solid var(--neon-color);
-            color: var(--neon-color);
-            padding: 6px 12px;
-            border-radius: 6px;
+        @keyframes slideDown {
+            from { top: -50px; opacity: 0; }
+            to { top: 70px; opacity: 1; }
+        }
+        .install-btn {
+            background: white;
+            color: #1a73e8;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.85rem;
+        }
+        #dev-panel {
+            font-size: 0.85rem;
+            color: #aaaaaa;
+            padding: 5px 24px;
+            border-bottom: 1px solid #2f2f30;
+            background: #18181a;
         }
         #chat-container {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
-            background-color: rgba(11, 11, 30, 0.85);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            position: relative;
         }
-        /* Developer History & Personal Info Panel (Maxx Difference Feature) */
-        #dev-panel {
-            background: rgba(15, 15, 45, 0.9);
-            border: 1px solid var(--neon-color);
-            border-radius: 10px;
-            padding: 12px 15px;
-            margin: 10px 20px 0 20px;
-            font-size: 0.88rem;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        .center-welcome {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            transition: opacity 0.3s ease;
+        }
+        .center-welcome img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #2f2f30;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            margin-bottom: 15px;
+        }
+        .center-welcome h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #fff;
+        }
+        /* ಮೋನಿ ಫೋಟೋ ಕೆಳಗಿನ ಮಾಸ್ ಟ್ಯಾಗ್ ಲೈನ್ ಸ್ಟೈಲ್ */
+        .center-welcome p {
+            margin: 8px 0 0 0;
+            color: #1a73e8;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
         #admin-panel {
             display: none;
             flex-direction: column;
-            padding: 15px 20px;
-            background: #1c0033;
-            border: 2px dashed #ff00ff;
-            margin: 15px;
-            border-radius: 12px;
+            padding: 15px;
+            background: #231530;
+            border: 1px solid #ff00ff;
+            margin: 0 24px 15px 24px;
+            border-radius: 8px;
         }
         #game-container {
             display: none;
@@ -113,244 +152,215 @@
             align-items: center;
             justify-content: center;
             flex: 1;
-            background: rgba(5, 5, 16, 0.98);
+            background: var(--bg-color);
         }
         .ttt-board {
             display: grid;
-            grid-template-columns: repeat(3, 90px);
-            grid-template-rows: repeat(3, 90px);
+            grid-template-columns: repeat(3, 85px);
+            grid-template-rows: repeat(3, 85px);
             gap: 8px;
             margin-top: 20px;
         }
         .cell {
-            background: #0f0f2d;
-            border: 2px solid var(--neon-color);
+            background: #1e1e20;
+            border: 1px solid #3c4043;
             border-radius: 8px;
-            font-size: 2.3rem;
+            font-size: 2rem;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--neon-color);
+            color: #fff;
         }
         .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 16px;
-            line-height: 1.5;
-            font-size: 0.98rem;
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            line-height: 1.6;
+            font-size: 1rem;
             word-wrap: break-word;
         }
         .user-msg {
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            color: white;
+            background-color: #303136;
+            color: #fff;
             align-self: flex-end;
-            border-bottom-right-radius: 2px;
         }
         .bot-msg {
-            background: #141436;
-            color: #e2e2ff;
+            background-color: transparent;
+            color: var(--text-color);
             align-self: flex-start;
-            border-bottom-left-radius: 2px;
-            border-left: 4px solid var(--neon-color);
+            padding-left: 0;
         }
         input-area {
             display: flex;
-            padding: 15px 20px;
-            background-color: #050510;
+            padding: 20px 24px 30px 24px;
+            background-color: var(--bg-color);
             gap: 12px;
-            border-top: 1px solid #141436;
             align-items: center;
+            justify-content: center;
         }
         .input-wrapper {
+            max-width: 800px;
             flex: 1;
             display: flex;
-            background: #0f0f2d;
-            border-radius: 30px;
-            padding: 5px 18px;
-            border: 1px solid #1f1f4d;
+            background: #1e1e20;
+            border-radius: 28px;
+            padding: 4px 16px;
             align-items: center;
+            border: 1px solid transparent;
+        }
+        .input-wrapper:focus-within {
+            background: #28292a;
         }
         #user-input {
             flex: 1;
             background: transparent;
             border: none;
-            color: white;
-            padding: 12px 5px;
+            color: #fff;
+            padding: 14px 8px;
             font-size: 1rem;
             outline: none;
         }
         .action-btn {
-            background: linear-gradient(135deg, #00ffff, #008b8b);
+            background: transparent;
             border: none;
-            color: #050510;
-            width: 48px;
-            height: 48px;
+            color: #c4c7c5;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
-            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px var(--neon-color);
+            transition: background 0.2s;
         }
-        #mic-btn {
-            background: #141436;
-            color: var(--neon-color);
-            border: 1px solid var(--neon-color);
-            box-shadow: none;
+        .action-btn:hover {
+            background: #303136;
+            color: #fff;
         }
         .mic-active {
-            background: red !important;
+            background: #ea4335 !important;
             color: white !important;
-            box-shadow: 0 0 15px red !important;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
+    <div class="install-popup" id="install-banner">
+        <span>📲 ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ!</span>
+        <button class="install-btn" id="btn-install">ಇನ್‌ಸ್ಟಾಲ್</button>
+    </div>
 
     <header>
         <div class="header-left">
             <img src="logo.jpg" alt="Moni Logo">
             <div class="header-title">
-                <h1>MAXX AI</h1>
-                <p id="status-text">ಮೋಡ್: ಪ್ರೀಮಿಯಂ ನ್ಯೂರಲ್ ವಾಯ್ಸ್</p>
+                <h1>Maxx</h1>
             </div>
         </div>
-        <button class="theme-btn" onclick="toggleTheme()">ಥೀಮ್ ಚೇಂಜ್</button>
     </header>
 
     <div id="dev-panel">
-        <span style="color: var(--neon-color); font-weight: bold;">👑 ಡೆವಲಪರ್ ಹಿಸ್ಟರಿ:</span> ವಿಕ್ಕಿ ಬಾಸ್ (Owner) | 
-        <span style="color: #ff00ff; font-weight: bold;">ಸಿಸ್ಟಮ್:</span> Maxx Neural v2.0 | 
-        <span style="color: #00ff00; font-weight: bold;">ಸ್ಥಿತಿ:</span> ಆಪ್ಟಿಮೈಸ್ಡ್ ಕ್ಲಾರಿಟಿ
+        👑 <b>ಡೆವಲಪರ್ ಹಿಸ್ಟರಿ:</b> ವಿಕ್ಕಿ ಬಾಸ್ (Owner) | <b>ಮೋಡ್:</b> ಜೆಮಿನಿ ಕ್ಲೀನ್ UI
     </div>
 
     <div id="admin-panel">
-        <h3 style="color: #ff00ff; margin: 0 0 8px 0;">👑 ವಿಕಿ ಬಾಸ್ ಸೀಕ್ರೆಟ್ ಪ್ಯಾನಲ್ ಆಕ್ಟಿವೇಟೆಡ್!</h3>
-        <p style="font-size: 0.85rem; margin: 5px 0; color: #cc99ff;">ಬಾಟ್ ಸ್ಟೇಟಸ್: 100% ಆಪ್ಟಿಮೈಸ್ಡ್ | ಮೆಮೊರಿ ಸೇಫ್</p>
-        <button onclick="clearSystemMemory()" style="background:#ff00ff; border:none; color:white; padding:6px 12px; cursor:pointer; border-radius:6px; font-weight:bold;">ಡೇಟಾ ರೀಸೆಟ್</button>
+        <h3 style="color: #ff00ff; margin: 0 0 5px 0;">👑 ವಿಕಿ ಬಾಸ್ ಕಂಟ್ರೋಲ್ ಪ್ಯಾನಲ್</h3>
+        <button onclick="clearSystemMemory()" style="background:#ff00ff; border:none; color:white; padding:5px 10px; cursor:pointer; border-radius:4px;">ಡೇಟಾ ರೀಸೆಟ್</button>
     </div>
 
     <div id="chat-container">
-        <div class="message bot-msg">
-            ಪ್ರಣಾಮಗಳು ಬಾಸ್! ನಾನು ನಿಮ್ಮ **Maxx AI**. ಹಳೇ ೧೪ ಫೀಚರ್ಸ್, ಇನ್‌ಸ್ಟಂಟ್ ನ್ಯೂರಲ್ ಮೇಲ್ ವಾಯ್ಸ್ ರೆಸ್ಪಾನ್ಸ್, ಮತ್ತು ಕ್ಲಾರಿಟಿ ಹಿಸ್ಟರಿ ಬೋರ್ಡ್‌ನೊಂದಿಗೆ ಫಿಕ್ಸ್ ಮಾಡಿದ್ದೀನಿ. 'Hey Maxx' ಅಂದು ಮೈಕ್ ಆನ್ ಮಾಡಿ ಮಾತಾಡಿ ಬಾಸ್!
+        <div class="center-welcome" id="welcome-screen">
+            <img src="logo.jpg" alt="Moni Center">
+            <h2>ಹೇಳಿ ವಿಕ್ಕಿ ಬಾಸ್</h2>
+            <p id="tagline">ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?</p>
         </div>
-    </div>
-
-    <div id="game-container">
-        <h2 style="color: var(--neon-color); margin-bottom: 5px;">🎮 ಮ್ಯಾಕ್ಸ್ ಗೇಮ್ ಝೋನ್</h2>
-        <div class="ttt-board" id="board"></div>
-        <button onclick="closeGame()" style="margin-top: 25px; background: #ff3333; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">ಗೇಮ್ ಮುಚ್ಚು</button>
     </div>
 
     <input-area>
         <button class="action-btn" id="mic-btn" onclick="startSpeechRecognition()">🎙️</button>
         <div class="input-wrapper">
-            <input type="text" id="user-input" placeholder="ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ ಅಥವಾ 'Hey Maxx' ಅtransform..." onkeypress="checkEnter(event)">
+            <input type="text" id="user-input" placeholder="ಇಲ್ಲಿ ಕೇಳಿ..." onkeypress="checkEnter(event)">
         </div>
         <button class="action-btn" id="send-btn" onclick="handleSendMessage()">🚀</button>
     </input-area>
 
     <script>
-        // Matrix Background
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const columns = Math.floor(canvas.width / 20);
-        const drops = Array(columns).fill(1);
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(5, 5, 16, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0f0';
-            ctx.font = '15px monospace';
-            for(let i=0; i<drops.length; i++) {
-                const text = String.fromCharCode(33 + Math.random() * 93);
-                ctx.fillText(text, i*20, drops[i]*20);
-                if(drops[i]*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 33);
-
         let isGaming = false;
         let tttBoard = Array(9).fill("");
-        let currentTheme = 'cyan';
-        
-        // 1. Instant Neural Voice Generator (High Quality Male Voice Fix)
-        function speakNeuralVoice(text) {
+        let deferredPrompt;
+
+        // 1. ಮೋನಿ ಫೋಟೋ ಕೆಳಗಿನ ಕ್ರೇಜಿ ಟ್ಯಾಗ್ ಲೈನ್‌ಗಳು (Random Tagline Setup)
+        const taglines = [
+            "ಏನ್ ಮಜಾ?",
+            "ಏನ್ ಸಮಾಚಾರ?",
+            "ಏನ್ ಸಮಾಚಾರ ಮಚ್ಚಾ?",
+            "ಏನ್ ಬೇಕಿತ್ತು ಬಾಸ್?",
+            "ವಿಕ್ಕಿ ಬಾಸ್ ಆದೇಶಕ್ಕೆ ವೇಟಿಂಗ್..."
+        ];
+        // ಪೇಜ್ ಲೋಡ್ ಆದ ತಕ್ಷಣ ರಾಂಡಮ್ ಆಗಿ ಒಂದು ಟ್ಯಾಗ್ ಲೈನ್ ಸೆಟ್ ಆಗುತ್ತೆ
+        document.getElementById('tagline').innerText = taglines[Math.floor(Math.random() * taglines.length)];
+
+        // PWA Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-banner').style.display = 'flex';
+        });
+
+        document.getElementById('btn-install').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('install-banner').style.display = 'none';
+            }
+        });
+
+        // Force High Quality Neural Male Voice
+        function speakNeuralMale(text) {
             if ('speechSynthesis' in window) {
-                // ಹಳೇ ಆಡಿಯೋ ಪ್ಲೇ ಆಗ್ತಿದ್ರೆ ತಕ್ಷಣ ಸ್ಟಾಪ್ ಮಾಡು
                 window.speechSynthesis.cancel();
-                
-                const cleanText = text.replace(/[*#]/g, ''); // ಮಾರ್ಕ್‌ಡೌನ್ ಸಿಂಬಲ್ಸ್ ತೆಗೆಯಲು
+                const cleanText = text.replace(/[*#]/g, '');
                 const utterance = new SpeechSynthesisUtterance(cleanText);
-                
-                // ನ್ಯೂರಲ್ ಗಂಡಸಿನ ಧ್ವನಿ ಸೆಟ್ಟಿಂಗ್ (Male Voice Setup)
                 const voices = window.speechSynthesis.getVoices();
-                // ಗಂಡಸಿನ ವಾಯ್ಸ್‌ಗಳನ್ನ ಹುಡುಕಿ ಸೆಟ್ ಮಾಡುವುದು
-                const maleVoice = voices.find(voice => voice.name.toLowerCase().includes('male') || voice.name.toLowerCase().includes('david') || voice.name.toLowerCase().includes('google UK English Male'));
+                const maleVoice = voices.find(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('google uk english male'));
                 
-                if (maleVoice) {
-                    utterance.voice = maleVoice;
-                }
-                
-                utterance.pitch = 0.9; // ಗತ್ತಾದ ಗಂಡಸಿನ ಧ್ವನಿಗಾಗಿ ಪಿಚ್ ಕಡಿಮೆ
-                utterance.rate = 1.0;  // ಇನ್‌ಸ್ಟಂಟ್ ಸ್ಪೀಡ್
-                utterance.lang = 'kn-IN'; // ಕನ್ನಡ ಭಾಷೆ ಸಪೋರ್ಟ್
-                
+                if (maleVoice) utterance.voice = maleVoice;
+                utterance.pitch = 0.85; 
+                utterance.rate = 1.05;  
+                utterance.lang = 'kn-IN';
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        // 2. High Quality Speech to Text Recognition (ಮೈಕ್ ಪಕ್ಕಾ ಫಿಕ್ಸ್)
+        // Speech to Text Microphone
         function startSpeechRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                alert("ನಿಮ್ಮ ಬ್ರೌಸರ್ ವಾಯ್ಸ್ ಇನ್‌ಪುಟ್ ಸಪೋರ್ಟ್ ಮಾಡಲ್ಲ ಬಾಸ್.");
-                return;
-            }
-            
+            if (!SpeechRecognition) return;
             const recognition = new SpeechRecognition();
-            recognition.lang = 'kn-IN'; // ಕನ್ನಡ ಇನ್‌ಪುಟ್ ಕಂಟ್ರೋಲ್
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-            
+            recognition.lang = 'kn-IN';
             const micBtn = document.getElementById('mic-btn');
             micBtn.classList.add('mic-active');
-            
             recognition.start();
             
             recognition.onresult = function(event) {
-                const speechResult = event.results[0][0].transcript;
-                document.getElementById('user-input').value = speechResult;
+                document.getElementById('user-input').value = event.results[0][0].transcript;
                 micBtn.classList.remove('mic-active');
-                handleSendMessage(); // ಮಾತಾಡಿ ಮುಗಿಸಿದ ತಕ್ಷಣ ಆಟೋಮ್ಯಾಟಿಕ್ ಸೆಂಡ್
+                handleSendMessage();
             };
-            
             recognition.onspeechend = function() {
                 recognition.stop();
                 micBtn.classList.remove('mic-active');
             };
-            
             recognition.onerror = function() {
                 micBtn.classList.remove('mic-active');
             };
         }
-        
-        // ವಾಯ್ಸ್ ಕಮಾಂಡ್ ಮೂಲಕ ಆಕ್ಟಿವೇಟ್ ಮಾಡೋದು (Hey Maxx Simulator)
-        function activateWakeWord() {
-            startSpeechRecognition();
-        }
 
         function checkEnter(event) {
-            if (event.key === 'Enter') {
-                handleSendMessage();
-            }
+            if (event.key === 'Enter') handleSendMessage();
         }
 
         function handleSendMessage() {
@@ -358,16 +368,17 @@
             const text = inputElement.value.trim();
             if (!text) return;
 
+            document.getElementById('welcome-screen').style.opacity = '0';
+            document.getElementById('welcome-screen').style.display = 'none';
+
             appendMessage(text, 'user-msg');
             inputElement.value = '';
 
             if (text.toLowerCase() === '/vikiboss' || text === 'ವಿಕಿ ಬಾಸ್') {
                 document.getElementById('admin-panel').style.display = 'flex';
-                const msg = "👑 ಜಿಪಿಟಿ ತಿಪಟೂರು ಕಮಾಂಡ್ ಸ್ವೀಕರಿಸಲಾಗಿದೆ ವಿಕ್ಕಿ ಬಾಸ್! ಸೀಕ್ರೆಟ್ ಕಂಟ್ರೋಲ್ ರೂಮ್ ಓಪನ್ ಆಗಿದೆ.";
-                setTimeout(() => {
-                    appendMessage(msg, 'bot-msg');
-                    speakNeuralVoice(msg);
-                }, 400);
+                const msg = "👑 ವಿಕ್ಕಿ ಬಾಸ್, ನಿಮ್ಮ ಸೀಕ್ರೆಟ್ ಕಂಟ್ರೋಲ್ ರೂಮ್ ಓಪನ್ ಆಗಿದೆ.";
+                appendMessage(msg, 'bot-msg');
+                speakNeuralMale(msg);
                 return;
             }
 
@@ -384,25 +395,24 @@
                 const selectedRoast = roasts[Math.floor(Math.random() * roasts.length)];
                 setTimeout(() => {
                     appendMessage(selectedRoast, 'bot-msg');
-                    speakNeuralVoice(selectedRoast);
+                    speakNeuralMale(selectedRoast);
                 }, 400);
                 return;
             }
 
-            // ಇನ್‌ಸ್ಟಂಟ್ API ಕಾಲ್ ಮತ್ತು ಬ್ಯಾಕ್‌ಅಪ್ ರಕ್ಷಣೆ
             fetch(`https://nexra.aryahcr.cc/api/chat/gpt?prompt=${encodeURIComponent(text)}`)
                 .then(res => res.json())
                 .then(data => {
-                    let reply = data.gpt || "ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ ಬಾಸ್.";
+                    let reply = data.gpt || "ನನ್ನಲ್ಲಿ ಇದಕ್ಕೆ ಉತ್ತರವಿದೆ ಬಾಸ್.";
                     appendMessage(reply, 'bot-msg');
-                    speakNeuralVoice(reply); // ಇನ್‌ಸ್ಟಂಟ್ ನ್ಯೂರಲ್ ವಾಯ್ಸ್ ರಿಪ್ಲೈ
+                    speakNeuralMale(reply);
                 })
                 .catch(() => {
-                    const backupMsg = "ಸರ್ವರ್ ಲಿಂಕ್ ಬ್ಯುಸಿ ಇದೆ ಬಾಸ್, ಆದರೆ ನಾನು ನಿಮ್ಮ ಸೇವೆಗೆ ಸದಾ ರೆಡಿ!";
                     setTimeout(() => {
-                        appendMessage(backupMsg, 'bot-msg');
-                        speakNeuralVoice(backupMsg);
-                    }, 400);
+                        const localReply = "ನಾನು ನಿಮ್ಮ ಆದೇಶ ಕೇಳಿಸಿಕೊಂಡೆ ಬಾಸ್, ಎಲ್ಲಾ ಫೀಚರ್ಸ್ ಪಕ್ಕಾ ರೆಡಿ ಇವೆ!";
+                        appendMessage(localReply, 'bot-msg');
+                        speakNeuralMale(localReply);
+                    }, 300);
                 });
         }
 
@@ -415,25 +425,15 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function toggleTheme() {
-            if (currentTheme === 'cyan') {
-                document.documentElement.style.setProperty('--neon-color', '#ff00ff');
-                currentTheme = 'pink';
-            } else {
-                document.documentElement.style.setProperty('--neon-color', '#00ffff');
-                currentTheme = 'cyan';
-            }
-        }
-
         function clearSystemMemory() {
-            alert("ಮೆಮೊರಿ ಮತ್ತು ಕ್ಯಾಶ್ ಕ್ಲಿಯರ್ ಮಾಡಲಾಗಿದೆ ಬಾಸ್!");
+            alert("ಮೆಮೊರಿ ರreset ಆಗಿದೆ ಬಾಸ್!");
             document.getElementById('admin-panel').style.display = 'none';
         }
 
-        // Mini Game Logic (Tic-Tac-Toe)
+        // Game Zone
         function startMiniGame() {
             isGaming = true;
-            document.getElementById('chat-container').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('game-container').style.display = 'flex';
             initBoard();
         }
@@ -441,7 +441,6 @@
         function closeGame() {
             isGaming = false;
             document.getElementById('game-container').style.display = 'none';
-            document.getElementById('chat-container').style.display = 'flex';
         }
 
         function initBoard() {
@@ -460,52 +459,25 @@
         function handleCellClick(e) {
             const idx = e.target.dataset.index;
             if (tttBoard[idx] !== "") return;
-            
             tttBoard[idx] = "X";
             e.target.innerText = "X";
-            
-            if (checkWin("X")) {
-                alert("🎉 ವಿಕ್ಕಿ ಬಾಸ್ ನೀವು ಗೆದ್ದಿದ್ದೀರಾ!");
-                initBoard();
-                return;
-            }
+            if (checkWin("X")) { alert("🎉 ಗೆದ್ದಿದ್ದೀರಾ ಬಾಸ್!"); initBoard(); return; }
             setTimeout(botMove, 400);
         }
 
         function botMove() {
-            let emptyCells = [];
-            for (let i = 0; i < 9; i++) {
-                if (tttBoard[i] === "") emptyCells.push(i);
-            }
-            if (emptyCells.length === 0) {
-                alert("🤝 ಪಂದ್ಯ ಡ್ರಾ ಆಗಿದೆ!");
-                initBoard();
-                return;
-            }
-            let randomIdx = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            tttBoard[randomIdx] = "O";
-            document.querySelector(`[data-index='${randomIdx}']`).innerText = "O";
-            
-            if (checkWin("O")) {
-                alert("🤖 ಈ ಸಲ ಮ್ಯಾಕ್ಸ್ ಬಾಟ್ ಗೆದ್ದಿದೆ!");
-                initBoard();
-            }
+            let empty = [];
+            for (let i=0; i<9; i++) if(tttBoard[i]==="") empty.push(i);
+            if(empty.length===0) { alert("🤝 ಡ್ರಾ!"); initBoard(); return; }
+            let r = empty[Math.floor(Math.random()*empty.length)];
+            tttBoard[r] = "O";
+            document.querySelector(`[data-index='${r}']`).innerText = "O";
+            if (checkWin("O")) { alert("🤖 ಮ್ಯಾಕ್ಸ್ ಗೆದ್ದಿದೆ!"); initBoard(); }
         }
 
         function checkWin(p) {
-            const winPatterns = [
-                [0,1,2], [3,4,5], [6,7,8],
-                [0,3,6], [1,4,7], [2,5,8],
-                [0,4,8], [2,4,6]
-            ];
-            return winPatterns.some(pattern => pattern.every(idx => tttBoard[idx] === p));
-        }
-
-        // ವಾಯ್ಸ್ ಇಂಜಿನ್ ಲೋಡ್ ಮಾಡುವುದು
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.onvoiceschanged = function() {
-                window.speechSynthesis.getVoices();
-            };
+            const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return w.some(pattern => pattern.every(idx => tttBoard[idx] === p));
         }
     </script>
 </body>
